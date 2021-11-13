@@ -36,7 +36,7 @@ Qrack::QInterfacePtr MakeRandQubit()
 }
 
 void benchmarkLoopVariable(std::function<void(Qrack::QInterfacePtr, int, int)> fn, bitLenInt mxQbts, int minDepth = 1, int maxDepth = 1, bool resetRandomPerm = true,
-    bool hadamardRandomBits = false, bool logNormal = false, bool randQubits = false)
+    bool hadamardRandomBits = false, bool randQubits = false)
 {
     Qrack::QInterfacePtr qftReg;
 
@@ -98,11 +98,7 @@ void benchmarkLoopVariable(std::function<void(Qrack::QInterfacePtr, int, int)> f
 
                 // Collect interval data
                 tClock = clock() - iterClock;
-                if (logNormal) {
-                    trialClocks[i] = log2(tClock * CLOCK_FACTOR);
-                } else {
-                    trialClocks[i] = tClock * CLOCK_FACTOR;
-                }
+                trialClocks[i] = tClock * CLOCK_FACTOR;
                 avgt += trialClocks[i];
             }
             avgt /= ITERATIONS;
@@ -117,30 +113,29 @@ void benchmarkLoopVariable(std::function<void(Qrack::QInterfacePtr, int, int)> f
 
             std::cout << (int)numBits << ", "; /* # of Qubits */
             std::cout << (int)depth << ", "; /* Depth */
-            std::cout << formatTime(avgt, logNormal) << ","; /* Average Time (ms) */
-            std::cout << formatTime(stdet, logNormal) << ","; /* Sample Std. Deviation (ms) */
-            std::cout << formatTime(trialClocks[0], logNormal) << ","; /* Fastest (ms) */
+            std::cout << avgt << ","; /* Average Time (ms) */
+            std::cout << stdet << ","; /* Sample Std. Deviation (ms) */
+            std::cout << trialClocks[0] << ","; /* Fastest (ms) */
             if (ITERATIONS % 4 == 0) {
-                std::cout << formatTime((trialClocks[ITERATIONS / 4 - 1] + trialClocks[ITERATIONS / 4]) / 2, logNormal)
+                std::cout << ((trialClocks[ITERATIONS / 4 - 1] + trialClocks[ITERATIONS / 4]) / 2)
                           << ","; /* 1st Quartile (ms) */
             } else {
-                std::cout << formatTime(trialClocks[ITERATIONS / 4 - 1] / 2, logNormal) << ","; /* 1st Quartile (ms) */
+                std::cout << (trialClocks[ITERATIONS / 4 - 1] / 2) << ","; /* 1st Quartile (ms) */
             }
             if (ITERATIONS % 2 == 0) {
-                std::cout << formatTime((trialClocks[ITERATIONS / 2 - 1] + trialClocks[ITERATIONS / 2]) / 2, logNormal)
+                std::cout << ((trialClocks[ITERATIONS / 2 - 1] + trialClocks[ITERATIONS / 2]) / 2)
                           << ","; /* Median (ms) */
             } else {
-                std::cout << formatTime(trialClocks[ITERATIONS / 2 - 1] / 2, logNormal) << ","; /* Median (ms) */
+                std::cout << (trialClocks[ITERATIONS / 2 - 1] / 2) << ","; /* Median (ms) */
             }
             if (ITERATIONS % 4 == 0) {
-                std::cout << formatTime(
-                                 (trialClocks[(3 * ITERATIONS) / 4 - 1] + trialClocks[(3 * ITERATIONS) / 4]) / 2, logNormal)
+                std::cout << ((trialClocks[(3 * ITERATIONS) / 4 - 1] + trialClocks[(3 * ITERATIONS) / 4]) / 2)
                           << ","; /* 3rd Quartile (ms) */
             } else {
-                std::cout << formatTime(trialClocks[(3 * ITERATIONS) / 4 - 1] / 2, logNormal)
+                std::cout << (trialClocks[(3 * ITERATIONS) / 4 - 1] / 2)
                           << ","; /* 3rd Quartile (ms) */
             }
-            std::cout << formatTime(trialClocks[ITERATIONS - 1], logNormal) << std::endl; /* Slowest (ms) */
+            std::cout << trialClocks[ITERATIONS - 1] << std::endl; /* Slowest (ms) */
         }
     }
     
@@ -148,7 +143,7 @@ void benchmarkLoopVariable(std::function<void(Qrack::QInterfacePtr, int, int)> f
 }
 
 void benchmarkLoop(std::function<void(Qrack::QInterfacePtr, int, int)> fn, int minDepth = 1, int maxDepth = 1, bool resetRandomPerm = true,
-    bool hadamardRandomBits = false, bool logNormal = false, bool randQubits = false)
+    bool hadamardRandomBits = false, bool randQubits = false)
 {
-    benchmarkLoopVariable(fn, MAX_QUBITS, minDepth, maxDepth, resetRandomPerm, hadamardRandomBits, logNormal, randQubits);
+    benchmarkLoopVariable(fn, MAX_QUBITS, minDepth, maxDepth, resetRandomPerm, hadamardRandomBits, randQubits);
 }
