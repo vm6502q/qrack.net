@@ -21,7 +21,11 @@ module.exports = {
         test: /\.(wasm)$/,
         loader: 'file-loader',
         type: 'javascript/auto'
-      }
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ]
   },
   devServer: {
