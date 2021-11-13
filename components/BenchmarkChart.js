@@ -10,7 +10,6 @@ function BenchmarkChart (props) {
 
   useEffect(() => {
     function drawChart () {
-
       d3.select('#qrack-line-chart-container')
         .select('svg')
         .remove()
@@ -86,6 +85,17 @@ function BenchmarkChart (props) {
       dots.append('text').text(function (d) { return d.method })
         .attr('x', function (d) { return x(d.label) })
         .attr('y', function (d) { return y(d.value) })
+
+      const line = d3.line()
+        .x(function (d) { return x(d.label) })
+        .y(function (d) { return y(d.value) })
+
+      svg.append('path')
+        .datum(data)
+        .attr('fill', 'none')
+        .attr('stroke-width', 1.5)
+        .attr('stroke', 'steelblue')
+        .attr('d', line)
 
       const xAxisLabelX = lWidth / 2
       const xAxisLabelY = lHeight + 40

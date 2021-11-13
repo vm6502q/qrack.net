@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 module.exports = {
   entry: path.resolve(__dirname, 'index.js'),
@@ -25,7 +26,7 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
-      },
+      }
     ]
   },
   devServer: {
@@ -34,5 +35,8 @@ module.exports = {
       'Cross-Origin-Opener-Policy': 'same-origin'
     }
   },
-  plugins: [new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html') })]
+  plugins: [
+    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html') }),
+    new FaviconsWebpackPlugin('favicon.ico')
+  ]
 }

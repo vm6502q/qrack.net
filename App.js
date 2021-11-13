@@ -17,7 +17,7 @@ class App extends React.Component {
     super(props)
     this.state = {
       benchmarkData: [],
-      fullData:[]
+      fullData: []
     }
 
     this.handleQftDispatch = this.handleQftDispatch.bind(this)
@@ -27,7 +27,7 @@ class App extends React.Component {
     this.handleQftDispatch(1, 12)
   }
 
-  handleQftDispatch(length, maxLength) {
+  handleQftDispatch (length, maxLength) {
     qrack.then((core) => {
       const start = new Date().getTime()
       const mResult = core.qft_u3(length, 0)
