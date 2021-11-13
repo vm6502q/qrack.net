@@ -9,8 +9,8 @@
 
 #include "qrack/qfactory.hpp"
 
-const int MAX_QUBITS = 16;
-const int ITERATIONS = 100;
+const int MAX_QUBITS = 8;
+const int ITERATIONS = 10;
 const double CLOCK_FACTOR = 1000.0 / CLOCKS_PER_SEC; // Report in ms
 
 double formatTime(double t, bool logNormal)
