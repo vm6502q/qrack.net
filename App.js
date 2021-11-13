@@ -52,6 +52,10 @@ class App extends React.Component {
         <h1>WebAssembly Qrack with React From Scratch!</h1>
         <h4>QFT (random unitary initialization)</h4>
         <BenchmarkChart data={this.state.fullData} width={1000} height={400} xLabel='Qubits' xType='number' yLabel='Time (ms)' yType='number' />
+        <div>
+          <p>These benchmarks for <a href='https://github.com/vm6502q/qrack'>vm650q/qrack</a> <b>were just run in your browser!</b></p>
+          <p>Qrack can compile for browsers with WebAssembly. In the time it took to load, this page served you a copy of the full Qrack library built for the purpose, ran a quantum Fourier transform, and graphed the timing results!</p>
+        </div>
       </div>
     )
   }
