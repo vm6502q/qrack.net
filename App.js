@@ -21,6 +21,7 @@ class App extends React.Component {
     }
 
     this.handleQftDispatch = this.handleQftDispatch.bind(this)
+    this.handleQftIteration = this.handleQftIteration.bind(this)
   }
 
   componentDidMount () {
@@ -29,21 +30,25 @@ class App extends React.Component {
 
   handleQftDispatch (length, maxLength) {
     qrack.then((core) => {
-      const start = new Date().getTime()
-      const mResult = core.qft_u3(length, 0)
-      const end = new Date().getTime()
-
-      const nBenchmarkData = this.state.benchmarkData
-      nBenchmarkData.push({ method: '', label: length, value: (end - start) })
-
-      this.setState({ benchmarkData: nBenchmarkData })
-
-      if (length < maxLength) {
-        this.handleQftDispatch(length + 1, maxLength)
-      } else {
-        this.setState({ fullData: nBenchmarkData })
-      }
+      this.handleQftIteration(core, length, maxLength)
     })
+  }
+
+  handleQftIteration (core, length, maxLength) {
+    const start = new Date().getTime()
+    const mResult = core.qft_u3(length, 0)
+    const end = new Date().getTime()
+
+    const nBenchmarkData = this.state.benchmarkData
+    nBenchmarkData.push({ method: '', label: length, value: (end - start) })
+
+    this.setState({ benchmarkData: nBenchmarkData })
+
+    if (length < maxLength) {
+      this.handleQftIteration(core, length + 1, maxLength)
+    } else {
+      this.setState({ fullData: nBenchmarkData })
+    }
   }
 
   render () {
