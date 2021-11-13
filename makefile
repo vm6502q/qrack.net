@@ -1,5 +1,5 @@
 all: qft
 
 qft:
-	emcc -O3 -std=c++11 -pthread -Wall -Werror qrack_benchmarks.cpp -s WASM=1 --shell-file html_template/shell_minimal.html -Llib -lqrack -lpthread -o index.html
+	emcc -O3 -std=c++11 -pthread -Wall -Werror --bind bindings/QrackBindings.cpp -Icpp/ cpp/*.cpp -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME=Qrack -s ENVIRONMENT="worker" -Lcpp/lib -lqrack -lpthread -o Qrack.js
 
