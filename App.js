@@ -48,7 +48,7 @@ class App extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='container text-center'>
         <h1>WebAssembly Qrack with React From Scratch!</h1>
         <h4>QFT (random unitary initialization)</h4>
         <BenchmarkChart data={this.state.fullData} width={1000} height={400} xLabel='Qubits' xType='number' yLabel='Time (ms)' yType='number' />
