@@ -16,7 +16,12 @@ Qrack::QInterfacePtr MakeRandQubit()
 }
 
 int Sample::qft(int length) {
-    Qrack::QInterfacePtr qftReg = Qrack::CreateQuantumInterface(Qrack::QINTERFACE_OPTIMAL, length, 0U);
+    Qrack::QInterfacePtr qftReg = MakeRandQubit();
+
+    for (bitLenInt i = 1U; i < length; i++) {
+        qftReg->Compose(MakeRandQubit());
+    }
+
     qftReg->QFT(0U, length, false);
     return (int)qftReg->MAll();
 }
