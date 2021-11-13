@@ -1,4 +1,5 @@
 all: qft
 
 qft:
-	emcc -O3 -std=c++11 -Wall -Werror --bind bindings/SampleBindings.cpp -Icpp/ cpp/*.cpp -s ASSERTIONS=1 -s WASM=1 -s MODULARIZE=1 -L${EMSDK}/upstream/emscripten/cache/sysroot/lib -lqrack -lpthread -o Sample.js
+	emcc -O3 -std=c++11 -Wall -Werror qrack_qft.cpp -s WASM=1 --shell-file html_template/shell_minimal.html -Llib -lqrack -lpthread -o qrack_qft.html
+
