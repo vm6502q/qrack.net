@@ -24,7 +24,7 @@ int main()
 {
 
     // Random permutation basis eigenstate initialization
-    std::cout<<">>>Random Permutation Basis Eigenstate Initialization:"<<std::endl;
+    std::cout<<">>>QFT, Random Permutation Basis Eigenstate Initialization:"<<std::endl;
     benchmarkLoop(
         [](QInterfacePtr qftReg, int n, int unused) {
             qftReg->QFT(0, n);
@@ -42,6 +42,7 @@ int main()
     const int GateCount1Qb = 4;
     const int GateCountMultiQb = 3;
 
+    std::cout<<">>>Random stabilizer circuits:"<<std::endl;
     benchmarkLoop(
         [&](QInterfacePtr qReg, int n, int depth) {
             int d;
@@ -88,5 +89,5 @@ int main()
             }
 
             qReg->MAll();
-        }, 10, 10, true, false, false);
+        }, QINTERFACE_STABILIZER_HYBRID, 10, 10, true, false, false);
 }

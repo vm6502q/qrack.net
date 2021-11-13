@@ -9,7 +9,7 @@
 
 #include "qrack/qfactory.hpp"
 
-const int MAX_QUBITS = 8;
+const int MAX_QUBITS = 24;
 const int ITERATIONS = 10;
 const double CLOCK_FACTOR = 1000.0 / CLOCKS_PER_SEC; // Report in ms
 
@@ -35,7 +35,7 @@ Qrack::QInterfacePtr MakeRandQubit()
     return qubit;
 }
 
-void benchmarkLoopVariable(std::function<void(Qrack::QInterfacePtr, int, int)> fn, bitLenInt mxQbts, int minDepth = 1, int maxDepth = 1, bool resetRandomPerm = true,
+void benchmarkLoopVariable(std::function<void(Qrack::QInterfacePtr, int, int)> fn, Qrack::QInterfaceEngine engineType, bitLenInt mxQbts, int minDepth = 1, int maxDepth = 1, bool resetRandomPerm = true,
     bool hadamardRandomBits = false, bool randQubits = false)
 {
     Qrack::QInterfacePtr qftReg;
@@ -59,7 +59,7 @@ void benchmarkLoopVariable(std::function<void(Qrack::QInterfacePtr, int, int)> f
     double avgt, stdet;
 
     for (numBits = 4; numBits <= MAX_QUBITS; numBits++) {
-        qftReg = Qrack::CreateQuantumInterface(Qrack::QINTERFACE_OPTIMAL, numBits, 0);
+        qftReg = Qrack::CreateQuantumInterface(engineType, numBits, 0);
         for (depth = minDepth; depth <= maxDepth; depth++) {
             avgt = 0.0;
 
@@ -142,8 +142,8 @@ void benchmarkLoopVariable(std::function<void(Qrack::QInterfacePtr, int, int)> f
     std::cout << std::endl;
 }
 
-void benchmarkLoop(std::function<void(Qrack::QInterfacePtr, int, int)> fn, int minDepth = 1, int maxDepth = 1, bool resetRandomPerm = true,
+void benchmarkLoop(std::function<void(Qrack::QInterfacePtr, int, int)> fn, Qrack::QInterfaceEngine engineType, int minDepth = 1, int maxDepth = 1, bool resetRandomPerm = true,
     bool hadamardRandomBits = false, bool randQubits = false)
 {
-    benchmarkLoopVariable(fn, MAX_QUBITS, minDepth, maxDepth, resetRandomPerm, hadamardRandomBits, randQubits);
+    benchmarkLoopVariable(fn, engineType, MAX_QUBITS, minDepth, maxDepth, resetRandomPerm, hadamardRandomBits, randQubits);
 }
