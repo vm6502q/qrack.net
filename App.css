@@ -1,3 +1,12 @@
+.qrack-logo {
+    padding-top: 32px;
+    text-align: center;
+}
+
+.qrack-logo-bottom-text {
+    padding-top:8px;
+}
+
 /* D3.js: */
 
 .grid line {
