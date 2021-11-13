@@ -11,7 +11,11 @@ const sample = Sample({
 });
 
 sample.then((core) => {
-    console.log(core.add(1, 2));
+    try {
+        console.log(core.qft(2));
+    } catch (e) {
+        console.log(e)
+    }
 });
 
 ReactDOM.render(

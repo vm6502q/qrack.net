@@ -2,26 +2,21 @@
 
 #include "qrack/qfactory.hpp"
 
-Qrack::QInterfacePtr MakeRandQubit()
-{
-    Qrack::QInterfacePtr qubit = Qrack::CreateQuantumInterface(Qrack::QINTERFACE_OPTIMAL_MULTI, 1U, 0U);
-
-    Qrack::real1 theta = 4 * M_PI * qubit->Rand();
-    Qrack::real1 phi = 2 * M_PI * qubit->Rand();
-    Qrack::real1 lambda = 2 * M_PI * qubit->Rand();
-
-    qubit->U(0U, theta, phi, lambda);
-
-    return qubit;
-}
+using namespace Qrack;
 
 int Sample::qft(int length) {
-    Qrack::QInterfacePtr qftReg = MakeRandQubit();
+    QInterfacePtr qftReg = CreateQuantumInterface(QINTERFACE_OPTIMAL, length, 0U);
 
-    for (bitLenInt i = 1U; i < length; i++) {
-        qftReg->Compose(MakeRandQubit());
+    real1_f theta, phi, lambda;
+    for (bitLenInt i = 0U; i < length; i++) {
+        theta = 4 * PI_R1 * qftReg->Rand();
+        phi = 2 * PI_R1 * qftReg->Rand();
+        lambda = 2 * PI_R1 * qftReg->Rand();
+
+        qftReg->U(i, theta, phi, lambda);
     }
 
-    qftReg->QFT(0U, length, false);
+    qftReg->QFT(0U, length);
+
     return (int)qftReg->MAll();
 }
