@@ -60,7 +60,7 @@ class App extends React.Component {
         <h4>QFT (including random unitary initialization, 1 sample)</h4>
         <BenchmarkChart data={this.state.fullData} width={1000} height={400} xLabel='Qubits' xType='number' yLabel='Time (ms)' yType='number' />
         <div>
-          <p>These benchmarks for the <a href='https://github.com/vm6502q/qrack'>vm650q/qrack</a> quantum computer simulator library <b>were just run in your browser!</b></p>
+          <p>These benchmarks for the <b>open source</b> <a href='https://github.com/vm6502q/qrack'>vm6502q/qrack</a> quantum computer simulator library <b>were just run in your browser!</b></p>
           <p>Qrack can compile for browsers with WebAssembly. In the time this page took to load, it served you a copy of the full Qrack library built for the purpose, ran a quantum Fourier transform, and graphed the timing results!</p>
           <p>Qrack also supports GPU workloads with OpenCL, up to multi-device environments. It's the same code to compile!</p>
         </div>
