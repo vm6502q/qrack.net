@@ -37,7 +37,8 @@ module.exports = {
     headers: {
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin'
-    }
+    },
+    disableHostCheck: true
   },
   plugins: [
     new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html') }),
