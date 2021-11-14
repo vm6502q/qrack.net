@@ -27,7 +27,7 @@ class App extends React.Component {
   }
 
   componentDidMount () {
-    this.handleQftDispatch(1, 12)
+    this.handleQftDispatch(1, 16)
   }
 
   handleQftDispatch (length, maxLength) {
