@@ -2,6 +2,10 @@ body {
     background-color: #eee;
 }
 
+.app-title {
+    padding-top: 8px;
+}
+
 .qrack-logo {
     padding-top: 32px;
     text-align: center;

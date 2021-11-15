@@ -57,7 +57,7 @@ function App () {
   return (
     <div>
       <div className='container text-center'>
-        <h1>WebAssembly Qrack with React From Scratch!</h1>
+        <h1 className='app-title'>WebAssembly Qrack With React.js From Scratch!</h1>
         <h4>QFT (including random unitary initialization, 1 sample)</h4>
       </div>
       <BenchmarkChart data={fullData} width={width} height={400} xLabel='Qubits' xType='number' yLabel='Time (ms)' yType='number' />
