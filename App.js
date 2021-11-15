@@ -67,7 +67,7 @@ class App extends React.Component {
         <div className='qrack-logo'>
           <b>
             <h4>Powered by Qrack</h4>
-            <img src={logo} width='192px' />
+            <a href='https://github.com/vm6502q/qrack'><img src={logo} width='192px' /></a>
             <h4 className='qrack-logo-bottom-text'>You rock!</h4>
           </b>
         </div>
