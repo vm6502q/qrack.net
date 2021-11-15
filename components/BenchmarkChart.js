@@ -8,7 +8,7 @@ import * as d3 from 'd3'
 function BenchmarkChart (props) {
   const { data, width, height, xLabel, yLabel, xType, yType, isLowerBetter } = props
 
-  useEffect(() => {
+  React.useEffect(() => {
     function drawChart () {
       d3.select('#qrack-line-chart-container')
         .select('svg')
@@ -17,7 +17,7 @@ function BenchmarkChart (props) {
         .select('.tooltip')
         .remove()
 
-      const margin = { top: 20, right: 80, bottom: 60, left: 80 }
+      const margin = { top: 20, right: 256, bottom: 60, left: 256 }
       const lWidth = width - margin.left - margin.right
       const lHeight = height - margin.top - margin.bottom
       const yMinValue = d3.min(data, d => d.value)

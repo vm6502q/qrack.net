@@ -1,5 +1,5 @@
 import './App.css'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import BenchmarkChart from './components/BenchmarkChart.js'
 
@@ -14,51 +14,54 @@ const qrack = Qrack({
   }
 })
 
-class App extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      benchmarkData: [],
-      fullData: []
-    }
+function App () {
+  const [benchmarkData, setBenchmarkData] = useState([])
+  const [fullData, setFullData] = useState([])
 
-    this.handleQftDispatch = this.handleQftDispatch.bind(this)
-    this.handleQftIteration = this.handleQftIteration.bind(this)
-  }
-
-  componentDidMount () {
-    this.handleQftDispatch(1, 16)
-  }
-
-  handleQftDispatch (length, maxLength) {
+  function handleQftDispatch (length, maxLength) {
     qrack.then((core) => {
-      this.handleQftIteration(core, length, maxLength)
+      handleQftIteration(core, length, maxLength)
     })
   }
 
-  handleQftIteration (core, length, maxLength) {
+  function handleQftIteration (core, length, maxLength) {
     const start = new Date().getTime()
     const mResult = core.qft_u3(length, 0)
     const end = new Date().getTime()
 
-    const nBenchmarkData = this.state.benchmarkData
+    const nBenchmarkData = benchmarkData
     nBenchmarkData.push({ method: '', label: length, value: (end - start) })
 
-    this.setState({ benchmarkData: nBenchmarkData })
+    setBenchmarkData(nBenchmarkData)
 
     if (length < maxLength) {
-      this.handleQftIteration(core, length + 1, maxLength)
+      handleQftIteration(core, length + 1, maxLength)
     } else {
-      this.setState({ fullData: nBenchmarkData })
+      setFullData(nBenchmarkData)
     }
   }
 
-  render () {
-    return (
+  useEffect(() => {
+    handleQftDispatch(1, 16)
+  }, [])
+
+  const [width, setWidth] = useState(0)
+
+  useEffect(() => {
+    function handleResize () {
+      setWidth(window.innerWidth)
+    }
+    window.addEventListener('resize', handleResize)
+  })
+
+  return (
+    <div>
       <div className='container text-center'>
         <h1>WebAssembly Qrack with React From Scratch!</h1>
         <h4>QFT (including random unitary initialization, 1 sample)</h4>
-        <BenchmarkChart data={this.state.fullData} width={800} height={400} xLabel='Qubits' xType='number' yLabel='Time (ms)' yType='number' />
+      </div>
+      <BenchmarkChart data={fullData} width={width} height={400} xLabel='Qubits' xType='number' yLabel='Time (ms)' yType='number' />
+      <div className='container text-center'>
         <div>
           <p>These benchmarks for the <b>open source</b> <a href='https://github.com/vm6502q/qrack'>vm6502q/qrack</a> quantum computer simulator library <b>were just run in your browser!</b></p>
           <p>Qrack can compile for browsers as WebAssembly. In the time this page took to load, it served you a copy of the Qrack library built for the purpose, ran a quantum Fourier transform, and graphed the timing results! <a href='https://github.com/WrathfulSpatula/qrack.net'>This page is also open source, as a template.</a></p>
@@ -72,8 +75,8 @@ class App extends React.Component {
           </b>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default App
