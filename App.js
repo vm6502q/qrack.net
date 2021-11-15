@@ -42,7 +42,7 @@ function App () {
   }
 
   useEffect(() => {
-    handleQftDispatch(1, 18)
+    handleQftDispatch(1, 16)
   }, [])
 
   const [width, setWidth] = useState(window.innerWidth)
