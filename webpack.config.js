@@ -41,7 +41,6 @@ module.exports = {
     disableHostCheck: true
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html') }),
-    new FaviconsWebpackPlugin('favicon.ico')
+    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html'), favicon: './favicon.ico' })
   ]
 }
