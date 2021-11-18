@@ -18,8 +18,14 @@ function BenchmarkChart (props) {
         .remove()
 
       const margin = { top: 20, right: 256, bottom: 60, left: 256 }
-      const lWidth = width - margin.left - margin.right
-      const lHeight = height - margin.top - margin.bottom
+      let lWidth = width - margin.left - margin.right
+      let lHeight = height - margin.top - margin.bottom
+      if (lWidth < 300) {
+        const shim = (width / 2) - 150
+        margin.right = shim
+        margin.left = shim
+        lWidth = 300
+      }
       const yMinValue = d3.min(data, d => d.value)
       const yMaxValue = d3.max(data, d => d.value)
       const xMinValue = d3.min(data, d => d.label)
