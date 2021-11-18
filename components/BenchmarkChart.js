@@ -17,13 +17,13 @@ function BenchmarkChart (props) {
         .select('.tooltip')
         .remove()
 
-      const margin = { top: 20, right: 256, bottom: 60, left: 256 }
+      const margin = { top: 20, right: 256, bottom: 60, left: 272 }
       let lWidth = width - margin.left - margin.right
       let lHeight = height - margin.top - margin.bottom
       if (lWidth < 300) {
-        const shim = (width / 2) - 150
+        const shim = (width / 2) - 158
         margin.right = shim
-        margin.left = shim
+        margin.left = shim + 16
         lWidth = 300
       }
       const yMinValue = d3.min(data, d => d.value)
