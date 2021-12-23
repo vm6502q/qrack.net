@@ -3,7 +3,7 @@
 This is the source for https://qrack.net. To build the [vm6502q/qrack](https://github.com/vm6502q/qrack) library as WASM, the following build command is suggested, in an active `emsdk` environment:
 
 ```sh
-emcmake cmake -DENABLE_RDRAND=OFF -DUINTPOW=5 -DENABLE_PTHREAD=OFF ..
+emcmake cmake -DENABLE_RDRAND=OFF -DUINTPOW=5 -DENABLE_PTHREAD=OFF -DSEED_DEVRAND=OFF ..
 ```
 
 The library is already built in this example. To recompile the WASM, just run `make all` in the project root directory.
