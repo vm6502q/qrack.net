@@ -37,7 +37,7 @@ module.exports = {
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin'
     },
-    disableHostCheck: true
+    allowedHosts: 'all'
   },
   plugins: [
     new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html'), favicon: './favicon.ico' })
