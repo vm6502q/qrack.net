@@ -26,7 +26,7 @@ function App () {
 
   function handleQftIteration (core, length, maxLength) {
     const start = new Date().getTime()
-    const mResult = core.qft_u3(length, 0)
+    const mResult = core.qft_u3(length)
     const end = new Date().getTime()
 
     const nBenchmarkData = benchmarkData

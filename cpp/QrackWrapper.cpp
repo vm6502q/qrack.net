@@ -2,15 +2,8 @@
 
 #include "qrack/qfactory.hpp"
 
-int QrackWrapper::qft_perm(int length, int perm) {
-    Qrack::QInterfacePtr qReg = Qrack::CreateQuantumInterface(Qrack::QINTERFACE_OPTIMAL, length, perm);
-    qReg->QFT(0, length);
-    
-    return (int)qReg->MAll();
-}
-
-int QrackWrapper::qft_u3(int length, int perm) {
-    Qrack::QInterfacePtr qReg = Qrack::CreateQuantumInterface(Qrack::QINTERFACE_OPTIMAL, length, perm);
+int QrackWrapper::qft_u3(int length) {
+    Qrack::QInterfacePtr qReg = Qrack::CreateQuantumInterface(Qrack::QINTERFACE_OPTIMAL, length, 0U);
     
     Qrack::real1_f th, ph, lm;
     for (bitLenInt i = 0U; i < length; i++) {
