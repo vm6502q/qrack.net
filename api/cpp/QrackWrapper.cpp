@@ -33,3 +33,7 @@ void QrackWrapper::seed(int sid, int s) {
 double QrackWrapper::Prob(int sid, int q) {
     return (double)Qrack::Prob((Qrack::quid)sid, (bitLenInt)q);
 }
+
+double QrackWrapper::ProbRdm(int sid, int q) {
+    return (double)Qrack::ProbRdm((Qrack::quid)sid, (bitLenInt)q);
+}

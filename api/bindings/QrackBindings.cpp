@@ -29,4 +29,7 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("prob", optional_override([](int sid, int q) -> void {
         QrackWrapper::Prob(sid, q);
     }));
+    function("prob_rdm", optional_override([](int sid, int q) -> void {
+        QrackWrapper::ProbRdm(sid, q);
+    }));
 }
