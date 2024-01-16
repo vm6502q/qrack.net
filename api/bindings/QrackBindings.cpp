@@ -5,7 +5,16 @@
 using namespace emscripten;
 
 EMSCRIPTEN_BINDINGS(QrackWrapper) {
-    function("qft_u3", optional_override([](int length) -> int {
-        return QrackWrapper::qft_u3(length);
+    function("get_error", optional_override([](int sid) -> int {
+        return QrackWrapper::get_error(sid);
+    }));
+    function("init_general", optional_override([](int length) -> int {
+        return QrackWrapper::init_general(length);
+    }));
+    function("init_stabilizer", optional_override([](int length) -> int {
+        return QrackWrapper::init_stabilizer(length);
+    }));
+    function("init_qbdd", optional_override([](int length) -> int {
+        return QrackWrapper::init_qbdd(length);
     }));
 }
