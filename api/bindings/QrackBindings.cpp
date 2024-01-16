@@ -17,4 +17,10 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("init_qbdd", optional_override([](int length) -> int {
         return QrackWrapper::init_qbdd(length);
     }));
+    function("init_clone", optional_override([](int sid) -> int {
+        return QrackWrapper::init_clone(sid);
+    }));
+    function("destroy", optional_override([](int sid) -> void {
+        QrackWrapper::destroy(sid);
+    }));
 }
