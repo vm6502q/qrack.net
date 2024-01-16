@@ -19,7 +19,7 @@ function BenchmarkChart (props) {
 
       const margin = { top: 20, right: 256, bottom: 60, left: 272 }
       let lWidth = width - margin.left - margin.right
-      let lHeight = height - margin.top - margin.bottom
+      const lHeight = height - margin.top - margin.bottom
       if (lWidth < 300) {
         const shim = (width / 2) - 158
         margin.right = shim
@@ -45,8 +45,8 @@ function BenchmarkChart (props) {
       // Add X axis
       const x = (xType === 'time')
         ? d3.scaleTime()
-            .domain([xMinValue, xMaxValue])
-            .range([0, lWidth])
+          .domain([xMinValue, xMaxValue])
+          .range([0, lWidth])
         : d3.scaleLinear()
           .domain([xMinValue, xMaxValue])
           .range([0, lWidth])
@@ -60,8 +60,8 @@ function BenchmarkChart (props) {
       // Add Y axis
       const y = (yType === 'time')
         ? d3.scaleTime()
-            .domain(yDomain)
-            .range([lHeight, 0])
+          .domain(yDomain)
+          .range([lHeight, 0])
         : d3.scaleLinear()
           .domain(yDomain)
           .range([lHeight, 0])
