@@ -23,4 +23,10 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("destroy", optional_override([](int sid) -> void {
         QrackWrapper::destroy(sid);
     }));
+    function("seed", optional_override([](int sid, int s) -> void {
+        QrackWrapper::seed(sid, s);
+    }));
+    function("prob", optional_override([](int sid, int q) -> void {
+        QrackWrapper::Prob(sid, q);
+    }));
 }

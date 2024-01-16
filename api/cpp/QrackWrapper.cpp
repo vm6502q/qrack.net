@@ -25,3 +25,11 @@ int QrackWrapper::init_clone(int sid) {
 void QrackWrapper::destroy(int sid) {
     Qrack::destroy((Qrack::quid)sid);
 }
+
+void QrackWrapper::seed(int sid, int s) {
+    Qrack::seed((Qrack::quid)sid, (unsigned)s);
+}
+
+double QrackWrapper::Prob(int sid, int q) {
+    return (double)Qrack::Prob((Qrack::quid)sid, (bitLenInt)q);
+}
