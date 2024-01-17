@@ -43,3 +43,7 @@ double QrackWrapper::ProbRdm(int64_t sid, int64_t q) {
 void QrackWrapper::ResetAll(int64_t sid) {
     Qrack::ResetAll((Qrack::quid)sid);
 }
+
+void QrackWrapper::allocateQubit(int64_t sid, int64_t qid) {
+    Qrack::allocateQubit((Qrack::quid)sid, (Qrack::quid)qid);
+}

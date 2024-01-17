@@ -35,4 +35,7 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);
     }));
+    function("allocate_qubit", optional_override([](long long sid, long long qid) -> void {
+        QrackWrapper::allocateQubit(sid, qid);
+    }));
 }

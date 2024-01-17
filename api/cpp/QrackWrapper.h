@@ -15,4 +15,5 @@ public:
 
     //SPAM and non-unitary
     static void ResetAll(long long sid);
+    static void allocateQubit(long long sid, long long qid);
 };
