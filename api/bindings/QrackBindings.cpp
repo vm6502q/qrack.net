@@ -72,6 +72,17 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
         return QrackWrapper::JointEnsembleProbability(sid, q, b);
     }));
 
+    // Schmidt decomposition
+    function("compose", optional_override([](long long sid1, long long sid2, std::vector<long long> q) -> void {
+        QrackWrapper::Compose(sid1, sid2, q);
+    }));
+    function("decompose", optional_override([](long long sid, std::vector<long long> q) -> long long {
+        return QrackWrapper::Decompose(sid, q);
+    }));
+    function("dispose", optional_override([](long long sid, std::vector<long long> q) -> void {
+        QrackWrapper::Dispose(sid, q);
+    }));
+
     // SPAM and non-unitary
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);

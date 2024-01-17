@@ -27,6 +27,11 @@ public:
     static void PhaseParity(long long sid, double lambda, std::vector<long long> q);
     static double JointEnsembleProbability(long long sid, std::vector<long long> q, std::vector<char> b);
 
+    // Schmidt decomposition
+    static void Compose(long long sid1, long long sid2, std::vector<long long> q);
+    static long long Decompose(long long sid, std::vector<long long> q);
+    static void Dispose(long long sid, std::vector<long long> q);
+
     // SPAM and non-unitary
     static bool M(long long sid, long long q);
     static bool ForceM(long long sid, long long q, bool r);
