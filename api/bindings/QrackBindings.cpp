@@ -25,6 +25,12 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("num_qubits", optional_override([](long long sid) -> long long {
         return QrackWrapper::num_qubits(sid);
     }));
+    function("allocate_qubit", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::allocateQubit(sid, q);
+    }));
+    function("release_qubit", optional_override([](long long sid, long long q) -> bool {
+        return QrackWrapper::release(sid, q);
+    }));
     function("destroy", optional_override([](long long sid) -> void {
         QrackWrapper::destroy(sid);
     }));
@@ -70,8 +76,20 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);
     }));
-    function("allocate_qubit", optional_override([](long long sid, long long q) -> void {
-        QrackWrapper::allocateQubit(sid, q);
+    function("measure", optional_override([](long long sid, long long q) -> bool {
+        return QrackWrapper::M(sid, q);
+    }));
+    function("force_measure", optional_override([](long long sid, long long q, bool v) -> bool {
+        return QrackWrapper::ForceM(sid, q, v);
+    }));
+    function("measure_basis", optional_override([](long long sid, std::vector<long long> q, std::vector<char> b) -> bool {
+        return QrackWrapper::Measure(sid, q, b);
+    }));
+    function("measure_all", optional_override([](long long sid) -> unsigned long long {
+        return QrackWrapper::MAll(sid);
+    }));
+    function("measure_shots", optional_override([](long long sid, std::vector<long long> q, unsigned s) -> std::vector<unsigned long long> {
+        return QrackWrapper::MeasureShots(sid, q, s);
     }));
 
     // single-qubit gates

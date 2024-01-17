@@ -10,6 +10,8 @@ public:
     static long long num_qubits(long long sid);
     static void destroy(long long sid);
     static void seed(long long sid, long long s);
+    static void allocateQubit(long long sid, long long qid);
+    static bool release(long long sid, long long q);
 
     // Expectation value output
     static double Prob(long long sid, long long q);
@@ -25,9 +27,13 @@ public:
     static void PhaseParity(long long sid, double lambda, std::vector<long long> q);
     static double JointEnsembleProbability(long long sid, std::vector<long long> q, std::vector<char> b);
 
-    //SPAM and non-unitary
+    // SPAM and non-unitary
+    static bool M(long long sid, long long q);
+    static bool ForceM(long long sid, long long q, bool r);
+    static bool Measure(long long sid, std::vector<long long> q, std::vector<char> b);
+    static unsigned long long MAll(long long sid);
+    static std::vector<unsigned long long> MeasureShots(long long sid, std::vector<long long> q, unsigned s);
     static void ResetAll(long long sid);
-    static void allocateQubit(long long sid, long long qid);
 
     // single-qubit gates
     static void X(long long sid, long long q);
