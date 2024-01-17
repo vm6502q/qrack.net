@@ -9,6 +9,7 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     emscripten::register_vector<float>("VectorFloat");
     emscripten::register_vector<char>("VectorChar");
 
+    // Utility
     function("get_error", optional_override([](long long sid) -> long long {
         return QrackWrapper::get_error(sid);
     }));
@@ -30,6 +31,8 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("seed", optional_override([](long long sid, long long s) -> void {
         QrackWrapper::seed(sid, s);
     }));
+
+    // Expectation value output
     function("prob", optional_override([](long long sid, long long q) -> double {
         return QrackWrapper::Prob(sid, q);
     }));
@@ -48,6 +51,8 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("fact_exp_rdm", optional_override([](long long sid, std::vector<long long> q, std::vector<long long> s, bool r) -> double {
         return QrackWrapper::FactorizedExpectationRdm(sid, q, s, r);
     }));
+
+    // SPAM and non-unitary
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);
     }));
