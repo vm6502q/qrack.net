@@ -8,10 +8,26 @@ const db = require('../models/index')
 const sequelize = db.sequelize
 const Job = db.job
 
+const Qrack = require('./Qrack.js')
+const QrackWASM = require('./Qrack.wasm')
+
+const qrack = Qrack({
+  locateFile: () => {
+    return QrackWASM
+  }
+})
+
 class JobService extends ModelService {
   constructor () {
     super(Job)
   }
+
+  // Dispatch example:
+  // function handleQftDispatch (length, maxLength) {
+  //   qrack.then((core) => {
+  //     handleQftIteration(core, length, maxLength)
+  //   })
+  // }
 
   async sanitize (job) {
     return {
