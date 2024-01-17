@@ -79,4 +79,12 @@ public:
     static void Exp(long long sid, double phi, std::vector<long long> q, std::vector<char> b);
     // multi-controlled exponential of Pauli operators
     static void MCExp(long long sid, double phi, std::vector<long long> c, std::vector<long long> q, std::vector<char> b);
+
+    // swap variants
+    static void SWAP(long long sid, long long qi1, long long qi2);
+    static void ISWAP(long long sid, long long qi1, long long qi2);
+    static void AdjISWAP(long long sid, long long qi1, long long qi2);
+    static void FSim(long long sid, double theta, double phi, long long qi1, long long qi2);
+    static void CSWAP(long long sid, std::vector<long long> c, long long qi1, long long qi2);
+    static void ACSWAP(long long sid, std::vector<long long> c, long long qi1, long long qi2);
 };

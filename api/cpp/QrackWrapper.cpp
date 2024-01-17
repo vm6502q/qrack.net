@@ -280,3 +280,22 @@ void QrackWrapper::MCExp(long long sid, double phi, std::vector<long long> c, st
         "QrackWrapper::MCExp() 'q' and 'b' parameter vectors should have same size!");
     Qrack::MCExp((Qrack::quid)sid, (Qrack::real1_f)phi, transform_controls(c), _q);
 }
+
+void QrackWrapper::SWAP(long long sid, long long qi1, long long qi2) {
+    Qrack::SWAP((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2);
+}
+void QrackWrapper::ISWAP(long long sid, long long qi1, long long qi2) {
+    Qrack::ISWAP((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2);
+}
+void QrackWrapper::AdjISWAP(long long sid, long long qi1, long long qi2) {
+    Qrack::AdjISWAP((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2);
+}
+void QrackWrapper::FSim(long long sid, double theta, double phi, long long qi1, long long qi2) {
+    Qrack::FSim((Qrack::quid)sid, (Qrack::real1_f)theta, (Qrack::real1_f)phi, (bitLenInt)qi1, (bitLenInt)qi2);
+}
+void QrackWrapper::CSWAP(long long sid, std::vector<long long> c, long long qi1, long long qi2) {
+    Qrack::CSWAP((Qrack::quid)sid, transform_controls(c), (bitLenInt)qi1, (bitLenInt)qi2);
+}
+void QrackWrapper::ACSWAP(long long sid, std::vector<long long> c, long long qi1, long long qi2) {
+    Qrack::ACSWAP((Qrack::quid)sid, transform_controls(c), (bitLenInt)qi1, (bitLenInt)qi2);
+}

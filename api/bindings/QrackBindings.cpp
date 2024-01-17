@@ -202,4 +202,24 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("mcexp", optional_override([](long long sid, double phi, std::vector<long long> c, std::vector<long long> q, std::vector<char> b) -> void {
         QrackWrapper::MCExp(sid, phi, c, q, b);
     }));
+
+    // swap variants
+    function("swap", optional_override([](long long sid, long long q1, long long q2) -> void {
+        QrackWrapper::SWAP(sid, q1, q2);
+    }));
+    function("iswap", optional_override([](long long sid, long long q1, long long q2) -> void {
+        QrackWrapper::ISWAP(sid, q1, q2);
+    }));
+    function("adjiswap", optional_override([](long long sid, long long q1, long long q2) -> void {
+        QrackWrapper::AdjISWAP(sid, q1, q2);
+    }));
+    function("fsim", optional_override([](long long sid, double theta, double phi, long long q1, long long q2) -> void {
+        QrackWrapper::FSim(sid, theta, phi, q1, q2);
+    }));
+    function("mcswap", optional_override([](long long sid, std::vector<long long> c, long long q1, long long q2) -> void {
+        QrackWrapper::CSWAP(sid, c, q1, q2);
+    }));
+    function("macswap", optional_override([](long long sid, std::vector<long long> c, long long q1, long long q2) -> void {
+        QrackWrapper::ACSWAP(sid, c, q1, q2);
+    }));
 }
