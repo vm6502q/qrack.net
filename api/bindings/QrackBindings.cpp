@@ -176,4 +176,15 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("multiplex_1qb_mtrx", optional_override([](long long sid, std::vector<long long> c, long long q, std::vector<double> m) -> void {
         QrackWrapper::Multiplex1Mtrx(sid, c, q, m);
     }));
+
+    // coalesced single-qubit gates
+    function("mx", optional_override([](long long sid, std::vector<long long> q) -> void {
+        QrackWrapper::MX(sid, q);
+    }));
+    function("my", optional_override([](long long sid, std::vector<long long> q) -> void {
+        QrackWrapper::MY(sid, q);
+    }));
+    function("mz", optional_override([](long long sid, std::vector<long long> q) -> void {
+        QrackWrapper::MZ(sid, q);
+    }));
 }

@@ -65,4 +65,9 @@ public:
     static void MACMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q);
     static void UCMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q, long long p);
     static void Multiplex1Mtrx(long long sid, std::vector<long long> c, long long q, std::vector<double> m);
+
+    // coalesced single-qubit gates
+    static void MX(long long sid, std::vector<long long> q);
+    static void MY(long long sid, std::vector<long long> q);
+    static void MZ(long long sid, std::vector<long long> q);
 };
