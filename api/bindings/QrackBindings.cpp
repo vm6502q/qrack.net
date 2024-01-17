@@ -251,4 +251,42 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("macswap", optional_override([](long long sid, std::vector<long long> c, long long q1, long long q2) -> void {
         QrackWrapper::ACSWAP(sid, c, q1, q2);
     }));
+
+    // Quantum boolean (Toffoli) operations
+    function("and", optional_override([](long long sid, long long qi1, long long qi2, long long qo) -> void {
+        QrackWrapper::AND(sid, qi1, qi2, qo);
+    }));
+    function("or", optional_override([](long long sid, long long qi1, long long qi2, long long qo) -> void {
+        QrackWrapper::OR(sid, qi1, qi2, qo);
+    }));
+    function("xor", optional_override([](long long sid, long long qi1, long long qi2, long long qo) -> void {
+        QrackWrapper::XOR(sid, qi1, qi2, qo);
+    }));
+    function("nand", optional_override([](long long sid, long long qi1, long long qi2, long long qo) -> void {
+        QrackWrapper::NAND(sid, qi1, qi2, qo);
+    }));
+    function("nor", optional_override([](long long sid, long long qi1, long long qi2, long long qo) -> void {
+        QrackWrapper::NOR(sid, qi1, qi2, qo);
+    }));
+    function("xnor", optional_override([](long long sid, long long qi1, long long qi2, long long qo) -> void {
+        QrackWrapper::XNOR(sid, qi1, qi2, qo);
+    }));
+    function("cland", optional_override([](long long sid, bool ci, long long qi, long long qo) -> void {
+        QrackWrapper::CLAND(sid, ci, qi, qo);
+    }));
+    function("clor", optional_override([](long long sid, bool ci, long long qi, long long qo) -> void {
+        QrackWrapper::CLOR(sid, ci, qi, qo);
+    }));
+    function("clxor", optional_override([](long long sid, bool ci, long long qi, long long qo) -> void {
+        QrackWrapper::CLXOR(sid, ci, qi, qo);
+    }));
+    function("clnand", optional_override([](long long sid, bool ci, long long qi, long long qo) -> void {
+        QrackWrapper::CLNAND(sid, ci, qi, qo);
+    }));
+    function("clnor", optional_override([](long long sid, bool ci, long long qi, long long qo) -> void {
+        QrackWrapper::CLNOR(sid, ci, qi, qo);
+    }));
+    function("clxnor", optional_override([](long long sid, bool ci, long long qi, long long qo) -> void {
+        QrackWrapper::CLXNOR(sid, ci, qi, qo);
+    }));
 }

@@ -98,4 +98,18 @@ public:
     static void FSim(long long sid, double theta, double phi, long long qi1, long long qi2);
     static void CSWAP(long long sid, std::vector<long long> c, long long qi1, long long qi2);
     static void ACSWAP(long long sid, std::vector<long long> c, long long qi1, long long qi2);
+
+    // Quantum boolean (Toffoli) operations
+    static void AND(long long sid, long long qi1, long long qi2, long long qo);
+    static void OR(long long sid, long long qi1, long long qi2, long long qo);
+    static void XOR(long long sid, long long qi1, long long qi2, long long qo);
+    static void NAND(long long sid, long long qi1, long long qi2, long long qo);
+    static void NOR(long long sid, long long qi1, long long qi2, long long qo);
+    static void XNOR(long long sid, long long qi1, long long qi2, long long qo);
+    static void CLAND(long long sid, bool ci, long long qi, long long qo);
+    static void CLOR(long long sid, bool ci, long long qi, long long qo);
+    static void CLXOR(long long sid, bool ci, long long qi, long long qo);
+    static void CLNAND(long long sid, bool ci, long long qi, long long qo);
+    static void CLNOR(long long sid, bool ci, long long qi, long long qo);
+    static void CLXNOR(long long sid, bool ci, long long qi, long long qo);
 };

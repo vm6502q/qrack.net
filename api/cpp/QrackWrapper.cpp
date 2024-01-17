@@ -330,3 +330,39 @@ void QrackWrapper::CSWAP(int64_t sid, std::vector<int64_t> c, int64_t qi1, int64
 void QrackWrapper::ACSWAP(int64_t sid, std::vector<int64_t> c, int64_t qi1, int64_t qi2) {
     Qrack::ACSWAP((Qrack::quid)sid, transform_qbids(c), (bitLenInt)qi1, (bitLenInt)qi2);
 }
+void QrackWrapper::AND(int64_t sid, int64_t qi1, int64_t qi2, int64_t qo) {
+    Qrack::AND((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2, (bitLenInt)qo);
+}
+void QrackWrapper::OR(int64_t sid, int64_t qi1, int64_t qi2, int64_t qo) {
+    Qrack::OR((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2, (bitLenInt)qo);
+}
+void QrackWrapper::XOR(int64_t sid, int64_t qi1, int64_t qi2, int64_t qo) {
+    Qrack::XOR((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2, (bitLenInt)qo);
+}
+void QrackWrapper::NAND(int64_t sid, int64_t qi1, int64_t qi2, int64_t qo) {
+    Qrack::NAND((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2, (bitLenInt)qo);
+}
+void QrackWrapper::NOR(int64_t sid, int64_t qi1, int64_t qi2, int64_t qo) {
+    Qrack::NOR((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2, (bitLenInt)qo);
+}
+void QrackWrapper::XNOR(int64_t sid, int64_t qi1, int64_t qi2, int64_t qo) {
+    Qrack::XNOR((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2, (bitLenInt)qo);
+}
+void QrackWrapper::CLAND(int64_t sid, bool ci, int64_t qi, int64_t qo) {
+    Qrack::CLAND((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
+}
+void QrackWrapper::CLOR(int64_t sid, bool ci, int64_t qi, int64_t qo) {
+    Qrack::CLOR((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
+}
+void QrackWrapper::CLXOR(int64_t sid, bool ci, int64_t qi, int64_t qo) {
+    Qrack::CLXOR((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
+}
+void QrackWrapper::CLNAND(int64_t sid, bool ci, int64_t qi, int64_t qo) {
+    Qrack::CLNAND((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
+}
+void QrackWrapper::CLNOR(int64_t sid, bool ci, int64_t qi, int64_t qo) {
+    Qrack::CLNOR((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
+}
+void QrackWrapper::CLXNOR(int64_t sid, bool ci, int64_t qi, int64_t qo) {
+    Qrack::CLXNOR((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
+}
