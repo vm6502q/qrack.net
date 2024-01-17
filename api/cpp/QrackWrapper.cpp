@@ -64,6 +64,30 @@ double QrackWrapper::PermutationProbRdm(long long sid, std::vector<long long> q,
     return (double)Qrack::PermutationProbRdm((Qrack::quid)sid, _q, r);
 }
 
+std::vector<Qrack::QubitIntegerExpectation> validateFactProb(const std::vector<long long>& q, const std::vector<long long>& s, std::string m) {
+    if (q.size() != s.size()) {
+        throw std::invalid_argument(m);
+    }
+    std::vector<Qrack::QubitIntegerExpectation> _q;
+    _q.reserve(q.size());
+    for (long long i = 0; i < q.size(); ++i) {
+        _q.push_back(Qrack::QubitIntegerExpectation((int64_t)q[i], (int64_t)s[i]));
+    }
+    return _q;
+}
+
+double QrackWrapper::FactorizedExpectation(long long sid, std::vector<long long> q, std::vector<long long> s) {
+    std::vector<Qrack::QubitIntegerExpectation> _q = validateFactProb(q, s,
+        "QrackWrapper::FactorizedExpectation() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::FactorizedExpectation((Qrack::quid)sid, _q);
+}
+
+double QrackWrapper::FactorizedExpectationRdm(long long sid, std::vector<long long> q, std::vector<long long> s, bool r) {
+    std::vector<Qrack::QubitIntegerExpectation> _q = validateFactProb(q, s,
+        "QrackWrapper::FactorizedExpectationRdm() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::FactorizedExpectationRdm((Qrack::quid)sid, _q, r);
+}
+
 void QrackWrapper::ResetAll(int64_t sid) {
     Qrack::ResetAll((Qrack::quid)sid);
 }

@@ -42,6 +42,12 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("perm_prob_rdm", optional_override([](long long sid, std::vector<long long> q, std::vector<char> s, bool r) -> double {
         return QrackWrapper::PermutationProbRdm(sid, q, s, r);
     }));
+    function("fact_exp", optional_override([](long long sid, std::vector<long long> q, std::vector<long long> s) -> double {
+        return QrackWrapper::FactorizedExpectation(sid, q, s);
+    }));
+    function("fact_exp_rdm", optional_override([](long long sid, std::vector<long long> q, std::vector<long long> s, bool r) -> double {
+        return QrackWrapper::FactorizedExpectationRdm(sid, q, s, r);
+    }));
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);
     }));
