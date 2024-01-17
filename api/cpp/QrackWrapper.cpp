@@ -24,6 +24,10 @@ int64_t QrackWrapper::init_clone(int64_t sid) {
     return (int64_t)Qrack::init_clone((Qrack::quid)sid);
 }
 
+long long QrackWrapper::num_qubits(long long sid) {
+    return (long long)Qrack::num_qubits((Qrack::quid)sid);
+}
+
 void QrackWrapper::destroy(int64_t sid) {
     Qrack::destroy((Qrack::quid)sid);
 }
@@ -138,4 +142,121 @@ void QrackWrapper::ResetAll(int64_t sid) {
 
 void QrackWrapper::allocateQubit(int64_t sid, int64_t qid) {
     Qrack::allocateQubit((Qrack::quid)sid, (Qrack::quid)qid);
+}
+
+void QrackWrapper::X(long long sid, long long q) {
+    Qrack::X((Qrack::quid)sid, (bitLenInt)q);
+}
+void QrackWrapper::Y(long long sid, long long q) {
+    Qrack::Y((Qrack::quid)sid, (bitLenInt)q);
+}
+void QrackWrapper::Z(long long sid, long long q) {
+    Qrack::Z((Qrack::quid)sid, (bitLenInt)q);
+}
+void QrackWrapper::H(long long sid, long long q) {
+    Qrack::H((Qrack::quid)sid, (bitLenInt)q);
+}
+void QrackWrapper::S(long long sid, long long q) {
+    Qrack::S((Qrack::quid)sid, (bitLenInt)q);
+}
+void QrackWrapper::T(long long sid, long long q) {
+    Qrack::T((Qrack::quid)sid, (bitLenInt)q);
+}
+void QrackWrapper::AdjS(long long sid, long long q) {
+    Qrack::AdjS((Qrack::quid)sid, (bitLenInt)q);
+}
+void QrackWrapper::AdjT(long long sid, long long q) {
+    Qrack::AdjT((Qrack::quid)sid, (bitLenInt)q);
+}
+void QrackWrapper::U(long long sid, long long q, double theta, double phi, double lambda) {
+    Qrack::U((Qrack::quid)sid, (bitLenInt)q, (Qrack::real1_f)theta, (Qrack::real1_f)phi, (Qrack::real1_f)lambda);
+}
+
+std::vector<Qrack::complex> transform_matrix(std::vector<double> m) {
+    if (m.size() != 8) {
+        throw std::invalid_argument("QrackWrapper::Mtrx m argument must be 8 real components for 4 complex numbers of a 2x2 matrix!");
+    }
+    std::vector<Qrack::complex> _m;
+    _m.reserve(4);
+    for (size_t i = 0U; i < 4; ++i) {
+        _m.push_back(Qrack::complex(m[2 * i], m[(2 * i) + 1]));
+    }
+
+    return _m;
+}
+
+void QrackWrapper::Mtrx(long long sid, std::vector<double> m, long long q) {
+    Qrack::Mtrx((Qrack::quid)sid, transform_matrix(m), (bitLenInt)q);
+}
+
+std::vector<bitLenInt> transform_controls(const std::vector<long long>& c) {
+    std::vector<bitLenInt> _c;
+    _c.reserve(c.size());
+    for (size_t i = 0U; i < c.size(); ++i) {
+        _c.push_back((bitLenInt)c[i]);
+    }
+
+    return _c;
+}
+
+void QrackWrapper::MCX(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MCX((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MCY(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MCY((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MCZ(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MCZ((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MCH(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MCH((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MCS(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MCS((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MCT(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MCT((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MCAdjS(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MCAdjS((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MCAdjT(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MCAdjT((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MCU(long long sid, std::vector<long long> c, long long q, double theta, double phi, double lambda) {
+    Qrack::MCU((Qrack::quid)sid, transform_controls(c), (bitLenInt)q, (Qrack::real1_f)theta, (Qrack::real1_f)phi, (Qrack::real1_f)lambda);
+}
+void QrackWrapper::MCMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q) {
+    Qrack::MCMtrx((Qrack::quid)sid, transform_controls(c), transform_matrix(m), (bitLenInt)q);
+}
+
+void QrackWrapper::MACX(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MACX((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MACY(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MACY((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MACZ(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MACZ((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MACH(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MACH((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MACS(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MACS((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MACT(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MACT((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MACAdjS(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MACAdjS((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MACAdjT(long long sid, std::vector<long long> c, long long q) {
+    Qrack::MACAdjT((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
+}
+void QrackWrapper::MACU(long long sid, std::vector<long long> c, long long q, double theta, double phi, double lambda) {
+    Qrack::MACU((Qrack::quid)sid, transform_controls(c), (bitLenInt)q, (Qrack::real1_f)theta, (Qrack::real1_f)phi, (Qrack::real1_f)lambda);
+}
+void QrackWrapper::MACMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q) {
+    Qrack::MACMtrx((Qrack::quid)sid, transform_controls(c), transform_matrix(m), (bitLenInt)q);
 }

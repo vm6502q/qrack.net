@@ -25,6 +25,9 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("init_clone", optional_override([](long long sid) -> long long {
         return QrackWrapper::init_clone(sid);
     }));
+    function("num_qubits", optional_override([](long long sid) -> long long {
+        return QrackWrapper::num_qubits(sid);
+    }));
     function("destroy", optional_override([](long long sid) -> void {
         QrackWrapper::destroy(sid);
     }));
@@ -70,7 +73,101 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);
     }));
-    function("allocate_qubit", optional_override([](long long sid, long long qid) -> void {
-        QrackWrapper::allocateQubit(sid, qid);
+    function("allocate_qubit", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::allocateQubit(sid, q);
+    }));
+
+    // single-qubit gates
+    function("x", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::X(sid, q);
+    }));
+    function("y", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::Y(sid, q);
+    }));
+    function("z", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::Z(sid, q);
+    }));
+    function("h", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::H(sid, q);
+    }));
+    function("s", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::S(sid, q);
+    }));
+    function("t", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::T(sid, q);
+    }));
+    function("adjs", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::AdjS(sid, q);
+    }));
+    function("adjt", optional_override([](long long sid, long long q) -> void {
+        QrackWrapper::AdjT(sid, q);
+    }));
+    function("U", optional_override([](long long sid, long long q, double theta, double phi, double lambda) -> void {
+        QrackWrapper::U(sid, q, theta, phi, lambda);
+    }));
+    function("mtrx", optional_override([](long long sid, std::vector<double> m, long long q) -> void {
+        QrackWrapper::Mtrx(sid, m, q);
+    }));
+
+    // multi-controlled single-qubit gates
+    function("mcx", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MCX(sid, c, q);
+    }));
+    function("mcy", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MCY(sid, c, q);
+    }));
+    function("mcz", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MCZ(sid, c, q);
+    }));
+    function("mch", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MCH(sid, c, q);
+    }));
+    function("mcs", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MCS(sid, c, q);
+    }));
+    function("mct", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MCT(sid, c, q);
+    }));
+    function("mcadjs", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MCAdjS(sid, c, q);
+    }));
+    function("mcadjt", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MCAdjT(sid, c, q);
+    }));
+    function("mcu", optional_override([](long long sid, std::vector<long long> c, long long q, double theta, double phi, double lambda) -> void {
+        QrackWrapper::MCU(sid, c, q, theta, phi, lambda);
+    }));
+    function("mcmtrx", optional_override([](long long sid, std::vector<long long> c, std::vector<double> m, long long q) -> void {
+        QrackWrapper::MCMtrx(sid, c, m, q);
+    }));
+    function("macx", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MACX(sid, c, q);
+    }));
+    function("macy", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MACY(sid, c, q);
+    }));
+    function("macz", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MACZ(sid, c, q);
+    }));
+    function("mach", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MACH(sid, c, q);
+    }));
+    function("macs", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MACS(sid, c, q);
+    }));
+    function("mact", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MACT(sid, c, q);
+    }));
+    function("macadjs", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MACAdjS(sid, c, q);
+    }));
+    function("macadjt", optional_override([](long long sid, std::vector<long long> c, long long q) -> void {
+        QrackWrapper::MACAdjT(sid, c, q);
+    }));
+    function("macu", optional_override([](long long sid, std::vector<long long> c, long long q, double theta, double phi, double lambda) -> void {
+        QrackWrapper::MACU(sid, c, q, theta, phi, lambda);
+    }));
+    function("macmtrx", optional_override([](long long sid, std::vector<long long> c, std::vector<double> m, long long q) -> void {
+        QrackWrapper::MACMtrx(sid, c, m, q);
     }));
 }

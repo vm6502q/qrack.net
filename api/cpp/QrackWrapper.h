@@ -8,6 +8,7 @@ public:
     static long long init_stabilizer(long long length);
     static long long init_qbdd(long long length);
     static long long init_clone(long long sid);
+    static long long num_qubits(long long sid);
     static void destroy(long long sid);
     static void seed(long long sid, long long s);
 
@@ -28,4 +29,38 @@ public:
     //SPAM and non-unitary
     static void ResetAll(long long sid);
     static void allocateQubit(long long sid, long long qid);
+
+    // single-qubit gates
+    static void X(long long sid, long long q);
+    static void Y(long long sid, long long q);
+    static void Z(long long sid, long long q);
+    static void H(long long sid, long long q);
+    static void S(long long sid, long long q);
+    static void T(long long sid, long long q);
+    static void AdjS(long long sid, long long q);
+    static void AdjT(long long sid, long long q);
+    static void U(long long sid, long long q, double theta, double phi, double lambda);
+    static void Mtrx(long long sid, std::vector<double> m, long long q);
+
+    // multi-controlled single-qubit gates
+    static void MCX(long long sid, std::vector<long long> c, long long q);
+    static void MCY(long long sid, std::vector<long long> c, long long q);
+    static void MCZ(long long sid, std::vector<long long> c, long long q);
+    static void MCH(long long sid, std::vector<long long> c, long long q);
+    static void MCS(long long sid, std::vector<long long> c, long long q);
+    static void MCT(long long sid, std::vector<long long> c, long long q);
+    static void MCAdjS(long long sid, std::vector<long long> c, long long q);
+    static void MCAdjT(long long sid, std::vector<long long> c, long long q);
+    static void MCU(long long sid, std::vector<long long> c, long long q, double theta, double phi, double lambda);
+    static void MCMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q);
+    static void MACX(long long sid, std::vector<long long> c, long long q);
+    static void MACY(long long sid, std::vector<long long> c, long long q);
+    static void MACZ(long long sid, std::vector<long long> c, long long q);
+    static void MACH(long long sid, std::vector<long long> c, long long q);
+    static void MACS(long long sid, std::vector<long long> c, long long q);
+    static void MACT(long long sid, std::vector<long long> c, long long q);
+    static void MACAdjS(long long sid, std::vector<long long> c, long long q);
+    static void MACAdjT(long long sid, std::vector<long long> c, long long q);
+    static void MACU(long long sid, std::vector<long long> c, long long q, double theta, double phi, double lambda);
+    static void MACMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q);
 };
