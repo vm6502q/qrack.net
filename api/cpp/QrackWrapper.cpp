@@ -260,3 +260,9 @@ void QrackWrapper::MACU(long long sid, std::vector<long long> c, long long q, do
 void QrackWrapper::MACMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q) {
     Qrack::MACMtrx((Qrack::quid)sid, transform_controls(c), transform_matrix(m), (bitLenInt)q);
 }
+void QrackWrapper::UCMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q, long long p) {
+    Qrack::UCMtrx((Qrack::quid)sid, transform_controls(c), transform_matrix(m), (bitLenInt)q, (bitCapInt)p);
+}
+void QrackWrapper::Multiplex1Mtrx(long long sid, std::vector<long long> c, long long q, std::vector<double> m) {
+    Qrack::Multiplex1Mtrx((Qrack::quid)sid, transform_controls(c), (bitLenInt)q, transform_matrix(m));
+}

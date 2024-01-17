@@ -170,4 +170,10 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("macmtrx", optional_override([](long long sid, std::vector<long long> c, std::vector<double> m, long long q) -> void {
         QrackWrapper::MACMtrx(sid, c, m, q);
     }));
+    function("ucmtrx", optional_override([](long long sid, std::vector<long long> c, std::vector<double> m, long long q, long long p) -> void {
+        QrackWrapper::UCMtrx(sid, c, m, q, p);
+    }));
+    function("multiplex_1qb_mtrx", optional_override([](long long sid, std::vector<long long> c, long long q, std::vector<double> m) -> void {
+        QrackWrapper::Multiplex1Mtrx(sid, c, q, m);
+    }));
 }

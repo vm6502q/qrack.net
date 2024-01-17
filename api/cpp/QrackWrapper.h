@@ -63,4 +63,6 @@ public:
     static void MACAdjT(long long sid, std::vector<long long> c, long long q);
     static void MACU(long long sid, std::vector<long long> c, long long q, double theta, double phi, double lambda);
     static void MACMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q);
+    static void UCMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q, long long p);
+    static void Multiplex1Mtrx(long long sid, std::vector<long long> c, long long q, std::vector<double> m);
 };
