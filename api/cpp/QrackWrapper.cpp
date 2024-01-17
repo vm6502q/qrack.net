@@ -112,6 +112,26 @@ double QrackWrapper::FactorizedExpectationFpRdm(long long sid, std::vector<long 
     return (double)Qrack::FactorizedExpectationFpRdm((Qrack::quid)sid, _q, r);
 }
 
+void QrackWrapper::PhaseParity(long long sid, double lambda, std::vector<long long> q) {
+    std::vector<bitLenInt>_q;
+    _q.reserve(q.size());
+    for (size_t i = 0U; i < q.size(); ++i) {
+        _q.push_back(q[i]);
+    }
+    Qrack::PhaseParity((Qrack::quid)sid, (Qrack::real1_f)lambda, _q);
+}
+double QrackWrapper::JointEnsembleProbability(long long sid, std::vector<long long> q, std::vector<char> b) {
+    if (q.size() != b.size()) {
+        throw std::invalid_argument("QrackWrapper::JointEnsembleProbability() 'q' and 'b' parameter vectors should have same size!");
+    }
+    std::vector<Qrack::QubitPauliBasis>_q;
+    _q.reserve(q.size());
+    for (size_t i = 0U; i < q.size(); ++i) {
+        _q.push_back(Qrack::QubitPauliBasis((bitLenInt)q[i], (Qrack::Pauli)b[i]));
+    }
+    return (double)Qrack::JointEnsembleProbability((Qrack::quid)sid, _q);
+}
+
 void QrackWrapper::ResetAll(int64_t sid) {
     Qrack::ResetAll((Qrack::quid)sid);
 }

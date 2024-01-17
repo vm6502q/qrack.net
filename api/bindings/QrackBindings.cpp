@@ -58,6 +58,14 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
         return QrackWrapper::FactorizedExpectationFpRdm(sid, q, s, r);
     }));
 
+    // Parity
+    function("phase_parity", optional_override([](long long sid, double lambda, std::vector<long long> q) -> void {
+        QrackWrapper::PhaseParity(sid, lambda, q);
+    }));
+    function("joint_ensemble_prob", optional_override([](long long sid, std::vector<long long> q, std::vector<char> b) -> double {
+        return QrackWrapper::JointEnsembleProbability(sid, q, b);
+    }));
+
     // SPAM and non-unitary
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);

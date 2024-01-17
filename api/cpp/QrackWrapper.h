@@ -21,6 +21,10 @@ public:
     static double FactorizedExpectationFp(long long sid, std::vector<long long> q, std::vector<double> s);
     static double FactorizedExpectationFpRdm(long long sid, std::vector<long long> q, std::vector<double> s, bool r);
 
+    // Parity
+    static void PhaseParity(long long sid, double lambda, std::vector<long long> q);
+    static double JointEnsembleProbability(long long sid, std::vector<long long> q, std::vector<char> b);
+
     //SPAM and non-unitary
     static void ResetAll(long long sid);
     static void allocateQubit(long long sid, long long qid);
