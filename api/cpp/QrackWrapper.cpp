@@ -37,3 +37,7 @@ double QrackWrapper::Prob(int sid, int q) {
 double QrackWrapper::ProbRdm(int sid, int q) {
     return (double)Qrack::ProbRdm((Qrack::quid)sid, (bitLenInt)q);
 }
+
+void QrackWrapper::ResetAll(int sid) {
+    Qrack::ResetAll((Qrack::quid)sid);
+}

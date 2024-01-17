@@ -12,4 +12,7 @@ public:
     // Expectation value output
     static double Prob(int sid, int q);
     static double ProbRdm(int sid, int q);
+
+    //SPAM and non-unitary
+    static void ResetAll(int sid);
 };
