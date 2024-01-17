@@ -15,6 +15,7 @@ public:
     static double Prob(long long sid, long long q);
     static double ProbRdm(long long sid, long long q);
     static double PermutationProb(long long sid, std::vector<long long> q, std::vector<char> s);
+    static double PermutationProbRdm(long long sid, std::vector<long long> q, std::vector<char> s, bool r);
 
     //SPAM and non-unitary
     static void ResetAll(long long sid);

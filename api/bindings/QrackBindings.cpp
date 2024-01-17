@@ -39,6 +39,9 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("permutation_prob", optional_override([](long long sid, std::vector<long long> q, std::vector<char> s) -> double {
         return QrackWrapper::PermutationProb(sid, q, s);
     }));
+    function("permutation_prob_rdm", optional_override([](long long sid, std::vector<long long> q, std::vector<char> s, bool s) -> double {
+        return QrackWrapper::PermutationProbRdm(sid, q, s, s);
+    }));
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);
     }));

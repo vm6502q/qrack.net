@@ -40,16 +40,28 @@ double QrackWrapper::ProbRdm(int64_t sid, int64_t q) {
     return (double)Qrack::ProbRdm((Qrack::quid)sid, (bitLenInt)q);
 }
 
-double QrackWrapper::PermutationProb(long long sid, std::vector<long long> q, std::vector<char> s) {
+std::vector<Qrack::QubitIndexState> validatePermProb(const std::vector<long long>& q, const std::vector<char>& s, std::string m) {
     if (q.size() != s.size()) {
-        throw std::invalid_argument("QrackWrapper::PermutationProb() 'q' and 's' parameter vectors should have same size!");
+        throw std::invalid_argument(m);
     }
     std::vector<Qrack::QubitIndexState> _q;
     _q.reserve(q.size());
     for (long long i = 0; i < q.size(); ++i) {
         _q.push_back(Qrack::QubitIndexState((int64_t)q[i], (bool)s[i]));
     }
+    return _q;
+}
+
+double QrackWrapper::PermutationProb(long long sid, std::vector<long long> q, std::vector<char> s) {
+    std::vector<Qrack::QubitIndexState> _q = validatePermProb(q, s,
+        "QrackWrapper::PermutationProb() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::PermutationProb((Qrack::quid)sid, _q);
+}
+
+double QrackWrapper::PermutationProbRdm(long long sid, std::vector<long long> q, std::vector<char> s, bool r) {
+    std::vector<Qrack::QubitIndexState> _q = validatePermProb(q, s,
+        "QrackWrapper::PermutationProbRdm() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::PermutationProbRdm((Qrack::quid)sid, _q, r);
 }
 
 void QrackWrapper::ResetAll(int64_t sid) {
