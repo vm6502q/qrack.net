@@ -10,9 +10,6 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     emscripten::register_vector<char>("VectorChar");
 
     // Utility
-    function("get_error", optional_override([](long long sid) -> long long {
-        return QrackWrapper::get_error(sid);
-    }));
     function("init_general", optional_override([](long long length) -> long long {
         return QrackWrapper::init_general(length);
     }));
@@ -186,5 +183,23 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     }));
     function("mz", optional_override([](long long sid, std::vector<long long> q) -> void {
         QrackWrapper::MZ(sid, q);
+    }));
+
+    // single-qubit rotations
+    function("r", optional_override([](long long sid, double phi, long long q, char b) -> void {
+        QrackWrapper::R(sid, phi, q, b);
+    }));
+    // multi-controlled single-qubit rotations
+    function("mcr", optional_override([](long long sid, double phi, std::vector<long long> c, long long q, char b) -> void {
+        QrackWrapper::MCR(sid, phi, c, q, b);
+    }));
+
+    // exponential of Pauli operators
+    function("exp", optional_override([](long long sid, double phi, std::vector<long long> q, std::vector<char> b) -> void {
+        QrackWrapper::Exp(sid, phi, q, b);
+    }));
+    // multi-controlled exponential of Pauli operators
+    function("mcexp", optional_override([](long long sid, double phi, std::vector<long long> c, std::vector<long long> q, std::vector<char> b) -> void {
+        QrackWrapper::MCExp(sid, phi, c, q, b);
     }));
 }

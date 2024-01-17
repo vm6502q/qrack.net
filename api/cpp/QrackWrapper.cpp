@@ -4,34 +4,24 @@
 
 typedef long long int64_t;
 
-int64_t QrackWrapper::get_error(int64_t sid) {
-    return Qrack::get_error((Qrack::quid)sid);
-}
-
 int64_t QrackWrapper::init_general(int64_t length) {
     return (int64_t)Qrack::init_count((bitLenInt)length, false);
 }
-
 int64_t QrackWrapper::init_stabilizer(int64_t length) {
     return (int64_t)Qrack::init_count_type((bitLenInt)length, false, false, true, true, false, false, false, false, false);
 }
-
 int64_t QrackWrapper::init_qbdd(int64_t length) {
     return (int64_t)Qrack::init_count_type((bitLenInt)length, false, false, true, false, true, false, false, false, false);
 }
-
 int64_t QrackWrapper::init_clone(int64_t sid) {
     return (int64_t)Qrack::init_clone((Qrack::quid)sid);
 }
-
 long long QrackWrapper::num_qubits(long long sid) {
     return (long long)Qrack::num_qubits((Qrack::quid)sid);
 }
-
 void QrackWrapper::destroy(int64_t sid) {
     Qrack::destroy((Qrack::quid)sid);
 }
-
 void QrackWrapper::seed(int64_t sid, int64_t s) {
     Qrack::seed((Qrack::quid)sid, (unsigned)s);
 }
@@ -39,11 +29,9 @@ void QrackWrapper::seed(int64_t sid, int64_t s) {
 double QrackWrapper::Prob(int64_t sid, int64_t q) {
     return (double)Qrack::Prob((Qrack::quid)sid, (bitLenInt)q);
 }
-
 double QrackWrapper::ProbRdm(int64_t sid, int64_t q) {
     return (double)Qrack::ProbRdm((Qrack::quid)sid, (bitLenInt)q);
 }
-
 std::vector<Qrack::QubitIndexState> validatePermProb(const std::vector<long long>& q, const std::vector<char>& s, std::string m) {
     if (q.size() != s.size()) {
         throw std::invalid_argument(m);
@@ -55,19 +43,16 @@ std::vector<Qrack::QubitIndexState> validatePermProb(const std::vector<long long
     }
     return _q;
 }
-
 double QrackWrapper::PermutationProb(long long sid, std::vector<long long> q, std::vector<char> s) {
     std::vector<Qrack::QubitIndexState> _q = validatePermProb(q, s,
         "QrackWrapper::PermutationProb() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::PermutationProb((Qrack::quid)sid, _q);
 }
-
 double QrackWrapper::PermutationProbRdm(long long sid, std::vector<long long> q, std::vector<char> s, bool r) {
     std::vector<Qrack::QubitIndexState> _q = validatePermProb(q, s,
         "QrackWrapper::PermutationProbRdm() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::PermutationProbRdm((Qrack::quid)sid, _q, r);
 }
-
 std::vector<Qrack::QubitIntegerExpectation> validateFactProb(const std::vector<long long>& q, const std::vector<long long>& s, std::string m) {
     if (q.size() != s.size()) {
         throw std::invalid_argument(m);
@@ -79,19 +64,16 @@ std::vector<Qrack::QubitIntegerExpectation> validateFactProb(const std::vector<l
     }
     return _q;
 }
-
 double QrackWrapper::FactorizedExpectation(long long sid, std::vector<long long> q, std::vector<long long> s) {
     std::vector<Qrack::QubitIntegerExpectation> _q = validateFactProb(q, s,
         "QrackWrapper::FactorizedExpectation() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::FactorizedExpectation((Qrack::quid)sid, _q);
 }
-
 double QrackWrapper::FactorizedExpectationRdm(long long sid, std::vector<long long> q, std::vector<long long> s, bool r) {
     std::vector<Qrack::QubitIntegerExpectation> _q = validateFactProb(q, s,
         "QrackWrapper::FactorizedExpectationRdm() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::FactorizedExpectationRdm((Qrack::quid)sid, _q, r);
 }
-
 std::vector<Qrack::QubitRealExpectation> validateFactFpProb(const std::vector<long long>& q, const std::vector<double>& s, std::string m) {
     if (q.size() != s.size()) {
         throw std::invalid_argument(m);
@@ -103,13 +85,11 @@ std::vector<Qrack::QubitRealExpectation> validateFactFpProb(const std::vector<lo
     }
     return _q;
 }
-
 double QrackWrapper::FactorizedExpectationFp(long long sid, std::vector<long long> q, std::vector<double> s) {
     std::vector<Qrack::QubitRealExpectation> _q = validateFactFpProb(q, s,
         "QrackWrapper::FactorizedExpectationFp() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::FactorizedExpectationFp((Qrack::quid)sid, _q);
 }
-
 double QrackWrapper::FactorizedExpectationFpRdm(long long sid, std::vector<long long> q, std::vector<double> s, bool r) {
     std::vector<Qrack::QubitRealExpectation> _q = validateFactFpProb(q, s,
         "QrackWrapper::FactorizedExpectationFpRdm() 'q' and 's' parameter vectors should have same size!");
@@ -139,7 +119,6 @@ double QrackWrapper::JointEnsembleProbability(long long sid, std::vector<long lo
 void QrackWrapper::ResetAll(int64_t sid) {
     Qrack::ResetAll((Qrack::quid)sid);
 }
-
 void QrackWrapper::allocateQubit(int64_t sid, int64_t qid) {
     Qrack::allocateQubit((Qrack::quid)sid, (Qrack::quid)qid);
 }
@@ -171,7 +150,6 @@ void QrackWrapper::AdjT(long long sid, long long q) {
 void QrackWrapper::U(long long sid, long long q, double theta, double phi, double lambda) {
     Qrack::U((Qrack::quid)sid, (bitLenInt)q, (Qrack::real1_f)theta, (Qrack::real1_f)phi, (Qrack::real1_f)lambda);
 }
-
 std::vector<Qrack::complex> transform_matrix(std::vector<double> m) {
     if (m.size() != 8) {
         throw std::invalid_argument("QrackWrapper::Mtrx m argument must be 8 real components for 4 complex numbers of a 2x2 matrix!");
@@ -184,11 +162,9 @@ std::vector<Qrack::complex> transform_matrix(std::vector<double> m) {
 
     return _m;
 }
-
 void QrackWrapper::Mtrx(long long sid, std::vector<double> m, long long q) {
     Qrack::Mtrx((Qrack::quid)sid, transform_matrix(m), (bitLenInt)q);
 }
-
 std::vector<bitLenInt> transform_controls(const std::vector<long long>& c) {
     std::vector<bitLenInt> _c;
     _c.reserve(c.size());
@@ -198,7 +174,6 @@ std::vector<bitLenInt> transform_controls(const std::vector<long long>& c) {
 
     return _c;
 }
-
 void QrackWrapper::MCX(long long sid, std::vector<long long> c, long long q) {
     Qrack::MCX((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
 }
@@ -229,7 +204,6 @@ void QrackWrapper::MCU(long long sid, std::vector<long long> c, long long q, dou
 void QrackWrapper::MCMtrx(long long sid, std::vector<long long> c, std::vector<double> m, long long q) {
     Qrack::MCMtrx((Qrack::quid)sid, transform_controls(c), transform_matrix(m), (bitLenInt)q);
 }
-
 void QrackWrapper::MACX(long long sid, std::vector<long long> c, long long q) {
     Qrack::MACX((Qrack::quid)sid, transform_controls(c), (bitLenInt)q);
 }
@@ -275,4 +249,34 @@ void QrackWrapper::MY(long long sid, std::vector<long long> q) {
 }
 void QrackWrapper::MZ(long long sid, std::vector<long long> q) {
     Qrack::MZ((Qrack::quid)sid, transform_controls(q));
+}
+
+void QrackWrapper::R(long long sid, double phi, long long q, char b) {
+    Qrack::R((Qrack::quid)sid, (Qrack::real1_f)phi, Qrack::QubitPauliBasis((bitLenInt)q, (Qrack::Pauli)b));
+}
+void QrackWrapper::MCR(long long sid, double phi, std::vector<long long> c, long long q, char b) {
+    Qrack::MCR((Qrack::quid)sid, (Qrack::real1_f)phi, transform_controls(c), Qrack::QubitPauliBasis((bitLenInt)q, (Qrack::Pauli)b));
+}
+
+std::vector<Qrack::QubitPauliBasis> transform_qubit_paulis(const std::vector<long long>& q, const std::vector<char>& b, std::string m) {
+    if (q.size() != b.size()) {
+        throw std::invalid_argument(m);
+    }
+    std::vector<Qrack::QubitPauliBasis> _b;
+    _b.reserve(b.size());
+    for (size_t i = 0U; i < b.size(); ++i) {
+        _b.push_back(Qrack::QubitPauliBasis((bitLenInt)q[i], (Qrack::Pauli)b[i]));
+    }
+
+    return _b;
+}
+void QrackWrapper::Exp(long long sid, double phi, std::vector<long long> q, std::vector<char> b) {
+    std::vector<Qrack::QubitPauliBasis> _q = transform_qubit_paulis(q, b,
+        "QrackWrapper::Exp() 'q' and 'b' parameter vectors should have same size!");
+    Qrack::Exp((Qrack::quid)sid, (Qrack::real1_f)phi, _q);
+}
+void QrackWrapper::MCExp(long long sid, double phi, std::vector<long long> c, std::vector<long long> q, std::vector<char> b) {
+    std::vector<Qrack::QubitPauliBasis> _q = transform_qubit_paulis(q, b,
+        "QrackWrapper::MCExp() 'q' and 'b' parameter vectors should have same size!");
+    Qrack::MCExp((Qrack::quid)sid, (Qrack::real1_f)phi, transform_controls(c), _q);
 }

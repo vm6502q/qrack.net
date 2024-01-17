@@ -3,7 +3,6 @@
 class QrackWrapper {
 public:
     // Utility
-    static long long get_error(long long sid);
     static long long init_general(long long length);
     static long long init_stabilizer(long long length);
     static long long init_qbdd(long long length);
@@ -70,4 +69,14 @@ public:
     static void MX(long long sid, std::vector<long long> q);
     static void MY(long long sid, std::vector<long long> q);
     static void MZ(long long sid, std::vector<long long> q);
+
+    // single-qubit rotations
+    static void R(long long sid, double phi, long long q, char b);
+    // multi-controlled single-qubit rotations
+    static void MCR(long long sid, double phi, std::vector<long long> c, long long q, char b);
+
+    // exponential of Pauli operators
+    static void Exp(long long sid, double phi, std::vector<long long> q, std::vector<char> b);
+    // multi-controlled exponential of Pauli operators
+    static void MCExp(long long sid, double phi, std::vector<long long> c, std::vector<long long> q, std::vector<char> b);
 };
