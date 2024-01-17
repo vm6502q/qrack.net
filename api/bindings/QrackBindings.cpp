@@ -5,6 +5,10 @@
 using namespace emscripten;
 
 EMSCRIPTEN_BINDINGS(QrackWrapper) {
+    emscripten::register_vector<long long>("VectorLong");
+    emscripten::register_vector<float>("VectorFloat");
+    emscripten::register_vector<char>("VectorChar");
+
     function("get_error", optional_override([](long long sid) -> long long {
         return QrackWrapper::get_error(sid);
     }));
@@ -26,11 +30,14 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("seed", optional_override([](long long sid, long long s) -> void {
         QrackWrapper::seed(sid, s);
     }));
-    function("prob", optional_override([](long long sid, long long q) -> void {
-        QrackWrapper::Prob(sid, q);
+    function("prob", optional_override([](long long sid, long long q) -> double {
+        return QrackWrapper::Prob(sid, q);
     }));
-    function("prob_rdm", optional_override([](long long sid, long long q) -> void {
-        QrackWrapper::ProbRdm(sid, q);
+    function("prob_rdm", optional_override([](long long sid, long long q) -> double {
+        return QrackWrapper::ProbRdm(sid, q);
+    }));
+    function("permutation_prob", optional_override([](long long sid, std::vector<long long> q, std::vector<char> s) -> double {
+        return QrackWrapper::PermutationProb(sid, q, s);
     }));
     function("reset_all", optional_override([](long long sid) -> void {
         QrackWrapper::ResetAll(sid);

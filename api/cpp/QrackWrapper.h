@@ -1,3 +1,5 @@
+#include <vector>
+
 class QrackWrapper {
 public:
     // Utility
@@ -12,6 +14,7 @@ public:
     // Expectation value output
     static double Prob(long long sid, long long q);
     static double ProbRdm(long long sid, long long q);
+    static double PermutationProb(long long sid, std::vector<long long> q, std::vector<char> s);
 
     //SPAM and non-unitary
     static void ResetAll(long long sid);

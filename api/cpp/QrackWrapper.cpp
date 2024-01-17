@@ -40,6 +40,18 @@ double QrackWrapper::ProbRdm(int64_t sid, int64_t q) {
     return (double)Qrack::ProbRdm((Qrack::quid)sid, (bitLenInt)q);
 }
 
+double QrackWrapper::PermutationProb(long long sid, std::vector<long long> q, std::vector<char> s) {
+    if (q.size() != s.size()) {
+        throw std::invalid_argument("QrackWrapper::PermutationProb() 'q' and 's' parameter vectors should have same size!");
+    }
+    std::vector<Qrack::QubitIndexState> _q;
+    _q.reserve(q.size());
+    for (long long i = 0; i < q.size(); ++i) {
+        _q.push_back(Qrack::QubitIndexState((int64_t)q[i], (bool)s[i]));
+    }
+    return (double)Qrack::PermutationProb((Qrack::quid)sid, _q);
+}
+
 void QrackWrapper::ResetAll(int64_t sid) {
     Qrack::ResetAll((Qrack::quid)sid);
 }
