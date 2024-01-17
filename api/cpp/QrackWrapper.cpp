@@ -88,6 +88,30 @@ double QrackWrapper::FactorizedExpectationRdm(long long sid, std::vector<long lo
     return (double)Qrack::FactorizedExpectationRdm((Qrack::quid)sid, _q, r);
 }
 
+std::vector<Qrack::QubitRealExpectation> validateFactFpProb(const std::vector<long long>& q, const std::vector<double>& s, std::string m) {
+    if (q.size() != s.size()) {
+        throw std::invalid_argument(m);
+    }
+    std::vector<Qrack::QubitRealExpectation> _q;
+    _q.reserve(q.size());
+    for (long long i = 0; i < q.size(); ++i) {
+        _q.push_back(Qrack::QubitRealExpectation((int64_t)q[i], (Qrack::real1)s[i]));
+    }
+    return _q;
+}
+
+double QrackWrapper::FactorizedExpectationFp(long long sid, std::vector<long long> q, std::vector<double> s) {
+    std::vector<Qrack::QubitRealExpectation> _q = validateFactFpProb(q, s,
+        "QrackWrapper::FactorizedExpectationFp() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::FactorizedExpectationFp((Qrack::quid)sid, _q);
+}
+
+double QrackWrapper::FactorizedExpectationFpRdm(long long sid, std::vector<long long> q, std::vector<double> s, bool r) {
+    std::vector<Qrack::QubitRealExpectation> _q = validateFactFpProb(q, s,
+        "QrackWrapper::FactorizedExpectationFpRdm() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::FactorizedExpectationFpRdm((Qrack::quid)sid, _q, r);
+}
+
 void QrackWrapper::ResetAll(int64_t sid) {
     Qrack::ResetAll((Qrack::quid)sid);
 }

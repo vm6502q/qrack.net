@@ -18,6 +18,8 @@ public:
     static double PermutationProbRdm(long long sid, std::vector<long long> q, std::vector<char> s, bool r);
     static double FactorizedExpectation(long long sid, std::vector<long long> q, std::vector<long long> s);
     static double FactorizedExpectationRdm(long long sid, std::vector<long long> q, std::vector<long long> s, bool r);
+    static double FactorizedExpectationFp(long long sid, std::vector<long long> q, std::vector<double> s);
+    static double FactorizedExpectationFpRdm(long long sid, std::vector<long long> q, std::vector<double> s, bool r);
 
     //SPAM and non-unitary
     static void ResetAll(long long sid);

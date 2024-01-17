@@ -6,7 +6,7 @@ using namespace emscripten;
 
 EMSCRIPTEN_BINDINGS(QrackWrapper) {
     emscripten::register_vector<long long>("VectorLong");
-    emscripten::register_vector<float>("VectorFloat");
+    emscripten::register_vector<double>("VectorDouble");
     emscripten::register_vector<char>("VectorChar");
 
     // Utility
@@ -50,6 +50,12 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     }));
     function("fact_exp_rdm", optional_override([](long long sid, std::vector<long long> q, std::vector<long long> s, bool r) -> double {
         return QrackWrapper::FactorizedExpectationRdm(sid, q, s, r);
+    }));
+    function("fact_exp_fp", optional_override([](long long sid, std::vector<long long> q, std::vector<double> s) -> double {
+        return QrackWrapper::FactorizedExpectationFp(sid, q, s);
+    }));
+    function("fact_exp_fp_rdm", optional_override([](long long sid, std::vector<long long> q, std::vector<double> s, bool r) -> double {
+        return QrackWrapper::FactorizedExpectationFpRdm(sid, q, s, r);
     }));
 
     // SPAM and non-unitary
