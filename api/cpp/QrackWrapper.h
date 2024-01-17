@@ -1,18 +1,18 @@
 class QrackWrapper {
 public:
     // Utility
-    static int get_error(int sid);
-    static int init_general(int length);
-    static int init_stabilizer(int length);
-    static int init_qbdd(int length);
-    static int init_clone(int sid);
-    static void destroy(int sid);
-    static void seed(int sid, int s);
+    static long long get_error(long long sid);
+    static long long init_general(long long length);
+    static long long init_stabilizer(long long length);
+    static long long init_qbdd(long long length);
+    static long long init_clone(long long sid);
+    static void destroy(long long sid);
+    static void seed(long long sid, long long s);
 
     // Expectation value output
-    static double Prob(int sid, int q);
-    static double ProbRdm(int sid, int q);
+    static double Prob(long long sid, long long q);
+    static double ProbRdm(long long sid, long long q);
 
     //SPAM and non-unitary
-    static void ResetAll(int sid);
+    static void ResetAll(long long sid);
 };
