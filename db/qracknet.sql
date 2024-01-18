@@ -42,7 +42,7 @@ ALTER TABLE public."jobStatusTypes" OWNER TO postgres;
 
 CREATE TABLE public.jobs (
     id integer NOT NULL,
-    "statusTypeId" integer NOT NULL,
+    "jobStatusTypeId" integer NOT NULL,
     "userId" integer NOT NULL,
     "createdAt" date NOT NULL,
     "updatedAt" date
@@ -74,7 +74,7 @@ ALTER TABLE public."outputTypes" OWNER TO postgres;
 CREATE TABLE public.outputs (
     id integer NOT NULL,
     "jobId" integer NOT NULL,
-    "typeId" integer NOT NULL,
+    "outputTypeId" integer NOT NULL,
     name text NOT NULL,
     value text NOT NULL,
     "createdAt" date NOT NULL,
@@ -167,11 +167,11 @@ ALTER TABLE ONLY public.users
 
 --
 -- TOC entry 2859 (class 2606 OID 18024)
--- Name: jobs jobs_statustypeid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: jobs jobs_jobstatustypeid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.jobs
-    ADD CONSTRAINT jobs_statustypeid_fk FOREIGN KEY ("statusTypeId") REFERENCES public."jobStatusTypes"(id) NOT VALID;
+    ADD CONSTRAINT jobs_jobstatustypeid_fk FOREIGN KEY ("jobStatusTypeId") REFERENCES public."jobStatusTypes"(id) NOT VALID;
 
 
 --
@@ -198,7 +198,7 @@ ALTER TABLE ONLY public.outputs
 --
 
 ALTER TABLE ONLY public.outputs
-    ADD CONSTRAINT outputs_typeid_fk FOREIGN KEY ("typeId") REFERENCES public."outputTypes"(id) NOT VALID;
+    ADD CONSTRAINT outputs_typeid_fk FOREIGN KEY ("outputTypeId") REFERENCES public."outputTypes"(id) NOT VALID;
 
 
 -- Completed on 2024-01-18 09:42:35 EST
