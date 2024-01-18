@@ -74,14 +74,26 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    qrack.then((core) => {
-      // TODO: Parse circuit
+    qrack.then(async (core) => {
       const p = reqBody.program
-      for (var i = 0; i < p.length; ++i) {
-        // TODO: Switch and run instructions
-        // TODO: Save outputs
-        // TODO: Map std::vector parameter types
+      for (i in p) {
+        switch (i.name) {
+          case 'init_general':
+            let sid = core.init_general(...i.parameters)
+            // TODO: Call service to save sid in output, in database.
+            break;
+          default:
+            break;
+        }
       }
+
+      // Job status 1: SUCCESS
+      job.jobStatusTypeId = 1
+      await job.save()
+    }).error(async () => {
+      // Job status 2: FAILURE
+      job.jobStatusTypeId = 2
+      await job.save()
     })
 
     return { success: true, body: await this.sanitize(job) }
