@@ -142,4 +142,20 @@ public:
     static void MCMULN(long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
     static void MCDIVN(long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
     static void MCPOWN(long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
+
+    // (Single-target-multiplexer-based) quantum neurons
+    static long long init_qneuron(long long sid, std::vector<long long> c, long long q, char f, double a, double tol);
+    static long long clone_qneuron(long long nid);
+    static void destroy_qneuron(long long nid);
+    static void set_qneuron_angles(long long nid, std::vector<double> angles);
+    static std::vector<double> get_qneuron_angles(long long nid);
+    static void set_qneuron_alpha(long long nid, double alpha);
+    static double get_qneuron_alpha(long long nid);
+    static void set_qneuron_activation_fn(long long nid, char f);
+    static char get_qneuron_activation_fn(long long nid);
+    static double qneuron_predict(long long nid, bool e, bool r);
+    static double qneuron_unpredict(long long nid, bool e);
+    static double qneuron_learn_cycle(long long nid, bool e);
+    static void qneuron_learn(long long nid, double eta, bool e, bool r);
+    static void qneuron_learn_permutation(long long nid, double eta, bool e, bool r);
 };

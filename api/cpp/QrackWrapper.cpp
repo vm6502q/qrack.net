@@ -446,3 +446,64 @@ void QrackWrapper::MCDIVN(int64_t sid, unsigned long long a, std::vector<int64_t
 void QrackWrapper::MCPOWN(int64_t sid, unsigned long long a, std::vector<int64_t> c, unsigned long long m, std::vector<int64_t> q, std::vector<int64_t> o) {
     Qrack::MCPOWN((Qrack::quid)sid, (bitCapInt)a, transform_qbids(c), (bitCapInt)m, transform_qbids(q), transform_qbids(o));
 }
+
+int64_t QrackWrapper::init_qneuron(int64_t sid, std::vector<int64_t> c, int64_t q, char f, double a, double tol) {
+    return Qrack::init_qneuron((Qrack::quid)sid, transform_qbids(c), (bitLenInt)q, (Qrack::QNeuronActivationFn)f, (Qrack::real1_f)a, (Qrack::real1_f)tol);
+}
+int64_t QrackWrapper::clone_qneuron(int64_t nid) {
+    return Qrack::clone_qneuron((Qrack::quid)nid);
+}
+void QrackWrapper::destroy_qneuron(int64_t nid) {
+    return Qrack::destroy_qneuron((Qrack::quid)nid);
+}
+std::vector<Qrack::real1> transform_to_real1(const std::vector<double>& m) {
+    std::vector<Qrack::real1> _m;
+    _m.reserve(m.size());
+    for (size_t i = 0U; i < m.size(); ++i) {
+        _m.push_back(m[i]);
+    }
+
+    return _m;
+}
+void QrackWrapper::set_qneuron_angles(int64_t nid, std::vector<double> angles) {
+    Qrack::set_qneuron_angles((Qrack::quid)nid, transform_to_real1(angles));
+}
+std::vector<double> transform_to_double(const std::vector<Qrack::real1>& m) {
+    std::vector<double> _m;
+    _m.reserve(m.size());
+    for (size_t i = 0U; i < m.size(); ++i) {
+        _m.push_back(m[i]);
+    }
+
+    return _m;
+}
+std::vector<double> QrackWrapper::get_qneuron_angles(int64_t nid) {
+    return transform_to_double(Qrack::get_qneuron_angles((Qrack::quid)nid));
+}
+void QrackWrapper::set_qneuron_alpha(int64_t nid, double alpha) {
+    Qrack::set_qneuron_alpha((Qrack::quid)nid, (Qrack::real1_f)alpha);
+}
+double QrackWrapper::get_qneuron_alpha(int64_t nid) {
+    return (double)Qrack::get_qneuron_alpha((Qrack::quid)nid);
+}
+void QrackWrapper::set_qneuron_activation_fn(int64_t nid, char f) {
+    Qrack::set_qneuron_activation_fn((Qrack::quid)nid, (Qrack::QNeuronActivationFn)f);
+}
+char QrackWrapper::get_qneuron_activation_fn(int64_t nid) {
+    return (char)Qrack::get_qneuron_activation_fn((Qrack::quid)nid);
+}
+double QrackWrapper::qneuron_predict(int64_t nid, bool e, bool r) {
+    return (double)Qrack::qneuron_predict((Qrack::quid)nid, e, r);
+}
+double QrackWrapper::qneuron_unpredict(int64_t nid, bool e) {
+    return (double)Qrack::qneuron_unpredict((Qrack::quid)nid, e);
+}
+double QrackWrapper::qneuron_learn_cycle(int64_t nid, bool e) {
+    return (double)Qrack::qneuron_learn_cycle((Qrack::quid)nid, e);
+}
+void QrackWrapper::qneuron_learn(int64_t nid, double eta, bool e, bool r) {
+    Qrack::qneuron_learn((Qrack::quid)nid, (Qrack::real1_f)eta, e, r);
+}
+void QrackWrapper::qneuron_learn_permutation(long long nid, double eta, bool e, bool r) {
+    Qrack::qneuron_learn_permutation((Qrack::quid)nid, (Qrack::real1_f)eta, e, r);
+}

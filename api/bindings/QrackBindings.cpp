@@ -371,4 +371,47 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("mcpown", optional_override([](long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o) -> void {
         QrackWrapper::MCPOWN(sid, a, c, m, q, o);
     }));
+
+    function("init_qneuron", optional_override([](long long nid, std::vector<long long> c, long long q, char f, double a, double tol) -> long long {
+        return QrackWrapper::init_qneuron(nid, c, q, f, a, tol);
+    }));
+    function("clone_qneuron", optional_override([](long long nid) -> long long {
+        return QrackWrapper::clone_qneuron(nid);
+    }));
+    function("destroy_qneuron", optional_override([](long long nid) -> void {
+        QrackWrapper::destroy_qneuron(nid);
+    }));
+    function("set_qneuron_angles", optional_override([](long long nid, std::vector<double> angles) -> void {
+        QrackWrapper::set_qneuron_angles(nid, angles);
+    }));
+    function("get_qneuron_angles", optional_override([](long long nid) -> std::vector<double> {
+        return QrackWrapper::get_qneuron_angles(nid);
+    }));
+    function("set_qneuron_alpha", optional_override([](long long nid, double alpha) -> void {
+        QrackWrapper::set_qneuron_alpha(nid, alpha);
+    }));
+    function("get_qneuron_alpha", optional_override([](long long nid) -> double {
+        return QrackWrapper::get_qneuron_alpha(nid);
+    }));
+    function("set_qneuron_activation_fn", optional_override([](long long nid, char f) -> void {
+        QrackWrapper::set_qneuron_activation_fn(nid, f);
+    }));
+    function("get_qneuron_activation_fn", optional_override([](long long nid) -> char {
+        return QrackWrapper::get_qneuron_activation_fn(nid);
+    }));
+    function("qneuron_predict", optional_override([](long long nid, bool e, bool r) -> double {
+        return QrackWrapper::qneuron_predict(nid, e, r);
+    }));
+    function("qneuron_unpredict", optional_override([](long long nid, bool e) -> double {
+        return QrackWrapper::qneuron_unpredict(nid, e);
+    }));
+    function("qneuron_learn_cycle", optional_override([](long long nid, bool e) -> double {
+        return QrackWrapper::qneuron_learn_cycle(nid, e);
+    }));
+    function("qneuron_learn", optional_override([](long long nid, double eta, bool e, bool r) -> void {
+        QrackWrapper::qneuron_learn(nid, eta, e, r);
+    }));
+    function("qneuron_learn_permutation", optional_override([](long long nid, double eta, bool e, bool r) -> void {
+        QrackWrapper::qneuron_learn_permutation(nid, eta, e, r);
+    }));
 }
