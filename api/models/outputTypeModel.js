@@ -3,7 +3,7 @@
 'use strict'
 
 module.exports = function (sequelize, DataTypes) {
-  const Model = sequelize.define('outputeType', {
+  const Model = sequelize.define('outputType', {
     name: {
       type: DataTypes.TEXT,
       allowNull: false

@@ -3,7 +3,7 @@
 'use strict'
 
 module.exports = function (sequelize, DataTypes) {
-  const Model = sequelize.define('job', {
+  const Model = sequelize.define('output', {
     jobId: {
       type: DataTypes.INTEGER,
       allowNull: false

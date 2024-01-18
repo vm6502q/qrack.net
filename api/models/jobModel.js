@@ -5,7 +5,7 @@
 module.exports = function (sequelize, DataTypes) {
   const Model = sequelize.define('job', {
     statusId: {
-      type: DataTypes.Integer,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     userId: {

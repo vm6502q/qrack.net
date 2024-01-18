@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 })
 
 const accountController = require('./controller/accountController')
-const arxivController = require('./controller/arxivController')
+const qrackController = require('./controller/qrackController')
 
 // Register routes.
 router.route('/register')
@@ -27,8 +27,8 @@ router.route('/password')
   .post(accountController.password)
 router.route('/user/password')
   .post(accountController.update_password)
-router.route('/v1/qrack/:id')
-  .get(arxivController.read)
+router.route('/qrack/:id')
+  .get(qrackController.read)
 
 // Export API routes.
 module.exports = router
