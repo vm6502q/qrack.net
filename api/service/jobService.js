@@ -3,9 +3,7 @@
 // Data Access Layer
 const ModelService = require('./modelService')
 // Database Model
-const config = require('../config')
 const db = require('../model/index')
-const sequelize = db.sequelize
 const Job = db.job
 
 const Qrack = require('./Qrack.js')
@@ -21,13 +19,6 @@ class JobService extends ModelService {
   constructor () {
     super(Job)
   }
-
-  // Dispatch example:
-  // function handleQftDispatch (length, maxLength) {
-  //   qrack.then((core) => {
-  //     handleQftIteration(core, length, maxLength)
-  //   })
-  // }
 
   async sanitize (job) {
     return {
@@ -54,7 +45,13 @@ class JobService extends ModelService {
     return { success: true, body: await this.sanitize(job) }
   }
 
-  async validateCreatRequest () {
+  async validateCreatRequest (reqBody) {
+    if (!reqBody.program) {
+      return { success: false, message: 'Job creation request must contain the "program" parameter.' }
+    }
+    if (!Array.isArray(reqBody.program)) {
+      return { success: false, message: 'Job creation request "program" parameter must be an array.' }
+    }
     return { success: true }
   }
 
@@ -65,7 +62,9 @@ class JobService extends ModelService {
     }
 
     let job = await this.SequelizeServiceInstance.new()
-    user.userId = userId
+    job.userId = userId
+    // Job status 3: RUNNING
+    job.jobStatusTypeId = 3
 
     const result = await this.create(job)
     if (!result.success) {
@@ -74,6 +73,16 @@ class JobService extends ModelService {
 
     job = result.body
     await job.save()
+
+    qrack.then((core) => {
+      // TODO: Parse circuit
+      const p = reqBody.program
+      for (var i = 0; i < p.length; ++i) {
+        // TODO: Switch and run instructions
+        // TODO: Save outputs
+        // TODO: Map std::vector parameter types
+      }
+    })
 
     return { success: true, body: await this.sanitize(job) }
   }
@@ -90,4 +99,4 @@ class JobService extends ModelService {
   }
 }
 
-module.exports = UserService
+module.exports = JobService
