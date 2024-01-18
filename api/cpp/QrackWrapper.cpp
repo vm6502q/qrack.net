@@ -47,22 +47,22 @@ std::vector<bitLenInt> transform_qbids(const std::vector<int64_t>& c) {
 
     return _c;
 }
-bool QrackWrapper::TrySeparateTol(long long sid, std::vector<long long> q, double tol) {
+bool QrackWrapper::TrySeparateTol(int64_t sid, std::vector<int64_t> q, double tol) {
     return Qrack::TrySeparateTol((Qrack::quid)sid, transform_qbids(q), (Qrack::real1_f)tol);
 }
-double QrackWrapper::GetUnitaryFidelity(long long sid) {
+double QrackWrapper::GetUnitaryFidelity(int64_t sid) {
     return (double)Qrack::GetUnitaryFidelity((Qrack::quid)sid);
 }
-void QrackWrapper::ResetUnitaryFidelity(long long sid) {
+void QrackWrapper::ResetUnitaryFidelity(int64_t sid) {
     Qrack::ResetUnitaryFidelity((Qrack::quid)sid);
 }
-void QrackWrapper::SetSdrp(long long sid, double sdrp) {
+void QrackWrapper::SetSdrp(int64_t sid, double sdrp) {
     Qrack::SetSdrp((Qrack::quid)sid, (Qrack::real1_f)sdrp);
 }
-void QrackWrapper::SetReactiveSeparate(long long sid, bool irs) {
+void QrackWrapper::SetReactiveSeparate(int64_t sid, bool irs) {
     Qrack::SetReactiveSeparate((Qrack::quid)sid, irs);
 }
-void QrackWrapper::SetTInjection(long long sid, bool iti) {
+void QrackWrapper::SetTInjection(int64_t sid, bool iti) {
     Qrack::SetTInjection((Qrack::quid)sid, iti);
 }
 
@@ -226,13 +226,13 @@ void QrackWrapper::AdjT(int64_t sid, int64_t q) {
 void QrackWrapper::U(int64_t sid, int64_t q, double theta, double phi, double lambda) {
     Qrack::U((Qrack::quid)sid, (bitLenInt)q, (Qrack::real1_f)theta, (Qrack::real1_f)phi, (Qrack::real1_f)lambda);
 }
-std::vector<Qrack::complex> transform_matrix(std::vector<double> m) {
+std::vector<Qrack::complex> transform_matrix(const std::vector<double>& m) {
     if (m.size() != 8) {
         throw std::invalid_argument("QrackWrapper::Mtrx m argument must be 8 real components for 4 complex numbers of a 2x2 matrix!");
     }
     std::vector<Qrack::complex> _m;
     _m.reserve(4);
-    for (size_t i = 0U; i < 4; ++i) {
+    for (size_t i = 0U; i < 4; i+=2) {
         _m.push_back(Qrack::complex(m[2 * i], m[(2 * i) + 1]));
     }
 
@@ -391,10 +391,10 @@ void QrackWrapper::CLXNOR(int64_t sid, bool ci, int64_t qi, int64_t qo) {
     Qrack::CLXNOR((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
 }
 
-void QrackWrapper::QFT(long long sid, std::vector<long long> q) {
+void QrackWrapper::QFT(int64_t sid, std::vector<int64_t> q) {
     Qrack::QFT((Qrack::quid)sid, transform_qbids(q));
 }
-void QrackWrapper::IQFT(long long sid, std::vector<long long> q) {
+void QrackWrapper::IQFT(int64_t sid, std::vector<int64_t> q) {
     Qrack::IQFT((Qrack::quid)sid, transform_qbids(q));
 }
 
