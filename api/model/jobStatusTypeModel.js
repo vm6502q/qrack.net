@@ -1,17 +1,17 @@
-// outputModel.js
+// jobStatusTypeModel.js
 
 'use strict'
 
 module.exports = function (sequelize, DataTypes) {
-  const Model = sequelize.define('outputeType', {
+  const Model = sequelize.define('jobStatusType', {
     name: {
       type: DataTypes.TEXT,
       allowNull: false
     }
   }, {})
   Model.associate = function (db) {
-    db.outputType.hasMany(db.output)
-    db.output.belongsTo(db.outputType)
+    db.jobStatusType.hasMany(db.job)
+    db.job.belongsTo(db.jobStatusType)
   }
   return Model
 }

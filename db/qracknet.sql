@@ -5,7 +5,7 @@
 -- Dumped from database version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
 -- Dumped by pg_dump version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
 
--- Started on 2024-01-18 09:06:48 EST
+-- Started on 2024-01-18 09:30:09 EST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,13 +23,26 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 202 (class 1259 OID 17868)
+-- TOC entry 206 (class 1259 OID 18016)
+-- Name: jobStatusTypes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."jobStatusTypes" (
+    id integer NOT NULL,
+    name text NOT NULL
+);
+
+
+ALTER TABLE public."jobStatusTypes" OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 17972)
 -- Name: jobs; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.jobs (
     id integer NOT NULL,
-    status text NOT NULL,
+    "statusTypeId" integer NOT NULL,
     "userId" integer NOT NULL,
     "createdAt" date NOT NULL,
     "updatedAt" date
@@ -39,7 +52,7 @@ CREATE TABLE public.jobs (
 ALTER TABLE public.jobs OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 17889)
+-- TOC entry 203 (class 1259 OID 17975)
 -- Name: outputTypes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -54,7 +67,7 @@ CREATE TABLE public."outputTypes" (
 ALTER TABLE public."outputTypes" OWNER TO postgres;
 
 --
--- TOC entry 205 (class 1259 OID 17897)
+-- TOC entry 204 (class 1259 OID 17981)
 -- Name: outputs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -72,7 +85,7 @@ CREATE TABLE public.outputs (
 ALTER TABLE public.outputs OWNER TO postgres;
 
 --
--- TOC entry 203 (class 1259 OID 17876)
+-- TOC entry 205 (class 1259 OID 17987)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -94,7 +107,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 2845 (class 2606 OID 17875)
+-- TOC entry 2849 (class 2606 OID 17994)
 -- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -103,7 +116,7 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 2849 (class 2606 OID 17896)
+-- TOC entry 2851 (class 2606 OID 17996)
 -- Name: outputTypes outputTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -112,7 +125,7 @@ ALTER TABLE ONLY public."outputTypes"
 
 
 --
--- TOC entry 2851 (class 2606 OID 17904)
+-- TOC entry 2853 (class 2606 OID 17998)
 -- Name: outputs outputs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -121,7 +134,16 @@ ALTER TABLE ONLY public.outputs
 
 
 --
--- TOC entry 2847 (class 2606 OID 17883)
+-- TOC entry 2857 (class 2606 OID 18023)
+-- Name: jobStatusTypes statusTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."jobStatusTypes"
+    ADD CONSTRAINT "statusTypes_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2855 (class 2606 OID 18000)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -130,7 +152,16 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2852 (class 2606 OID 17884)
+-- TOC entry 2859 (class 2606 OID 18024)
+-- Name: jobs jobs_statustypeid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.jobs
+    ADD CONSTRAINT jobs_statustypeid_fk FOREIGN KEY ("statusTypeId") REFERENCES public."jobStatusTypes"(id) NOT VALID;
+
+
+--
+-- TOC entry 2858 (class 2606 OID 18001)
 -- Name: jobs jobs_userid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -139,7 +170,7 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 2854 (class 2606 OID 17910)
+-- TOC entry 2860 (class 2606 OID 18006)
 -- Name: outputs outputs_jobid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -148,7 +179,7 @@ ALTER TABLE ONLY public.outputs
 
 
 --
--- TOC entry 2853 (class 2606 OID 17905)
+-- TOC entry 2861 (class 2606 OID 18011)
 -- Name: outputs outputs_typeid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -156,7 +187,7 @@ ALTER TABLE ONLY public.outputs
     ADD CONSTRAINT outputs_typeid_fk FOREIGN KEY ("typeId") REFERENCES public."outputTypes"(id) NOT VALID;
 
 
--- Completed on 2024-01-18 09:06:48 EST
+-- Completed on 2024-01-18 09:30:10 EST
 
 --
 -- PostgreSQL database dump complete

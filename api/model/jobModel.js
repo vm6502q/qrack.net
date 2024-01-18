@@ -4,8 +4,8 @@
 
 module.exports = function (sequelize, DataTypes) {
   const Model = sequelize.define('job', {
-    status: {
-      type: DataTypes.TEXT,
+    statusId: {
+      type: DataTypes.Integer,
       allowNull: false
     },
     userId: {

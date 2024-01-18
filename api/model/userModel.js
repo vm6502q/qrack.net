@@ -41,10 +41,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.DATE
     }
   }, {})
-  Model.associate = function (db) {
-    db.user.hasMany(db.task)
-    db.task.belongsTo(db.task)
-  }
   Model.generateRecovery = function () {
     this.recoveryToken = uuidv4()
     this.recoveryTokenExpiration = new Date((new Date()).getTime() + recoveryExpirationMinutes * millisPerMinute)
