@@ -2,6 +2,11 @@
 
 // Data Access Layer
 const ModelService = require('./modelService')
+
+// Services
+const OutputService = require('./outputService.js')
+const outputService = OutputService()
+
 // Database Model
 const db = require('../model/index')
 const Job = db.job
@@ -80,7 +85,7 @@ class JobService extends ModelService {
         switch (i.name) {
           case 'init_general':
             let sid = core.init_general(...i.parameters)
-            // TODO: Call service to save sid in output, in database.
+            await outputService.createOrUpdate(job.id, i.output, sid, 1)
             break;
           default:
             break;
@@ -89,10 +94,12 @@ class JobService extends ModelService {
 
       // Job status 1: SUCCESS
       job.jobStatusTypeId = 1
+      job.statusMessage = 'Job completed fully and normally.'
       await job.save()
-    }).error(async () => {
+    }).error(async (e) => {
       // Job status 2: FAILURE
       job.jobStatusTypeId = 2
+      job.statusMessage = e.toString()
       await job.save()
     })
 
