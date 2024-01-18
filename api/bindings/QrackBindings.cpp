@@ -37,6 +37,30 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("seed", optional_override([](long long sid, long long s) -> void {
         QrackWrapper::seed(sid, s);
     }));
+    function("try_separate_1qb", optional_override([](long long sid, long long qi1) -> bool {
+        return QrackWrapper::TrySeparate1Qb(sid, qi1);
+    }));
+    function("try_separate_2qb", optional_override([](long long sid, long long qi1, long long qi2) -> bool {
+        return QrackWrapper::TrySeparate2Qb(sid, qi1, qi2);
+    }));
+    function("try_separate_tol", optional_override([](long long sid, std::vector<long long> q, double tol) -> bool {
+        return QrackWrapper::TrySeparateTol(sid, q, tol);
+    }));
+    function("get_unitary_fidelity", optional_override([](long long sid) -> double {
+        return QrackWrapper::GetUnitaryFidelity(sid);
+    }));
+    function("reset_unitary_fidelity", optional_override([](long long sid) -> void {
+        QrackWrapper::GetUnitaryFidelity(sid);
+    }));
+    function("set_sdrp", optional_override([](long long sid, double sdrp) -> void {
+        QrackWrapper::SetSdrp(sid, sdrp);
+    }));
+    function("set_reactive_separate", optional_override([](long long sid, bool irs) -> void {
+        QrackWrapper::SetReactiveSeparate(sid, irs);
+    }));
+    function("set_t_injection", optional_override([](long long sid, bool iti) -> void {
+        QrackWrapper::SetTInjection(sid, iti);
+    }));
 
     // Expectation value output
     function("prob", optional_override([](long long sid, long long q) -> double {

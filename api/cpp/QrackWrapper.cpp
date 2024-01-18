@@ -32,6 +32,39 @@ void QrackWrapper::allocateQubit(int64_t sid, int64_t qid) {
 bool QrackWrapper::release(int64_t sid, int64_t qid) {
     return Qrack::release((Qrack::quid)sid, (Qrack::quid)qid);
 }
+bool QrackWrapper::TrySeparate1Qb(int64_t sid, int64_t qi1) {
+    return Qrack::TrySeparate1Qb((Qrack::quid)sid, (bitLenInt)qi1);
+}
+bool QrackWrapper::TrySeparate2Qb(int64_t sid, int64_t qi1, int64_t qi2) {
+    return Qrack::TrySeparate2Qb((Qrack::quid)sid, (bitLenInt)qi1, (bitLenInt)qi2);
+}
+std::vector<bitLenInt> transform_qbids(const std::vector<int64_t>& c) {
+    std::vector<bitLenInt> _c;
+    _c.reserve(c.size());
+    for (size_t i = 0U; i < c.size(); ++i) {
+        _c.push_back((bitLenInt)c[i]);
+    }
+
+    return _c;
+}
+bool QrackWrapper::TrySeparateTol(long long sid, std::vector<long long> q, double tol) {
+    return Qrack::TrySeparateTol((Qrack::quid)sid, transform_qbids(q), (Qrack::real1_f)tol);
+}
+double QrackWrapper::GetUnitaryFidelity(long long sid) {
+    return (double)Qrack::GetUnitaryFidelity((Qrack::quid)sid);
+}
+void QrackWrapper::ResetUnitaryFidelity(long long sid) {
+    Qrack::ResetUnitaryFidelity((Qrack::quid)sid);
+}
+void QrackWrapper::SetSdrp(long long sid, double sdrp) {
+    Qrack::SetSdrp((Qrack::quid)sid, (Qrack::real1_f)sdrp);
+}
+void QrackWrapper::SetReactiveSeparate(long long sid, bool irs) {
+    Qrack::SetReactiveSeparate((Qrack::quid)sid, irs);
+}
+void QrackWrapper::SetTInjection(long long sid, bool iti) {
+    Qrack::SetTInjection((Qrack::quid)sid, iti);
+}
 
 double QrackWrapper::Prob(int64_t sid, int64_t q) {
     return (double)Qrack::Prob((Qrack::quid)sid, (bitLenInt)q);
@@ -123,15 +156,6 @@ double QrackWrapper::JointEnsembleProbability(int64_t sid, std::vector<int64_t> 
     return (double)Qrack::JointEnsembleProbability((Qrack::quid)sid, _q);
 }
 
-std::vector<bitLenInt> transform_qbids(const std::vector<int64_t>& c) {
-    std::vector<bitLenInt> _c;
-    _c.reserve(c.size());
-    for (size_t i = 0U; i < c.size(); ++i) {
-        _c.push_back((bitLenInt)c[i]);
-    }
-
-    return _c;
-}
 void QrackWrapper::Compose(int64_t sid1, int64_t sid2, std::vector<int64_t> q) {
     Qrack::Compose((Qrack::quid)sid1, (Qrack::quid)sid2, transform_qbids(q));
 }

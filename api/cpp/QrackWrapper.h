@@ -12,6 +12,14 @@ public:
     static void seed(long long sid, long long s);
     static void allocateQubit(long long sid, long long qid);
     static bool release(long long sid, long long q);
+    static bool TrySeparate1Qb(long long sid, long long qi1);
+    static bool TrySeparate2Qb(long long sid, long long qi1, long long qi2);
+    static bool TrySeparateTol(long long sid, std::vector<long long> q, double tol);
+    static double GetUnitaryFidelity(long long sid);
+    static void ResetUnitaryFidelity(long long sid);
+    static void SetSdrp(long long sid, double sdrp);
+    static void SetReactiveSeparate(long long sid, bool irs);
+    static void SetTInjection(long long sid, bool iti);
 
     // Expectation value output
     static double Prob(long long sid, long long q);
