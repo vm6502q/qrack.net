@@ -112,4 +112,22 @@ public:
     static void CLNAND(long long sid, bool ci, long long qi, long long qo);
     static void CLNOR(long long sid, bool ci, long long qi, long long qo);
     static void CLXNOR(long long sid, bool ci, long long qi, long long qo);
+
+    // Arithmetic logic unit
+    static void ADD(long long sid, unsigned long long a, std::vector<long long> q);
+    static void SUB(long long sid, unsigned long long a, std::vector<long long> q);
+    static void ADDS(long long sid, unsigned long long a, long long s, std::vector<long long> q);
+    static void SUBS(long long sid, unsigned long long a, long long s, std::vector<long long> q);
+    static void MCADD(long long sid, unsigned long long a, std::vector<long long> c, std::vector<long long> q);
+    static void MCSUB(long long sid, unsigned long long a, std::vector<long long> c, std::vector<long long> q);
+    static void MUL(long long sid, unsigned long long a, std::vector<long long> q, std::vector<long long> o);
+    static void DIV(long long sid, unsigned long long a, std::vector<long long> q, std::vector<long long> o);
+    static void MULN(long long sid, unsigned long long a, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
+    static void DIVN(long long sid, unsigned long long a, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
+    static void POWN(long long sid, unsigned long long a, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
+    static void MCMUL(long long sid, unsigned long long a, std::vector<long long> c, std::vector<long long> q, std::vector<long long> o);
+    static void MCDIV(long long sid, unsigned long long a, std::vector<long long> c, std::vector<long long> q, std::vector<long long> o);
+    static void MCMULN(long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
+    static void MCDIVN(long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
+    static void MCPOWN(long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o);
 };

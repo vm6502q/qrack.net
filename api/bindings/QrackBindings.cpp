@@ -289,4 +289,54 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("clxnor", optional_override([](long long sid, bool ci, long long qi, long long qo) -> void {
         QrackWrapper::CLXNOR(sid, ci, qi, qo);
     }));
+
+    // Arithmetic logic unit
+    function("add", optional_override([](long long sid, unsigned long long a, std::vector<long long> q) -> void {
+        QrackWrapper::ADD(sid, a, q);
+    }));
+    function("sub", optional_override([](long long sid, unsigned long long a, std::vector<long long> q) -> void {
+        QrackWrapper::SUB(sid, a, q);
+    }));
+    function("adds", optional_override([](long long sid, unsigned long long a, long long s, std::vector<long long> q) -> void {
+        QrackWrapper::ADD(sid, a, q);
+    }));
+    function("subs", optional_override([](long long sid, unsigned long long a, long long s, std::vector<long long> q) -> void {
+        QrackWrapper::SUB(sid, a, q);
+    }));
+    function("mcadd", optional_override([](long long sid, unsigned long long a, std::vector<long long> c, std::vector<long long> q) -> void {
+        QrackWrapper::MCADD(sid, a, c, q);
+    }));
+    function("mcsub", optional_override([](long long sid, unsigned long long a, std::vector<long long> c, std::vector<long long> q) -> void {
+        QrackWrapper::MCSUB(sid, a, c, q);
+    }));
+    function("mul", optional_override([](long long sid, unsigned long long a, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::MUL(sid, a, q, o);
+    }));
+    function("div", optional_override([](long long sid, unsigned long long a, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::DIV(sid, a, q, o);
+    }));
+    function("muln", optional_override([](long long sid, unsigned long long a, unsigned long long m, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::MULN(sid, a, m, q, o);
+    }));
+    function("divn", optional_override([](long long sid, unsigned long long a, unsigned long long m, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::DIVN(sid, a, m, q, o);
+    }));
+    function("pown", optional_override([](long long sid, unsigned long long a, unsigned long long m, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::POWN(sid, a, m, q, o);
+    }));
+    function("mcmul", optional_override([](long long sid, unsigned long long a, std::vector<long long> c, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::MCMUL(sid, a, c, q, o);
+    }));
+    function("mcdiv", optional_override([](long long sid, unsigned long long a, std::vector<long long> c, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::MCDIV(sid, a, c, q, o);
+    }));
+    function("mcmuln", optional_override([](long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::MCMULN(sid, a, c, m, q, o);
+    }));
+    function("mcdivn", optional_override([](long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::MCDIVN(sid, a, c, m, q, o);
+    }));
+    function("mcpown", optional_override([](long long sid, unsigned long long a, std::vector<long long> c, unsigned long long m, std::vector<long long> q, std::vector<long long> o) -> void {
+        QrackWrapper::MCPOWN(sid, a, c, m, q, o);
+    }));
 }

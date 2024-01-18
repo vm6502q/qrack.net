@@ -366,3 +366,52 @@ void QrackWrapper::CLNOR(int64_t sid, bool ci, int64_t qi, int64_t qo) {
 void QrackWrapper::CLXNOR(int64_t sid, bool ci, int64_t qi, int64_t qo) {
     Qrack::CLXNOR((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
 }
+
+void QrackWrapper::ADD(int64_t sid, unsigned long long a, std::vector<int64_t> q) {
+    Qrack::ADD((Qrack::quid)sid, (bitCapInt)a, transform_qbids(q));
+}
+void QrackWrapper::SUB(int64_t sid, unsigned long long a, std::vector<int64_t> q) {
+    Qrack::SUB((Qrack::quid)sid, (bitCapInt)a, transform_qbids(q));
+}
+void QrackWrapper::ADDS(int64_t sid, unsigned long long a, int64_t s, std::vector<int64_t> q) {
+    Qrack::ADDS((Qrack::quid)sid, (bitCapInt)a, (bitLenInt)s, transform_qbids(q));
+}
+void QrackWrapper::SUBS(int64_t sid, unsigned long long a, int64_t s, std::vector<int64_t> q) {
+    Qrack::SUBS((Qrack::quid)sid, (bitCapInt)a, (bitLenInt)s, transform_qbids(q));
+}
+void QrackWrapper::MCADD(int64_t sid, unsigned long long a, std::vector<int64_t> c, std::vector<int64_t> q) {
+    Qrack::MCADD((Qrack::quid)sid, (bitCapInt)a, transform_qbids(c), transform_qbids(q));
+}
+void QrackWrapper::MCSUB(int64_t sid, unsigned long long a, std::vector<int64_t> c, std::vector<int64_t> q) {
+    Qrack::MCSUB((Qrack::quid)sid, (bitCapInt)a, transform_qbids(c), transform_qbids(q));
+}
+void QrackWrapper::MUL(int64_t sid, unsigned long long a, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::MUL((Qrack::quid)sid, (bitCapInt)a, transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::DIV(int64_t sid, unsigned long long a, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::DIV((Qrack::quid)sid, (bitCapInt)a, transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::MULN(int64_t sid, unsigned long long a, unsigned long long m, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::MULN((Qrack::quid)sid, (bitCapInt)a, (bitCapInt)m, transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::DIVN(int64_t sid, unsigned long long a, unsigned long long m, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::DIVN((Qrack::quid)sid, (bitCapInt)a, (bitCapInt)m, transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::POWN(int64_t sid, unsigned long long a, unsigned long long m, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::POWN((Qrack::quid)sid, (bitCapInt)a, (bitCapInt)m, transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::MCMUL(int64_t sid, unsigned long long a, std::vector<int64_t> c, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::MCMUL((Qrack::quid)sid, (bitCapInt)a, transform_qbids(c), transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::MCDIV(int64_t sid, unsigned long long a, std::vector<int64_t> c, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::MCDIV((Qrack::quid)sid, (bitCapInt)a, transform_qbids(c), transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::MCMULN(int64_t sid, unsigned long long a, std::vector<int64_t> c, unsigned long long m, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::MCMULN((Qrack::quid)sid, (bitCapInt)a, transform_qbids(c), (bitCapInt)m, transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::MCDIVN(int64_t sid, unsigned long long a, std::vector<int64_t> c, unsigned long long m, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::MCDIVN((Qrack::quid)sid, (bitCapInt)a, transform_qbids(q), (bitCapInt)m, transform_qbids(q), transform_qbids(o));
+}
+void QrackWrapper::MCPOWN(int64_t sid, unsigned long long a, std::vector<int64_t> c, unsigned long long m, std::vector<int64_t> q, std::vector<int64_t> o) {
+    Qrack::MCPOWN((Qrack::quid)sid, (bitCapInt)a, transform_qbids(c), (bitCapInt)m, transform_qbids(q), transform_qbids(o));
+}
