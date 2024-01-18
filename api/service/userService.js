@@ -7,7 +7,6 @@ const ModelService = require('./modelService')
 // Database Model
 const config = require('../config')
 const db = require('../models/index')
-const sequelize = db.sequelize
 const User = db.user
 
 // Password hasher

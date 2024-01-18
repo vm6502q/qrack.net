@@ -56,7 +56,6 @@ app.use(unless(publicApiRoutes,
       if (!req.cookies || !req.cookies.token) {
         return ''
       }
-      const decoded = jwtDecode(req.cookies.token)
       return req.cookies.token
     }
   })
