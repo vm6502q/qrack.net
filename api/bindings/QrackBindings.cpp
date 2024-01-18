@@ -290,6 +290,14 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
         QrackWrapper::CLXNOR(sid, ci, qi, qo);
     }));
 
+    // Quantum Fourier Transform
+    function("qft", optional_override([](long long sid, std::vector<long long> q) -> void {
+        QrackWrapper::QFT(sid, q);
+    }));
+    function("iqft", optional_override([](long long sid, std::vector<long long> q) -> void {
+        QrackWrapper::IQFT(sid, q);
+    }));
+
     // Arithmetic logic unit
     function("add", optional_override([](long long sid, unsigned long long a, std::vector<long long> q) -> void {
         QrackWrapper::ADD(sid, a, q);

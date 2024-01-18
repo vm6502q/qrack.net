@@ -113,6 +113,10 @@ public:
     static void CLNOR(long long sid, bool ci, long long qi, long long qo);
     static void CLXNOR(long long sid, bool ci, long long qi, long long qo);
 
+    // Quantum Fourier Transform
+    static void QFT(long long sid, std::vector<long long> q);
+    static void IQFT(long long sid, std::vector<long long> q);
+
     // Arithmetic logic unit
     static void ADD(long long sid, unsigned long long a, std::vector<long long> q);
     static void SUB(long long sid, unsigned long long a, std::vector<long long> q);

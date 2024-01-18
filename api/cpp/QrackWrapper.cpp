@@ -367,6 +367,13 @@ void QrackWrapper::CLXNOR(int64_t sid, bool ci, int64_t qi, int64_t qo) {
     Qrack::CLXNOR((Qrack::quid)sid, ci, (bitLenInt)qi, (bitLenInt)qo);
 }
 
+void QrackWrapper::QFT(long long sid, std::vector<long long> q) {
+    Qrack::QFT((Qrack::quid)sid, transform_qbids(q));
+}
+void QrackWrapper::IQFT(long long sid, std::vector<long long> q) {
+    Qrack::IQFT((Qrack::quid)sid, transform_qbids(q));
+}
+
 void QrackWrapper::ADD(int64_t sid, unsigned long long a, std::vector<int64_t> q) {
     Qrack::ADD((Qrack::quid)sid, (bitCapInt)a, transform_qbids(q));
 }
