@@ -5,7 +5,7 @@
 -- Dumped from database version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
 -- Dumped by pg_dump version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
 
--- Started on 2024-01-18 09:30:09 EST
+-- Started on 2024-01-18 09:42:35 EST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -107,6 +107,20 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
+-- TOC entry 2992 (class 0 OID 18016)
+-- Dependencies: 206
+-- Data for Name: jobStatusTypes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."jobStatusTypes" (id, name) FROM stdin;
+1	SUCCESS
+2	FAILED
+3	RUNNING
+4	IN QUEUE
+\.
+
+
+--
 -- TOC entry 2849 (class 2606 OID 17994)
 -- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
@@ -187,7 +201,7 @@ ALTER TABLE ONLY public.outputs
     ADD CONSTRAINT outputs_typeid_fk FOREIGN KEY ("typeId") REFERENCES public."outputTypes"(id) NOT VALID;
 
 
--- Completed on 2024-01-18 09:30:10 EST
+-- Completed on 2024-01-18 09:42:35 EST
 
 --
 -- PostgreSQL database dump complete
