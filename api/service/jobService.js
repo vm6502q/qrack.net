@@ -84,8 +84,10 @@ class JobService extends ModelService {
       for (i in p) {
         switch (i.name) {
           case 'init_general':
-            let sid = core.init_general(...i.parameters)
-            await outputService.createOrUpdate(job.id, i.output, sid, 1)
+            await outputService.createOrUpdate(job.id, i.output, core.init_general(...i.parameters), 1)
+            break;
+          case 'init_clone':
+            await outputService.createOrUpdate(job.id, i.output, core.init_clone(await outputService.getByJobIdAndName(job.id, i.parameters[0])), 1)
             break;
           default:
             break;

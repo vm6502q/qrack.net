@@ -29,6 +29,10 @@ class OutputService extends ModelService {
     return { success: true, body: output }
   }
 
+  async getByJobIdAndName (jobId, name) {
+    return await this.findOne({ jobId, name })
+  }
+
   async createOrUpdate (jobId, name, value, outputTypeId) {
     let output = await this.findOne({ jobId, name })
     if (!output) {
