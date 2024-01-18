@@ -4,14 +4,6 @@
 
 module.exports = function (sequelize, DataTypes) {
   const Model = sequelize.define('output', {
-    jobId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    typeId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     name: {
       type: DataTypes.TEXT,
       allowNull: false,

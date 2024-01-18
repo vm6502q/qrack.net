@@ -3,16 +3,7 @@
 'use strict'
 
 module.exports = function (sequelize, DataTypes) {
-  const Model = sequelize.define('job', {
-    statusId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
-  }, {})
+  const Model = sequelize.define('job', {}, {})
   Model.associate = function (db) {
     db.user.hasMany(db.job)
     db.job.belongsTo(db.user)
