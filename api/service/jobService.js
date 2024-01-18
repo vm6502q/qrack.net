@@ -74,8 +74,8 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
+    const p = reqBody.program
     qrack.then(async (core) => {
-      const p = reqBody.program
       for (i in p) {
         switch (i.name) {
           case 'init_general':
