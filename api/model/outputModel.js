@@ -12,6 +12,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    name: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     value: {
       type: DataTypes.TEXT,
       allowNull: false
