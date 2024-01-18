@@ -4,7 +4,7 @@
 const ModelService = require('./modelService')
 // Database Model
 const config = require('../config')
-const db = require('../models/index')
+const db = require('../model/index')
 const sequelize = db.sequelize
 const Job = db.job
 

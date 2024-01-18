@@ -6,7 +6,7 @@ const { Op } = require('sequelize')
 const ModelService = require('./modelService')
 // Database Model
 const config = require('../config')
-const db = require('../models/index')
+const db = require('../model/index')
 const User = db.user
 
 // Password hasher
