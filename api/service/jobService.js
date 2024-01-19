@@ -85,7 +85,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_op(job, fn, i) {
-    let tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
     }
@@ -96,12 +96,38 @@ class JobService extends ModelService {
   }
 
   async single_quid_output_op(job, fn, i, o_type) {
-    let tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
     }
     i.parameters.shift()
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, ...i.parameters), o_type)
+
+    return false
+  }
+
+  async single_quid_mc_op(job, fn, i) {
+    const tmp = this.validate_sid(i.parameters[0], job)
+    if (!tmp) {
+      return true
+    }
+    i.parameters.shift()
+    const tmpLongVec = core.VectorLong(i.parameters[0])
+    i.parameters.shift()
+    fn(tmp, tmpLongVec, ...i.parameters)
+
+    return false
+  }
+
+  async single_quid_mc_output_op(job, fn, i, o_type) {
+    const tmp = this.validate_sid(i.parameters[0], job)
+    if (!tmp) {
+      return true
+    }
+    i.parameters.shift()
+    const tmpLongVec = core.VectorLong(i.parameters[0])
+    i.parameters.shift()
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, ...i.parameters), o_type)
 
     return false
   }
@@ -165,14 +191,9 @@ class JobService extends ModelService {
             }
             break
           case 'try_separate_tol':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc_output_op(job, core.try_separate_tol, i, 2)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.try_separate_tol(tmp, tmpVec, i.parameters[0]), 2)
             break
           case 'get_unitary_fidelity':
             if (single_quid_output_op(job, core.get_unitary_fidelity, i, 2)) {
@@ -282,14 +303,9 @@ class JobService extends ModelService {
             await outputService.createOrUpdate(job.id, i.output, core.fact_exp_rdm(tmp, tmpLongVec, tmpDoubleVec, i.parameters[0]), 3)
             break
           case 'phase_parity':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc_op(job, core.phase_parity, i)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            core.phase_parity(tmp, tmpLongVec, i.parameters[0])
             break
           case 'joint_ensemble_prob':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -319,24 +335,14 @@ class JobService extends ModelService {
             core.compose(tmp, tmp2, tmpLongVec)
             break
           case 'decompose':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc_output_op(job, core.decompose, i, 1)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.decompose(tmp, tmpLongVec), 1)
             break
           case 'dispose':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc_op(job, core.dispose, i)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            core.dispose(tmp, tmpLongVec)
             break
           case 'reset_all':
             if (single_quid_op(job, core.reset_all, i)) {
