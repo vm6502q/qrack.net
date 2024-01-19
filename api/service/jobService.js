@@ -103,6 +103,7 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
+    let tmp, tmpVec
     const p = reqBody.program
     qrack.then(async (core) => {
       for (i in p) {
@@ -153,6 +154,54 @@ class JobService extends ModelService {
             }
             i.parameters.shift()
             await outputService.createOrUpdate(job.id, i.output, core.try_separate_2qb(tmp, ...i.parameters), 2)
+            break
+          case 'try_separate_tol':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpVec, core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            await outputService.createOrUpdate(job.id, i.output, core.try_separate_tol(tmp, tmpVec, i.parameters[0]), 2)
+            break
+          case 'get_unitary_fidelity':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            await outputService.createOrUpdate(job.id, i.output, core.get_unitary_fidelity(tmp), 2)
+            break
+          case 'reset_unitary_fidelity':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            core.reset_unitary_fidelity(tmp)
+            break
+          case 'set_sdrp':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            core.set_sdrp(tmp, i.parameters[0])
+            break
+          case 'set_reactive_separate':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            core.set_reactive_separate(tmp, i.parameters[0])
+            break
+          case 'set_t_injection':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            core.set_t_injection(tmp, i.parameters[0])
             break
           default:
             // Job status 2: FAILURE
