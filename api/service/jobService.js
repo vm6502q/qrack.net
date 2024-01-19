@@ -95,6 +95,17 @@ class JobService extends ModelService {
     return false
   }
 
+  async single_quid_output_op(job, fn, i, o_type) {
+    let tmp = this.validate_sid(i.parameters[0], job)
+    if (!tmp) {
+      return true
+    }
+    i.parameters.shift()
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, ...i.parameters), o_type)
+
+    return false
+  }
+
   async create (reqBody, userId) {
     const validationResult = await this.validateCreateRequest(reqBody)
     if (!validationResult.success) {
@@ -129,11 +140,9 @@ class JobService extends ModelService {
             await outputService.createOrUpdate(job.id, i.output, core.init_qbdd(...i.parameters), 1)
             break
           case 'init_clone':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.init_clone, i, 1)) {
               return
             }
-            await outputService.createOrUpdate(job.id, i.output, core.init_clone(tmp), 1)
             break
           case 'destroy':
             if (single_quid_op(job, core.destroy, i)) {
@@ -146,20 +155,14 @@ class JobService extends ModelService {
             }
             break
           case 'try_separate_1qb':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.try_separate_1qb, i, 2)) {
               return
             }
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.try_separate_1qb(tmp, ...i.parameters), 2)
             break
           case 'try_separate_2qb':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.try_separate_2qb, i, 2)) {
               return
             }
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.try_separate_2qb(tmp, ...i.parameters), 2)
             break
           case 'try_separate_tol':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -172,11 +175,9 @@ class JobService extends ModelService {
             await outputService.createOrUpdate(job.id, i.output, core.try_separate_tol(tmp, tmpVec, i.parameters[0]), 2)
             break
           case 'get_unitary_fidelity':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.get_unitary_fidelity, i, 2)) {
               return
             }
-            await outputService.createOrUpdate(job.id, i.output, core.get_unitary_fidelity(tmp), 2)
             break
           case 'reset_unitary_fidelity':
             if (single_quid_op(job, core.reset_unitary_fidelity, i)) {
@@ -199,20 +200,14 @@ class JobService extends ModelService {
             }
             break
           case 'prob':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.prob, i, 3)) {
               return
             }
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.prob(tmp, i.parameters[0]), 3)
             break
           case 'prob_rdm':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.prob_rdm, i, 3)) {
               return
             }
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.prob_rdm(tmp, i.parameters[0]), 3)
             break
           case 'perm_prob':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -349,20 +344,14 @@ class JobService extends ModelService {
             }
             break
           case 'measure':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.measure, i, 2)) {
               return
             }
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.measure(tmp, i.parameters[0]), 2)
             break
           case 'force_measure':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.force_measure, i, 2)) {
               return
             }
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.force_measure(tmp, ...i.parameters), 2)
             break
           case 'measure_basis':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -377,11 +366,9 @@ class JobService extends ModelService {
             await outputService.createOrUpdate(job.id, i.output, core.measure_basis(tmp, tmpLongVec, tmpCharVec), 1)
             break
           case 'measure_all':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_output_op(job, core.measure_all, i, 4)) {
               return
             }
-            await outputService.createOrUpdate(job.id, i.output, core.measure_all(tmp), 4)
             break
           case 'measure_shots':
             tmp = this.validate_sid(i.parameters[0], job)
