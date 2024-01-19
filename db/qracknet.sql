@@ -5,7 +5,7 @@
 -- Dumped from database version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
 -- Dumped by pg_dump version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
 
--- Started on 2024-01-18 18:38:13 EST
+-- Started on 2024-01-19 15:32:58 EST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,20 +23,22 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 202 (class 1259 OID 18088)
+-- TOC entry 202 (class 1259 OID 18283)
 -- Name: jobStatusTypes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public."jobStatusTypes" (
     id integer NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    "createdAt" date DEFAULT '2024-01-19'::date NOT NULL,
+    "updatedAt" date
 );
 
 
 ALTER TABLE public."jobStatusTypes" OWNER TO postgres;
 
 --
--- TOC entry 203 (class 1259 OID 18094)
+-- TOC entry 203 (class 1259 OID 18289)
 -- Name: jobs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -53,7 +55,7 @@ CREATE TABLE public.jobs (
 ALTER TABLE public.jobs OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 18097)
+-- TOC entry 204 (class 1259 OID 18295)
 -- Name: outputTypes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -68,7 +70,7 @@ CREATE TABLE public."outputTypes" (
 ALTER TABLE public."outputTypes" OWNER TO postgres;
 
 --
--- TOC entry 205 (class 1259 OID 18103)
+-- TOC entry 205 (class 1259 OID 18301)
 -- Name: outputs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -86,7 +88,7 @@ CREATE TABLE public.outputs (
 ALTER TABLE public.outputs OWNER TO postgres;
 
 --
--- TOC entry 206 (class 1259 OID 18109)
+-- TOC entry 206 (class 1259 OID 18307)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -108,21 +110,21 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 2989 (class 0 OID 18088)
+-- TOC entry 2990 (class 0 OID 18283)
 -- Dependencies: 202
 -- Data for Name: jobStatusTypes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."jobStatusTypes" (id, name) FROM stdin;
-1	SUCCESS
-2	FAILED
-3	RUNNING
-4	IN QUEUE
+COPY public."jobStatusTypes" (id, name, "createdAt", "updatedAt") FROM stdin;
+1	SUCCESS	2024-01-19	2024-01-19
+2	FAILED	2024-01-19	2024-01-19
+3	RUNNING	2024-01-19	2024-01-19
+4	IN QUEUE	2024-01-19	2024-01-19
 \.
 
 
 --
--- TOC entry 2990 (class 0 OID 18094)
+-- TOC entry 2991 (class 0 OID 18289)
 -- Dependencies: 203
 -- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -132,17 +134,20 @@ COPY public.jobs (id, "jobStatusTypeId", "statusMessage", "userId", "createdAt",
 
 
 --
--- TOC entry 2991 (class 0 OID 18097)
+-- TOC entry 2992 (class 0 OID 18295)
 -- Dependencies: 204
 -- Data for Name: outputTypes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."outputTypes" (id, name, "createdAt", "updatedAt") FROM stdin;
+1	quid	2024-01-19	2024-01-19
+2	bool	2024-01-19	2024-01-19
+3	double	2024-01-19	2024-01-19
 \.
 
 
 --
--- TOC entry 2992 (class 0 OID 18103)
+-- TOC entry 2993 (class 0 OID 18301)
 -- Dependencies: 205
 -- Data for Name: outputs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -152,7 +157,7 @@ COPY public.outputs (id, "jobId", "outputTypeId", name, value, "createdAt", "upd
 
 
 --
--- TOC entry 2993 (class 0 OID 18109)
+-- TOC entry 2994 (class 0 OID 18307)
 -- Dependencies: 206
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -162,7 +167,7 @@ COPY public.users (id, username, "usernameNormal", "passwordHash", affiliation, 
 
 
 --
--- TOC entry 2852 (class 2606 OID 18116)
+-- TOC entry 2853 (class 2606 OID 18314)
 -- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -171,7 +176,7 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 2854 (class 2606 OID 18118)
+-- TOC entry 2855 (class 2606 OID 18316)
 -- Name: outputTypes outputTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -180,7 +185,7 @@ ALTER TABLE ONLY public."outputTypes"
 
 
 --
--- TOC entry 2856 (class 2606 OID 18120)
+-- TOC entry 2857 (class 2606 OID 18318)
 -- Name: outputs outputs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -189,7 +194,7 @@ ALTER TABLE ONLY public.outputs
 
 
 --
--- TOC entry 2850 (class 2606 OID 18122)
+-- TOC entry 2851 (class 2606 OID 18320)
 -- Name: jobStatusTypes statusTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -198,7 +203,7 @@ ALTER TABLE ONLY public."jobStatusTypes"
 
 
 --
--- TOC entry 2858 (class 2606 OID 18124)
+-- TOC entry 2859 (class 2606 OID 18322)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -207,7 +212,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2859 (class 2606 OID 18125)
+-- TOC entry 2860 (class 2606 OID 18323)
 -- Name: jobs jobs_jobstatustypeid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -216,7 +221,7 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 2860 (class 2606 OID 18130)
+-- TOC entry 2861 (class 2606 OID 18328)
 -- Name: jobs jobs_userid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -225,7 +230,7 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 2861 (class 2606 OID 18135)
+-- TOC entry 2862 (class 2606 OID 18333)
 -- Name: outputs outputs_jobid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -234,7 +239,7 @@ ALTER TABLE ONLY public.outputs
 
 
 --
--- TOC entry 2862 (class 2606 OID 18140)
+-- TOC entry 2863 (class 2606 OID 18338)
 -- Name: outputs outputs_typeid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -242,7 +247,7 @@ ALTER TABLE ONLY public.outputs
     ADD CONSTRAINT outputs_typeid_fk FOREIGN KEY ("outputTypeId") REFERENCES public."outputTypes"(id) NOT VALID;
 
 
--- Completed on 2024-01-18 18:38:13 EST
+-- Completed on 2024-01-19 15:32:58 EST
 
 --
 -- PostgreSQL database dump complete
