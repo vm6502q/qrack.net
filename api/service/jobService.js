@@ -116,16 +116,26 @@ class JobService extends ModelService {
             await outputService.createOrUpdate(job.id, i.output, core.init_qbdd(...i.parameters), 1)
             break;
           case 'init_clone':
-            if (!this.validate_sid(i.parameters[0], job)) {
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
               return
             }
             await outputService.createOrUpdate(job.id, i.output, core.init_clone(tmp), 1)
             break;
           case 'destroy':
-            if (!this.validate_sid(i.parameters[0], job)) {
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
               return
             }
-            await outputService.createOrUpdate(job.id, i.output, core.destroy(tmp), 1)
+            core.destroy(tmp)
+            break;
+          case 'seed':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift();
+            await outputService.createOrUpdate(job.id, i.output, core.seed(tmp, ...i.parameters), 1)
             break;
           default:
             break;
