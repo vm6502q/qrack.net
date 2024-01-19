@@ -1,7 +1,11 @@
 // api-routes.js
 
 // Initialize ExpressJS router.
-const router = require('express').Router()
+import express from 'express'
+// Controllers
+import accountController from './controller/accountController.js'
+import qrackController from './controller/qrackController.js'
+const router = express.Router()
 
 // Set default API response.
 router.get('/', function (req, res) {
@@ -10,9 +14,6 @@ router.get('/', function (req, res) {
     message: 'This is the Metriq public REST API.'
   })
 })
-
-const accountController = require('./controller/accountController')
-const qrackController = require('./controller/qrackController')
 
 // Register routes.
 router.route('/register')
@@ -31,4 +32,4 @@ router.route('/qrack/:id')
   .get(qrackController.read)
 
 // Export API routes.
-module.exports = router
+export default router

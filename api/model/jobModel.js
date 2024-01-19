@@ -2,7 +2,7 @@
 
 'use strict'
 
-module.exports = function (sequelize, DataTypes) {
+function jobModel (sequelize, DataTypes) {
   const Model = sequelize.define('job', {}, {})
   Model.associate = function (db) {
     db.user.hasMany(db.job)
@@ -10,3 +10,5 @@ module.exports = function (sequelize, DataTypes) {
   }
   return Model
 }
+
+export default jobModel

@@ -2,11 +2,11 @@
 
 'use strict'
 
-module.exports = function (sequelize, DataTypes) {
+function outputModel (sequelize, DataTypes) {
   const Model = sequelize.define('output', {
     name: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: false
     },
     value: {
       type: DataTypes.TEXT,
@@ -19,3 +19,5 @@ module.exports = function (sequelize, DataTypes) {
   }
   return Model
 }
+
+export default outputModel

@@ -1,24 +1,24 @@
 // userService.js
 
-const { Op } = require('sequelize')
+import { Op } from 'sequelize'
 
 // Data Access Layer
-const ModelService = require('./modelService')
+import ModelService from './modelService.js'
 // Database Model
-const config = require('../config')
-const db = require('../model/index')
-const User = db.user
+import config from '../config.js'
+import db from '../model/index.js'
 
 // Password hasher
-const bcrypt = require('bcrypt')
+import bcrypt from 'bcrypt'
+import { v4 } from 'uuid'
+import jwt from 'jsonwebtoken'
+
+import nodemailer from 'nodemailer'
+const User = db.user
 const saltRounds = 10
-const { v4: uuidv4 } = require('uuid')
-const jwt = require('jsonwebtoken')
 
 const recoveryExpirationMinutes = 30
 const millisPerMinute = 60000
-
-const nodemailer = require('nodemailer')
 
 class UserService extends ModelService {
   constructor () {
@@ -180,7 +180,7 @@ class UserService extends ModelService {
       return { success: false, error: 'User not found.' }
     }
     user = await this.getByPk(user.id)
-    user.recoveryToken = uuidv4().toString()
+    user.recoveryToken = v4.uuidv4().toString()
     user.recoveryTokenExpiration = new Date((new Date()).getTime() + recoveryExpirationMinutes * millisPerMinute)
     await user.save()
 
@@ -296,4 +296,4 @@ class UserService extends ModelService {
   }
 }
 
-module.exports = UserService
+export default UserService

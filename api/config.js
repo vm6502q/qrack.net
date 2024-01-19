@@ -1,3 +1,5 @@
+import crypto from 'crypto'
+
 const config = {}
 
 config.isDebug = true
@@ -22,7 +24,7 @@ config.api.getUriPrefix = () => {
 
 config.api.token = {}
 // NEVER store a valid secret key in files that might be checked into source code repositories!!!
-config.api.token.secretKey = process.env.QRACKNET_SECRET_KEY ? process.env.QRACKNET_SECRET_KEY : require('crypto').randomBytes(256).toString('base64')
+config.api.token.secretKey = process.env.QRACKNET_SECRET_KEY ? process.env.QRACKNET_SECRET_KEY : crypto.randomBytes(256).toString('base64')
 // Token is valid for 60 minutes (unless refreshed).
 config.api.token.expiresIn = 3600
 // Algorithm used for encrypting JWT
@@ -52,4 +54,4 @@ config.pgPool = (process.env.QRACKNET_MODE === 'TESTING')
 
 config.pgConnectionString = 'postgres://' + config.pgPool.user + ':' + config.pgPool.password + '@' + config.pgPool.host + ':' + config.pgPool.port + '/' + config.pgPool.database
 
-module.exports = config
+export default config

@@ -2,7 +2,7 @@
 
 'use strict'
 
-module.exports = function (sequelize, DataTypes) {
+function outputTypeModel (sequelize, DataTypes) {
   const Model = sequelize.define('outputType', {
     name: {
       type: DataTypes.TEXT,
@@ -15,3 +15,5 @@ module.exports = function (sequelize, DataTypes) {
   }
   return Model
 }
+
+export default outputTypeModel

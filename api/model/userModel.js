@@ -2,11 +2,11 @@
 
 'use strict'
 
-const { v4: uuidv4 } = require('uuid')
+import { v4 } from 'uuid'
 const recoveryExpirationMinutes = 30
 const millisPerMinute = 60000
 
-module.exports = function (sequelize, DataTypes) {
+function userModel (sequelize, DataTypes) {
   const Model = sequelize.define('user', {
     username: {
       type: DataTypes.TEXT,
@@ -42,8 +42,10 @@ module.exports = function (sequelize, DataTypes) {
     }
   }, {})
   Model.generateRecovery = function () {
-    this.recoveryToken = uuidv4()
+    this.recoveryToken = v4.uuidv4()
     this.recoveryTokenExpiration = new Date((new Date()).getTime() + recoveryExpirationMinutes * millisPerMinute)
   }
   return Model
 }
+
+export default userModel

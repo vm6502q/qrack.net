@@ -60,7 +60,7 @@ class JobService extends ModelService {
     return { success: true }
   }
 
-  async invalid_argument_error(job) {
+  async invalid_argument_error (job) {
     // Job status 2: FAILURE
     job.jobStatusTypeId = 2
     job.statusMessage =
@@ -70,11 +70,11 @@ class JobService extends ModelService {
     await job.save()
   }
 
-  async validate_sid(name, job) {
-    let v = await outputService.getByJobIdAndName(job.id, name)
+  async validate_sid (name, job) {
+    const v = await outputService.getByJobIdAndName(job.id, name)
     if (!v) {
       await this.invalid_argument_error(job)
-      return null;
+      return null
     }
     switch (v.outputTypeId) {
       case 1:
@@ -109,51 +109,51 @@ class JobService extends ModelService {
         switch (i.name) {
           case 'init_general':
             await outputService.createOrUpdate(job.id, i.output, core.init_general(...i.parameters), 1)
-            break;
+            break
           case 'init_stabilizer':
             await outputService.createOrUpdate(job.id, i.output, core.init_stabilizer(...i.parameters), 1)
-            break;
+            break
           case 'init_qbdd':
             await outputService.createOrUpdate(job.id, i.output, core.init_qbdd(...i.parameters), 1)
-            break;
+            break
           case 'init_clone':
             tmp = this.validate_sid(i.parameters[0], job)
             if (!tmp) {
               return
             }
             await outputService.createOrUpdate(job.id, i.output, core.init_clone(tmp), 1)
-            break;
+            break
           case 'destroy':
             tmp = this.validate_sid(i.parameters[0], job)
             if (!tmp) {
               return
             }
             core.destroy(tmp)
-            break;
+            break
           case 'seed':
             tmp = this.validate_sid(i.parameters[0], job)
             if (!tmp) {
               return
             }
-            i.parameters.shift();
+            i.parameters.shift()
             core.seed(tmp, ...i.parameters)
-            break;
+            break
           case 'try_separate_1qb':
             tmp = this.validate_sid(i.parameters[0], job)
             if (!tmp) {
               return
             }
-            i.parameters.shift();
+            i.parameters.shift()
             await outputService.createOrUpdate(job.id, i.output, core.try_separate_1qb(tmp, ...i.parameters), 2)
-            break;
+            break
           case 'try_separate_2qb':
             tmp = this.validate_sid(i.parameters[0], job)
             if (!tmp) {
               return
             }
-            i.parameters.shift();
+            i.parameters.shift()
             await outputService.createOrUpdate(job.id, i.output, core.try_separate_2qb(tmp, ...i.parameters), 2)
-            break;
+            break
           default:
             // Job status 2: FAILURE
             job.jobStatusTypeId = 2

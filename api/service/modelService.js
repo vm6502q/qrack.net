@@ -1,7 +1,7 @@
 // modelService.js
 
 // Data Access Layer
-const SequelizeService = require('./sequelizeService')
+import SequelizeService from './sequelizeService.js'
 
 class ModelService {
   constructor (Model) {
@@ -37,4 +37,4 @@ class ModelService {
   }
 }
 
-module.exports = ModelService
+export default ModelService

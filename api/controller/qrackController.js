@@ -1,11 +1,15 @@
 // qrackController.js
 
-const { routeWrapper } = require('../util/controllerUtil')
+import { routeWrapper } from '../util/controllerUtil.js'
 
-exports.read = async function (req, res) {
-  routeWrapper(res,
-    async () => {
-      return { success: true, body: {} }
-    },
-    'Retrieved job output and status by ID.')
+class QrackController {
+  static async read (req, res) {
+    routeWrapper(res,
+      async () => {
+        return { success: true, body: {} }
+      },
+      'Retrieved job output and status by ID.')
+  }
 }
+
+export default QrackController
