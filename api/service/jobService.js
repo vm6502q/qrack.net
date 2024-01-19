@@ -142,7 +142,8 @@ class JobService extends ModelService {
             // Job status 2: FAILURE
             job.jobStatusTypeId = 2
             job.statusMessage = 'One or more of your job program operation line names do not match a defined operation name.'
-            break;
+            await job.save()
+            return
         }
       }
 
