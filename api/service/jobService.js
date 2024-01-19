@@ -64,7 +64,7 @@ class JobService extends ModelService {
     job.jobStatusTypeId = 2
     job.statusMessage =
      'All simulator IDs and quantum neuron IDs should be specified as names in the output space of the job. ' +
-     '(Methods that produce output, at all, always save it to the "output space" of the job, to the' +
+     '(Methods that produce output, at all, always save it to the "output space" of the job, to the ' +
      'variable named by the "output" parameter of the job program line that produces output.)'
     await job.save()
   }
