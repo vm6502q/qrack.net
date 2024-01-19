@@ -209,7 +209,7 @@ class JobService extends ModelService {
               return
             }
             i.parameters.shift()
-            core.prob(tmp, i.parameters[0])
+            await outputService.createOrUpdate(job.id, i.output, core.prob(tmp, i.parameters[0]), 3)
             break
           case 'prob_rdm':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -217,7 +217,7 @@ class JobService extends ModelService {
               return
             }
             i.parameters.shift()
-            core.prob_rdm(tmp, i.parameters[0])
+            await outputService.createOrUpdate(job.id, i.output, core.prob_rdm(tmp, i.parameters[0]), 3)
             break
           case 'perm_prob':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -229,7 +229,7 @@ class JobService extends ModelService {
             i.parameters.shift()
             tmpCharVec = core.VectorLong(i.parameters[0])
             i.parameters.shift()
-            core.perm_prob(tmp, tmpLongVec, tmpCharVec)
+            await outputService.createOrUpdate(job.id, i.output, core.perm_prob(tmp, tmpLongVec, tmpCharVec), 3)
             break
           case 'perm_prob_rdm':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -241,7 +241,7 @@ class JobService extends ModelService {
             i.parameters.shift()
             tmpCharVec = core.VectorChar(i.parameters[0])
             i.parameters.shift()
-            core.perm_prob_rdm(tmp, tmpLongVec, tmpCharVec, i.parameters[0])
+            await outputService.createOrUpdate(job.id, i.output, core.perm_prob_rdm(tmp, tmpLongVec, tmpCharVec, i.parameters[0]), 3)
             break
           case 'fact_exp':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -253,7 +253,7 @@ class JobService extends ModelService {
             i.parameters.shift()
             tmpLongVec2 = core.VectorLong(i.parameters[0])
             i.parameters.shift()
-            core.fact_exp(tmp, tmpLongVec, tmpLongVec2)
+            await outputService.createOrUpdate(job.id, i.output, core.fact_exp(tmp, tmpLongVec, tmpLongVec2), 3)
             break
           case 'fact_exp_rdm':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -265,7 +265,7 @@ class JobService extends ModelService {
             i.parameters.shift()
             tmpLongVec2 = core.VectorLong(i.parameters[0])
             i.parameters.shift()
-            core.fact_exp_rdm(tmp, tmpLongVec, tmpLongVec2, i.parameters[0])
+            await outputService.createOrUpdate(job.id, i.output, core.fact_exp_rdm(tmp, tmpLongVec, tmpLongVec2, i.parameters[0]), 3)
             break
           case 'fact_exp_fp':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -277,7 +277,7 @@ class JobService extends ModelService {
             i.parameters.shift()
             tmpDoubleVec = core.VectorDouble(i.parameters[0])
             i.parameters.shift()
-            core.fact_exp_fp(tmp, tmpLongVec, tmpDoubleVec)
+            await outputService.createOrUpdate(job.id, i.output, core.fact_exp_fp(tmp, tmpLongVec, tmpDoubleVec), 3)
             break
           case 'fact_exp_rdm':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -289,7 +289,7 @@ class JobService extends ModelService {
             i.parameters.shift()
             tmpDoubleVec = core.VectorDouble(i.parameters[0])
             i.parameters.shift()
-            core.fact_exp_rdm(tmp, tmpLongVec, tmpDoubleVec, i.parameters[0])
+            await outputService.createOrUpdate(job.id, i.output, core.fact_exp_rdm(tmp, tmpLongVec, tmpDoubleVec, i.parameters[0]), 3)
             break
           default:
             // Job status 2: FAILURE
