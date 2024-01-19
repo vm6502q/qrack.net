@@ -144,7 +144,15 @@ class JobService extends ModelService {
               return
             }
             i.parameters.shift();
-            await outputService.createOrUpdate(job.id, i.output, core.seed(tmp, ...i.parameters), 2)
+            await outputService.createOrUpdate(job.id, i.output, core.try_separate_1qb(tmp, ...i.parameters), 2)
+            break;
+          case 'try_separate_2qb':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift();
+            await outputService.createOrUpdate(job.id, i.output, core.try_separate_2qb(tmp, ...i.parameters), 2)
             break;
           default:
             // Job status 2: FAILURE
