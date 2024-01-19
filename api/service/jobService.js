@@ -66,6 +66,20 @@ class JobService extends ModelService {
     await job.save()
   }
 
+  async validate_sid(name, job) {
+    let v = await outputService.getByJobIdAndName(job.id, name)
+    if (!v) {
+      await this.invalid_argument_error(job)
+      return null;
+    }
+    switch (v.outputTypeId) {
+      case 1:
+        return parseInt(v.value)
+      default:
+        return null
+    }
+  }
+
   async create (reqBody, userId) {
     const validationResult = await this.validateCreateRequest(reqBody)
     if (!validationResult.success) {
@@ -86,29 +100,29 @@ class JobService extends ModelService {
     await job.save()
 
     const p = reqBody.program
-    let tmp = null
     qrack.then(async (core) => {
       for (i in p) {
         switch (i.name) {
           case 'init_general':
-            tmp = core.init_general(...i.parameters)
-            await outputService.createOrUpdate(job.id, i.output, tmp, 1)
+            await outputService.createOrUpdate(job.id, i.output, core.init_general(...i.parameters), 1)
             break;
           case 'init_stabilizer':
-            tmp = core.init_stabilizer(...i.parameters)
-            await outputService.createOrUpdate(job.id, i.output, tmp, 1)
+            await outputService.createOrUpdate(job.id, i.output, core.init_stabilizer(...i.parameters), 1)
             break;
           case 'init_qbdd':
-            tmp = core.init_qbdd(...i.parameters)
-            await outputService.createOrUpdate(job.id, i.output, tmp, 1)
+            await outputService.createOrUpdate(job.id, i.output, core.init_qbdd(...i.parameters), 1)
             break;
           case 'init_clone':
-            tmp = await outputService.getByJobIdAndName(job.id, i.parameters[0])
-            if (!tmp) {
-              await this.invalid_argument_error(job)
-              return;
+            if (!this.validate_sid(i.parameters[0], job)) {
+              return
             }
             await outputService.createOrUpdate(job.id, i.output, core.init_clone(tmp), 1)
+            break;
+          case 'destroy':
+            if (!this.validate_sid(i.parameters[0], job)) {
+              return
+            }
+            await outputService.createOrUpdate(job.id, i.output, core.destroy(tmp), 1)
             break;
           default:
             break;
