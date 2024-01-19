@@ -103,7 +103,7 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    let tmp, tmpLongVec, tmpLongVec2, tmpCharVec, tmpDoubleVec
+    let tmp, tmp2, tmpLongVec, tmpLongVec2, tmpCharVec, tmpDoubleVec
     const p = reqBody.program
     qrack.then(async (core) => {
       for (i in p) {
@@ -312,6 +312,41 @@ class JobService extends ModelService {
             tmpCharVec = core.VectorChar(i.parameters[0])
             i.parameters.shift()
             await outputService.createOrUpdate(job.id, i.output, core.joint_ensemble_prob(tmp, tmpLongVec, tmpCharVec), 3)
+            break
+          case 'compose':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmp2 = this.validate_sid(i.parameters[0], job)
+            if (!tmp2) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            core.compose(tmp, tmp2, tmpLongVec)
+            break
+          case 'decompose':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            await outputService.createOrUpdate(job.id, i.output, core.decompose(tmp, tmpLongVec), 1)
+            break
+          case 'dispose':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            core.dispose(tmp, tmpLongVec)
             break
           default:
             // Job status 2: FAILURE
