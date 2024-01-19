@@ -103,7 +103,7 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    let tmp, tmpVec
+    let tmp, tmpLongVec, tmpCharVec
     const p = reqBody.program
     qrack.then(async (core) => {
       for (i in p) {
@@ -161,7 +161,7 @@ class JobService extends ModelService {
               return
             }
             i.parameters.shift()
-            tmpVec, core.VectorLong(i.parameters[0])
+            tmpLongVec = core.VectorLong(i.parameters[0])
             i.parameters.shift()
             await outputService.createOrUpdate(job.id, i.output, core.try_separate_tol(tmp, tmpVec, i.parameters[0]), 2)
             break
@@ -202,6 +202,46 @@ class JobService extends ModelService {
             }
             i.parameters.shift()
             core.set_t_injection(tmp, i.parameters[0])
+            break
+          case 'prob':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            core.prob(tmp, i.parameters[0])
+            break
+          case 'prob_rdm':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            core.prob_rdm(tmp, i.parameters[0])
+            break
+          case 'perm_prob':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            tmpCharVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            core.perm_prob(tmp, tmpLongVec, tmpCharVec)
+            break
+          case 'perm_prob_rdm':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            tmpCharVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            core.perm_prob_rdm(tmp, tmpLongVec, tmpCharVec, i.parameters[0])
             break
           default:
             // Job status 2: FAILURE
