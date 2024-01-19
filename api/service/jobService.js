@@ -94,6 +94,14 @@ class JobService extends ModelService {
             tmp = core.init_general(...i.parameters)
             await outputService.createOrUpdate(job.id, i.output, tmp, 1)
             break;
+          case 'init_stabilizer':
+            tmp = core.init_stabilizer(...i.parameters)
+            await outputService.createOrUpdate(job.id, i.output, tmp, 1)
+            break;
+          case 'init_qbdd':
+            tmp = core.init_qbdd(...i.parameters)
+            await outputService.createOrUpdate(job.id, i.output, tmp, 1)
+            break;
           case 'init_clone':
             tmp = await outputService.getByJobIdAndName(job.id, i.parameters[0])
             if (!tmp) {
