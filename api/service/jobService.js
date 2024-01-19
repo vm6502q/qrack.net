@@ -84,6 +84,17 @@ class JobService extends ModelService {
     }
   }
 
+  async single_quid_op(job, fn, i) {
+    let tmp = this.validate_sid(i.parameters[0], job)
+    if (!tmp) {
+      return true
+    }
+    i.parameters.shift()
+    fn(tmp, ...i.parameters)
+
+    return false
+  }
+
   async create (reqBody, userId) {
     const validationResult = await this.validateCreateRequest(reqBody)
     if (!validationResult.success) {
@@ -125,19 +136,14 @@ class JobService extends ModelService {
             await outputService.createOrUpdate(job.id, i.output, core.init_clone(tmp), 1)
             break
           case 'destroy':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_op(job, core.destroy, i)) {
               return
             }
-            core.destroy(tmp)
             break
           case 'seed':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_op(job, core.seed, i)) {
               return
             }
-            i.parameters.shift()
-            core.seed(tmp, ...i.parameters)
             break
           case 'try_separate_1qb':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -173,35 +179,24 @@ class JobService extends ModelService {
             await outputService.createOrUpdate(job.id, i.output, core.get_unitary_fidelity(tmp), 2)
             break
           case 'reset_unitary_fidelity':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_op(job, core.reset_unitary_fidelity, i)) {
               return
             }
-            core.reset_unitary_fidelity(tmp)
             break
           case 'set_sdrp':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_op(job, core.set_sdrp, i)) {
               return
             }
-            i.parameters.shift()
-            core.set_sdrp(tmp, i.parameters[0])
             break
           case 'set_reactive_separate':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_op(job, core.set_reactive_separate, i)) {
               return
             }
-            i.parameters.shift()
-            core.set_reactive_separate(tmp, i.parameters[0])
             break
           case 'set_t_injection':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_op(job, core.set_t_injection, i)) {
               return
             }
-            i.parameters.shift()
-            core.set_t_injection(tmp, i.parameters[0])
             break
           case 'prob':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -349,11 +344,9 @@ class JobService extends ModelService {
             core.dispose(tmp, tmpLongVec)
             break
           case 'reset_all':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_op(job, core.reset_all, i)) {
               return
             }
-            core.reset_all(tmp)
             break
           case 'measure':
             tmp = this.validate_sid(i.parameters[0], job)
@@ -403,6 +396,51 @@ class JobService extends ModelService {
             tmpLongVec = core.measure_shots(tmp, tmpLongVec, tmpCharVec)
             // See https://github.com/emscripten-core/emscripten/issues/11070
             await outputService.createOrUpdate(job.id, i.output, new Array(tmpLongVec.size()).fill(0).map((_, id) => tmpLongVec.get(id)), 5)
+            break
+          case 'x':
+            if (single_quid_op(job, core.x, i)) {
+              return
+            }
+            break;
+          case 'y':
+            if (single_quid_op(job, core.y, i)) {
+              return
+            }
+            break
+          case 'z':
+            if (single_quid_op(job, core.z, i)) {
+              return
+            }
+            break
+          case 'h':
+            if (single_quid_op(job, core.h, i)) {
+              return
+            }
+            break
+          case 's':
+            if (single_quid_op(job, core.s, i)) {
+              return
+            }
+            break
+          case 't':
+            if (single_quid_op(job, core.t, i)) {
+              return
+            }
+            break
+          case 'adjs':
+            if (single_quid_op(job, core.adjs, i)) {
+              return
+            }
+            break
+          case 'adjt':
+            if (single_quid_op(job, core.adjt, i)) {
+              return
+            }
+            break
+          case 'u':
+            if (single_quid_op(job, core.u, i)) {
+              return
+            }
             break
           default:
             // Job status 2: FAILURE
