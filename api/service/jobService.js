@@ -62,7 +62,10 @@ class JobService extends ModelService {
 
   async invalid_argument_error(job) {
     job.jobStatusTypeId = 2
-    job.statusMessage = 'All simulator IDs and quantum neuron IDs should be specified as names in output space of job.'
+    job.statusMessage =
+     'All simulator IDs and quantum neuron IDs should be specified as names in output space of job. ' +
+     '(Methods that produce output, at all, always save it to the "output space" of the job, with ' +
+     'variable named by the "output" parameter of the job program line.)'
     await job.save()
   }
 
