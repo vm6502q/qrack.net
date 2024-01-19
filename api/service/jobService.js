@@ -103,7 +103,7 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    let tmp, tmpLongVec, tmpLongVec2, tmpCharVec
+    let tmp, tmpLongVec, tmpLongVec2, tmpCharVec, tmpDoubleVec
     const p = reqBody.program
     qrack.then(async (core) => {
       for (i in p) {
@@ -266,6 +266,30 @@ class JobService extends ModelService {
             tmpLongVec2 = core.VectorLong(i.parameters[0])
             i.parameters.shift()
             core.fact_exp_rdm(tmp, tmpLongVec, tmpLongVec2, i.parameters[0])
+            break
+          case 'fact_exp_fp':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            tmpDoubleVec = core.VectorDouble(i.parameters[0])
+            i.parameters.shift()
+            core.fact_exp_fp(tmp, tmpLongVec, tmpDoubleVec)
+            break
+          case 'fact_exp_rdm':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            tmpDoubleVec = core.VectorDouble(i.parameters[0])
+            i.parameters.shift()
+            core.fact_exp_rdm(tmp, tmpLongVec, tmpDoubleVec, i.parameters[0])
             break
           default:
             // Job status 2: FAILURE
