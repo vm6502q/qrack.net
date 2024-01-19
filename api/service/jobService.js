@@ -61,6 +61,7 @@ class JobService extends ModelService {
   }
 
   async invalid_argument_error(job) {
+    // Job status 2: FAILURE
     job.jobStatusTypeId = 2
     job.statusMessage =
      'All simulator IDs and quantum neuron IDs should be specified as names in the output space of the job. ' +
@@ -138,6 +139,9 @@ class JobService extends ModelService {
             await outputService.createOrUpdate(job.id, i.output, core.seed(tmp, ...i.parameters), 1)
             break;
           default:
+            // Job status 2: FAILURE
+            job.jobStatusTypeId = 2
+            job.statusMessage = 'One or more of your job program operation line names do not match a defined operation name.'
             break;
         }
       }
