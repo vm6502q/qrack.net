@@ -89,7 +89,7 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     }));
 
     // Parity
-    function("phase_parity", optional_override([](long long sid, double lambda, std::vector<long long> q) -> void {
+    function("phase_parity", optional_override([](long long sid, std::vector<long long> q, double lambda) -> void {
         QrackWrapper::PhaseParity(sid, lambda, q);
     }));
     function("joint_ensemble_prob", optional_override([](long long sid, std::vector<long long> q, std::vector<char> b) -> double {

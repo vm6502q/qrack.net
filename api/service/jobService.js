@@ -291,6 +291,28 @@ class JobService extends ModelService {
             i.parameters.shift()
             await outputService.createOrUpdate(job.id, i.output, core.fact_exp_rdm(tmp, tmpLongVec, tmpDoubleVec, i.parameters[0]), 3)
             break
+          case 'phase_parity':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            core.phase_parity(tmp, tmpLongVec, i.parameters[0])
+            break
+          case 'joint_ensemble_prob':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            tmpCharVec = core.VectorChar(i.parameters[0])
+            i.parameters.shift()
+            await outputService.createOrUpdate(job.id, i.output, core.joint_ensemble_prob(tmp, tmpLongVec, tmpCharVec), 3)
+            break
           default:
             // Job status 2: FAILURE
             job.jobStatusTypeId = 2
