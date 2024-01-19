@@ -152,7 +152,7 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("adjt", optional_override([](long long sid, long long q) -> void {
         QrackWrapper::AdjT(sid, q);
     }));
-    function("U", optional_override([](long long sid, long long q, double theta, double phi, double lambda) -> void {
+    function("u", optional_override([](long long sid, long long q, double theta, double phi, double lambda) -> void {
         QrackWrapper::U(sid, q, theta, phi, lambda);
     }));
     function("mtrx", optional_override([](long long sid, std::vector<double> m, long long q) -> void {
