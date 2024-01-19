@@ -147,6 +147,36 @@ class JobService extends ModelService {
     return false
   }
 
+  async single_quid_mc2_output_op(job, fn, i, o_type) {
+    const tmp = this.validate_sid(i.parameters[0], job)
+    if (!tmp) {
+      return true
+    }
+    i.parameters.shift()
+    const tmpLongVec = core.VectorLong(i.parameters[0])
+    i.parameters.shift()
+    const tmpLongVec2 = core.VectorLong(i.parameters[0])
+    i.parameters.shift()
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpLongVec2, ...i.parameters), o_type)
+
+    return false
+  }
+
+  async single_quid_mc_double_output_op(job, fn, i, o_type) {
+    const tmp = this.validate_sid(i.parameters[0], job)
+    if (!tmp) {
+      return true
+    }
+    i.parameters.shift()
+    const tmpLongVec = core.VectorLong(i.parameters[0])
+    i.parameters.shift()
+    const tmpDoubleVec = core.VectorDouble(i.parameters[0])
+    i.parameters.shift()
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpDoubleVec, ...i.parameters), o_type)
+
+    return false
+  }
+
   async create (reqBody, userId) {
     const validationResult = await this.validateCreateRequest(reqBody)
     if (!validationResult.success) {
@@ -246,16 +276,9 @@ class JobService extends ModelService {
             }
             break
           case 'perm_prob':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc2_output_op(job, core.perm_prob, i, 3)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            tmpCharVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.perm_prob(tmp, tmpLongVec, tmpCharVec), 3)
             break
           case 'perm_prob_rdm':
             if (single_quid_mc_pauli_output_op(job, core.perm_prob_rdm, i, 3)) {
@@ -263,52 +286,24 @@ class JobService extends ModelService {
             }
             break
           case 'fact_exp':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc2_output_op(job, core.fact_exp, i, 3)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            tmpLongVec2 = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.fact_exp(tmp, tmpLongVec, tmpLongVec2), 3)
             break
           case 'fact_exp_rdm':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc2_output_op(job, core.fact_exp_rdm, i, 3)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            tmpLongVec2 = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.fact_exp_rdm(tmp, tmpLongVec, tmpLongVec2, i.parameters[0]), 3)
             break
           case 'fact_exp_fp':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc_double_output_op(job, core.fact_exp_fp, i, 3)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            tmpDoubleVec = core.VectorDouble(i.parameters[0])
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.fact_exp_fp(tmp, tmpLongVec, tmpDoubleVec), 3)
             break
           case 'fact_exp_rdm':
-            tmp = this.validate_sid(i.parameters[0], job)
-            if (!tmp) {
+            if (single_quid_mc_double_output_op(job, core.fact_exp_rdm, i, 3)) {
               return
             }
-            i.parameters.shift()
-            tmpLongVec = core.VectorLong(i.parameters[0])
-            i.parameters.shift()
-            tmpDoubleVec = core.VectorDouble(i.parameters[0])
-            i.parameters.shift()
-            await outputService.createOrUpdate(job.id, i.output, core.fact_exp_rdm(tmp, tmpLongVec, tmpDoubleVec, i.parameters[0]), 3)
             break
           case 'phase_parity':
             if (single_quid_mc_op(job, core.phase_parity, i)) {
