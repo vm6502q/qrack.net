@@ -147,6 +147,21 @@ class JobService extends ModelService {
     return false
   }
 
+  async single_quid_mc_mtrx_output_op(job, fn, i) {
+    const tmp = this.validate_sid(i.parameters[0], job)
+    if (!tmp) {
+      return true
+    }
+    i.parameters.shift()
+    const tmpLongVec = core.VectorLong(i.parameters[0])
+    i.parameters.shift()
+    const tmpDoubleVec = core.VectorDouble(i.parameters[0])
+    i.parameters.shift()
+    fn(tmp, tmpLongVec, tmpDoubleVec, ...i.parameters)
+
+    return false
+  }
+
   async single_quid_mc2_output_op(job, fn, i, o_type) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
@@ -196,9 +211,9 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    let tmp, tmp2, tmpLongVec, tmpCharVec
     const p = reqBody.program
     qrack.then(async (core) => {
+      let tmp, tmp2, tmpLongVec, tmpCharVec, mtrx
       for (i in p) {
         switch (i.name) {
           case 'init_general':
@@ -421,6 +436,116 @@ class JobService extends ModelService {
             break
           case 'u':
             if (single_quid_op(job, core.u, i)) {
+              return
+            }
+            break
+          case 'mtrx':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpDoubleVec = core.VectorDouble(i.parameters[0])
+            i.parameters.shift()
+            core.mtrx(tmp, tmpDoubleVec, ...i.parameters)
+            break
+          case 'mcx':
+            if (single_quid_mc_op(job, core.mcx, i)) {
+              return
+            }
+            break
+          case 'mcy':
+            if (single_quid_mc_op(job, core.mcy, i)) {
+              return
+            }
+            break
+          case 'mcz':
+            if (single_quid_mc_op(job, core.mcz, i)) {
+              return
+            }
+            break
+          case 'mch':
+            if (single_quid_mc_op(job, core.mch, i)) {
+              return
+            }
+            break
+          case 'mcs':
+            if (single_quid_mc_op(job, core.mcs, i)) {
+              return
+            }
+            break
+          case 'mct':
+            if (single_quid_mc_op(job, core.mct, i)) {
+              return
+            }
+            break
+          case 'mcadjs':
+            if (single_quid_mc_op(job, core.mcadjs, i)) {
+              return
+            }
+            break
+          case 'mcadjt':
+            if (single_quid_mc_op(job, core.mcadjt, i)) {
+              return
+            }
+            break
+          case 'mcu':
+            if (single_quid_mc_op(job, core.mcu, i)) {
+              return
+            }
+            break
+          case 'mcmtrx':
+            if (single_quid_mc_mtrx_output_op(job, core.mcmtrx, i)) {
+              return
+            }
+            break
+          case 'macx':
+            if (single_quid_mc_op(job, core.macx, i)) {
+              return
+            }
+            break
+          case 'macy':
+            if (single_quid_mc_op(job, core.macy, i)) {
+              return
+            }
+            break
+          case 'macz':
+            if (single_quid_mc_op(job, core.macz, i)) {
+              return
+            }
+            break
+          case 'mach':
+            if (single_quid_mc_op(job, core.mach, i)) {
+              return
+            }
+            break
+          case 'macs':
+            if (single_quid_mc_op(job, core.macs, i)) {
+              return
+            }
+            break
+          case 'mact':
+            if (single_quid_mc_op(job, core.mact, i)) {
+              return
+            }
+            break
+          case 'macadjs':
+            if (single_quid_mc_op(job, core.macadjs, i)) {
+              return
+            }
+            break
+          case 'macadjt':
+            if (single_quid_mc_op(job, core.macadjt, i)) {
+              return
+            }
+            break
+          case 'macu':
+            if (single_quid_mc_op(job, core.macu, i)) {
+              return
+            }
+            break
+          case 'macmtrx':
+            if (single_quid_mc_mtrx_output_op(job, core.macmtrx, i)) {
               return
             }
             break
