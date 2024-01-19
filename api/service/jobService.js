@@ -348,6 +348,62 @@ class JobService extends ModelService {
             i.parameters.shift()
             core.dispose(tmp, tmpLongVec)
             break
+          case 'reset_all':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            core.reset_all(tmp)
+            break
+          case 'measure':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            await outputService.createOrUpdate(job.id, i.output, core.measure(tmp, i.parameters[0]), 2)
+            break
+          case 'force_measure':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            await outputService.createOrUpdate(job.id, i.output, core.force_measure(tmp, ...i.parameters), 2)
+            break
+          case 'measure_basis':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            tmpCharVec = core.VectorChar(i.parameters[0])
+            i.parameters.shift()
+            await outputService.createOrUpdate(job.id, i.output, core.measure_basis(tmp, tmpLongVec, tmpCharVec), 1)
+            break
+          case 'measure_all':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            await outputService.createOrUpdate(job.id, i.output, core.measure_all(tmp), 4)
+            break
+          case 'measure_shots':
+            tmp = this.validate_sid(i.parameters[0], job)
+            if (!tmp) {
+              return
+            }
+            i.parameters.shift()
+            tmpLongVec = core.VectorLong(i.parameters[0])
+            i.parameters.shift()
+            tmpCharVec = core.VectorChar(i.parameters[0])
+            i.parameters.shift()
+            tmpLongVec = core.measure_shots(tmp, tmpLongVec, tmpCharVec)
+            // See https://github.com/emscripten-core/emscripten/issues/11070
+            await outputService.createOrUpdate(job.id, i.output, new Array(tmpLongVec.size()).fill(0).map((_, id) => tmpLongVec.get(id)), 5)
+            break
           default:
             // Job status 2: FAILURE
             job.jobStatusTypeId = 2
