@@ -147,7 +147,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc_mtrx_output_op(job, fn, i) {
+  async single_quid_mc_mtrx_op(job, fn, i) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -495,7 +495,7 @@ class JobService extends ModelService {
             }
             break
           case 'mcmtrx':
-            if (single_quid_mc_mtrx_output_op(job, core.mcmtrx, i)) {
+            if (single_quid_mc_mtrx_op(job, core.mcmtrx, i)) {
               return
             }
             break
@@ -545,7 +545,7 @@ class JobService extends ModelService {
             }
             break
           case 'macmtrx':
-            if (single_quid_mc_mtrx_output_op(job, core.macmtrx, i)) {
+            if (single_quid_mc_mtrx_op(job, core.macmtrx, i)) {
               return
             }
             break
