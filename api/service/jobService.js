@@ -196,7 +196,7 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    let tmp, tmp2, tmpLongVec, tmpLongVec2, tmpCharVec, tmpDoubleVec
+    let tmp, tmp2, tmpLongVec, tmpCharVec
     const p = reqBody.program
     qrack.then(async (core) => {
       for (i in p) {
