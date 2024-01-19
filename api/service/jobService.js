@@ -60,6 +60,12 @@ class JobService extends ModelService {
     return { success: true }
   }
 
+  async invalid_argument_error(job) {
+    job.jobStatusTypeId = 2
+    job.statusMessage = 'All simulator IDs and quantum neuron IDs should be specified as names in output space of job.'
+    await job.save()
+  }
+
   async create (reqBody, userId) {
     const validationResult = await this.validateCreateRequest(reqBody)
     if (!validationResult.success) {
@@ -80,14 +86,21 @@ class JobService extends ModelService {
     await job.save()
 
     const p = reqBody.program
+    let tmp = null
     qrack.then(async (core) => {
       for (i in p) {
         switch (i.name) {
           case 'init_general':
-            await outputService.createOrUpdate(job.id, i.output, core.init_general(...i.parameters), 1)
+            tmp = core.init_general(...i.parameters)
+            await outputService.createOrUpdate(job.id, i.output, tmp, 1)
             break;
           case 'init_clone':
-            await outputService.createOrUpdate(job.id, i.output, core.init_clone(await outputService.getByJobIdAndName(job.id, i.parameters[0])), 1)
+            tmp = await outputService.getByJobIdAndName(job.id, i.parameters[0])
+            if (!tmp) {
+              await this.invalid_argument_error(job)
+              return;
+            }
+            await outputService.createOrUpdate(job.id, i.output, core.init_clone(tmp), 1)
             break;
           default:
             break;
