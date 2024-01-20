@@ -51,7 +51,7 @@ class OutputService extends ModelService {
     output = result.body
     await output.save()
 
-    return { success: true, body: job }
+    return { success: true, body: output }
   }
 }
 

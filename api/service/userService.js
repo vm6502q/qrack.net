@@ -25,8 +25,8 @@ class UserService extends ModelService {
   }
 
   sanitize (user) {
-    user.passwordHash = '[REDACTED]',
-    user.recoveryToken = '[REDACTED]',
+    user.passwordHash = '[REDACTED]'
+    user.recoveryToken = '[REDACTED]'
     user.recoveryTokenExpiration = '[REDACTED]'
 
     return user

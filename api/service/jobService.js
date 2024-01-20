@@ -1,6 +1,5 @@
 // jobService.js
 
-const fs = require('node:fs')
 const path = require('path')
 
 // Database Model
@@ -36,7 +35,7 @@ class JobService extends ModelService {
     if (!job) {
       return { success: false, error: 'Job ID not found.' }
     }
-    if (job.userId != userId) {
+    if (job.userId !== userId) {
       return { success: false, error: 'You are not authorized for this Job ID.' }
     }
 
@@ -78,18 +77,18 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_output_op (job, fn, i, o_type) {
+  async single_quid_output_op (job, fn, i, oType) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, ...i.parameters), o_type)
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, ...i.parameters), oType)
 
     return false
   }
 
-  async single_quid_mc_op (job, fn, i) {
+  async single_quid_mc_op (job, fn, i, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -102,7 +101,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc_output_op (job, fn, i, o_type) {
+  async single_quid_mc_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -110,12 +109,12 @@ class JobService extends ModelService {
     i.parameters.shift()
     const tmpLongVec = core.VectorLong(i.parameters[0])
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, ...i.parameters), o_type)
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, ...i.parameters), oType)
 
     return false
   }
 
-  async single_quid_mc_pauli_output_op (job, fn, i, o_type) {
+  async single_quid_mc_pauli_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -125,12 +124,12 @@ class JobService extends ModelService {
     i.parameters.shift()
     const tmpCharVec = core.VectorChar(i.parameters[0])
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpCharVec, ...i.parameters), o_type)
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpCharVec, ...i.parameters), oType)
 
     return false
   }
 
-  async single_quid_mc_mtrx_op (job, fn, i) {
+  async single_quid_mc_mtrx_op (job, fn, i, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -145,7 +144,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc2_output_op (job, fn, i, o_type) {
+  async single_quid_mc2_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -155,12 +154,12 @@ class JobService extends ModelService {
     i.parameters.shift()
     const tmpLongVec2 = core.VectorLong(i.parameters[0])
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpLongVec2, ...i.parameters), o_type)
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpLongVec2, ...i.parameters), oType)
 
     return false
   }
 
-  async single_quid_mc_double_output_op (job, fn, i, o_type) {
+  async single_quid_mc_double_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -170,14 +169,14 @@ class JobService extends ModelService {
     i.parameters.shift()
     const tmpDoubleVec = core.VectorDouble(i.parameters[0])
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpDoubleVec, ...i.parameters), o_type)
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpDoubleVec, ...i.parameters), oType)
 
     return false
   }
 
-  async runQrackProgram (core, p) {
-    let tmp, tmp2, tmpLongVec, tmpCharVec
-    for (i in p) {
+  async runQrackProgram (core, p, job) {
+    let tmp, tmp2, tmpLongVec, tmpCharVec, tmpDoubleVec
+    for (const i in p) {
       switch (i.name) {
         case 'init_general':
           await outputService.createOrUpdate(job.id, i.output, core.init_general(...i.parameters), 1)
@@ -189,107 +188,107 @@ class JobService extends ModelService {
           await outputService.createOrUpdate(job.id, i.output, core.init_qbdd(...i.parameters), 1)
           break
         case 'init_clone':
-          if (single_quid_output_op(job, core.init_clone, i, 1)) {
+          if (this.single_quid_output_op(job, core.init_clone, i, 1)) {
             return
           }
           break
         case 'destroy':
-          if (single_quid_op(job, core.destroy, i)) {
+          if (this.single_quid_op(job, core.destroy, i)) {
             return
           }
           break
         case 'seed':
-          if (single_quid_op(job, core.seed, i)) {
+          if (this.single_quid_op(job, core.seed, i)) {
             return
           }
           break
         case 'try_separate_1qb':
-          if (single_quid_output_op(job, core.try_separate_1qb, i, 2)) {
+          if (this.single_quid_output_op(job, core.try_separate_1qb, i, 2)) {
             return
           }
           break
         case 'try_separate_2qb':
-          if (single_quid_output_op(job, core.try_separate_2qb, i, 2)) {
+          if (this.single_quid_output_op(job, core.try_separate_2qb, i, 2)) {
             return
           }
           break
         case 'try_separate_tol':
-          if (single_quid_mc_output_op(job, core.try_separate_tol, i, 2)) {
+          if (this.single_quid_mc_output_op(job, core.try_separate_tol, i, 2)) {
             return
           }
           break
         case 'get_unitary_fidelity':
-          if (single_quid_output_op(job, core.get_unitary_fidelity, i, 2)) {
+          if (this.single_quid_output_op(job, core.get_unitary_fidelity, i, 2)) {
             return
           }
           break
         case 'reset_unitary_fidelity':
-          if (single_quid_op(job, core.reset_unitary_fidelity, i)) {
+          if (this.single_quid_op(job, core.reset_unitary_fidelity, i)) {
             return
           }
           break
         case 'set_sdrp':
-          if (single_quid_op(job, core.set_sdrp, i)) {
+          if (this.single_quid_op(job, core.set_sdrp, i)) {
             return
           }
           break
         case 'set_reactive_separate':
-          if (single_quid_op(job, core.set_reactive_separate, i)) {
+          if (this.single_quid_op(job, core.set_reactive_separate, i)) {
             return
           }
           break
         case 'set_t_injection':
-          if (single_quid_op(job, core.set_t_injection, i)) {
+          if (this.single_quid_op(job, core.set_t_injection, i)) {
             return
           }
           break
         case 'prob':
-          if (single_quid_output_op(job, core.prob, i, 3)) {
+          if (this.single_quid_output_op(job, core.prob, i, 3)) {
             return
           }
           break
         case 'prob_rdm':
-          if (single_quid_output_op(job, core.prob_rdm, i, 3)) {
+          if (this.single_quid_output_op(job, core.prob_rdm, i, 3)) {
             return
           }
           break
         case 'perm_prob':
-          if (single_quid_mc2_output_op(job, core.perm_prob, i, 3)) {
+          if (this.single_quid_mc2_output_op(job, core.perm_prob, i, 3)) {
             return
           }
           break
         case 'perm_prob_rdm':
-          if (single_quid_mc_pauli_output_op(job, core.perm_prob_rdm, i, 3)) {
+          if (this.single_quid_mc_pauli_output_op(job, core.perm_prob_rdm, i, 3)) {
             return
           }
           break
         case 'fact_exp':
-          if (single_quid_mc2_output_op(job, core.fact_exp, i, 3)) {
+          if (this.single_quid_mc2_output_op(job, core.fact_exp, i, 3)) {
             return
           }
           break
         case 'fact_exp_rdm':
-          if (single_quid_mc2_output_op(job, core.fact_exp_rdm, i, 3)) {
+          if (this.single_quid_mc2_output_op(job, core.fact_exp_rdm, i, 3)) {
             return
           }
           break
         case 'fact_exp_fp':
-          if (single_quid_mc_double_output_op(job, core.fact_exp_fp, i, 3)) {
+          if (this.single_quid_mc_double_output_op(job, core.fact_exp_fp, i, 3)) {
             return
           }
           break
-        case 'fact_exp_rdm':
-          if (single_quid_mc_double_output_op(job, core.fact_exp_rdm, i, 3)) {
+        case 'fact_exp_fp_rdm':
+          if (this.single_quid_mc_double_output_op(job, core.fact_exp_fp_rdm, i, 3)) {
             return
           }
           break
         case 'phase_parity':
-          if (single_quid_mc_op(job, core.phase_parity, i)) {
+          if (this.single_quid_mc_op(job, core.phase_parity, i)) {
             return
           }
           break
         case 'joint_ensemble_prob':
-          if (single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3)) {
+          if (this.single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3)) {
             return
           }
           break
@@ -309,37 +308,37 @@ class JobService extends ModelService {
           core.compose(tmp, tmp2, tmpLongVec)
           break
         case 'decompose':
-          if (single_quid_mc_output_op(job, core.decompose, i, 1)) {
+          if (this.single_quid_mc_output_op(job, core.decompose, i, 1)) {
             return
           }
           break
         case 'dispose':
-          if (single_quid_mc_op(job, core.dispose, i)) {
+          if (this.single_quid_mc_op(job, core.dispose, i)) {
             return
           }
           break
         case 'reset_all':
-          if (single_quid_op(job, core.reset_all, i)) {
+          if (this.single_quid_op(job, core.reset_all, i)) {
             return
           }
           break
         case 'measure':
-          if (single_quid_output_op(job, core.measure, i, 2)) {
+          if (this.single_quid_output_op(job, core.measure, i, 2)) {
             return
           }
           break
         case 'force_measure':
-          if (single_quid_output_op(job, core.force_measure, i, 2)) {
+          if (this.single_quid_output_op(job, core.force_measure, i, 2)) {
             return
           }
           break
         case 'measure_basis':
-          if (single_quid_mc_pauli_output_op(job, core.measure_basis, i, 3)) {
+          if (this.single_quid_mc_pauli_output_op(job, core.measure_basis, i, 3)) {
             return
           }
           break
         case 'measure_all':
-          if (single_quid_output_op(job, core.measure_all, i, 4)) {
+          if (this.single_quid_output_op(job, core.measure_all, i, 4)) {
             return
           }
           break
@@ -358,47 +357,47 @@ class JobService extends ModelService {
           await outputService.createOrUpdate(job.id, i.output, new Array(tmpLongVec.size()).fill(0).map((_, id) => tmpLongVec.get(id)), 5)
           break
         case 'x':
-          if (single_quid_op(job, core.x, i)) {
+          if (this.single_quid_op(job, core.x, i)) {
             return
           }
           break
         case 'y':
-          if (single_quid_op(job, core.y, i)) {
+          if (this.single_quid_op(job, core.y, i)) {
             return
           }
           break
         case 'z':
-          if (single_quid_op(job, core.z, i)) {
+          if (this.single_quid_op(job, core.z, i)) {
             return
           }
           break
         case 'h':
-          if (single_quid_op(job, core.h, i)) {
+          if (this.single_quid_op(job, core.h, i)) {
             return
           }
           break
         case 's':
-          if (single_quid_op(job, core.s, i)) {
+          if (this.single_quid_op(job, core.s, i)) {
             return
           }
           break
         case 't':
-          if (single_quid_op(job, core.t, i)) {
+          if (this.single_quid_op(job, core.t, i)) {
             return
           }
           break
         case 'adjs':
-          if (single_quid_op(job, core.adjs, i)) {
+          if (this.single_quid_op(job, core.adjs, i)) {
             return
           }
           break
         case 'adjt':
-          if (single_quid_op(job, core.adjt, i)) {
+          if (this.single_quid_op(job, core.adjt, i)) {
             return
           }
           break
         case 'u':
-          if (single_quid_op(job, core.u, i)) {
+          if (this.single_quid_op(job, core.u, i)) {
             return
           }
           break
@@ -413,137 +412,137 @@ class JobService extends ModelService {
           core.mtrx(tmp, tmpDoubleVec, ...i.parameters)
           break
         case 'mcx':
-          if (single_quid_mc_op(job, core.mcx, i)) {
+          if (this.single_quid_mc_op(job, core.mcx, i)) {
             return
           }
           break
         case 'mcy':
-          if (single_quid_mc_op(job, core.mcy, i)) {
+          if (this.single_quid_mc_op(job, core.mcy, i)) {
             return
           }
           break
         case 'mcz':
-          if (single_quid_mc_op(job, core.mcz, i)) {
+          if (this.single_quid_mc_op(job, core.mcz, i)) {
             return
           }
           break
         case 'mch':
-          if (single_quid_mc_op(job, core.mch, i)) {
+          if (this.single_quid_mc_op(job, core.mch, i)) {
             return
           }
           break
         case 'mcs':
-          if (single_quid_mc_op(job, core.mcs, i)) {
+          if (this.single_quid_mc_op(job, core.mcs, i)) {
             return
           }
           break
         case 'mct':
-          if (single_quid_mc_op(job, core.mct, i)) {
+          if (this.single_quid_mc_op(job, core.mct, i)) {
             return
           }
           break
         case 'mcadjs':
-          if (single_quid_mc_op(job, core.mcadjs, i)) {
+          if (this.single_quid_mc_op(job, core.mcadjs, i)) {
             return
           }
           break
         case 'mcadjt':
-          if (single_quid_mc_op(job, core.mcadjt, i)) {
+          if (this.single_quid_mc_op(job, core.mcadjt, i)) {
             return
           }
           break
         case 'mcu':
-          if (single_quid_mc_op(job, core.mcu, i)) {
+          if (this.single_quid_mc_op(job, core.mcu, i)) {
             return
           }
           break
         case 'mcmtrx':
-          if (single_quid_mc_mtrx_op(job, core.mcmtrx, i)) {
+          if (this.single_quid_mc_mtrx_op(job, core.mcmtrx, i)) {
             return
           }
           break
         case 'macx':
-          if (single_quid_mc_op(job, core.macx, i)) {
+          if (this.single_quid_mc_op(job, core.macx, i)) {
             return
           }
           break
         case 'macy':
-          if (single_quid_mc_op(job, core.macy, i)) {
+          if (this.single_quid_mc_op(job, core.macy, i)) {
             return
           }
           break
         case 'macz':
-          if (single_quid_mc_op(job, core.macz, i)) {
+          if (this.single_quid_mc_op(job, core.macz, i)) {
             return
           }
           break
         case 'mach':
-          if (single_quid_mc_op(job, core.mach, i)) {
+          if (this.single_quid_mc_op(job, core.mach, i)) {
             return
           }
           break
         case 'macs':
-          if (single_quid_mc_op(job, core.macs, i)) {
+          if (this.single_quid_mc_op(job, core.macs, i)) {
             return
           }
           break
         case 'mact':
-          if (single_quid_mc_op(job, core.mact, i)) {
+          if (this.single_quid_mc_op(job, core.mact, i)) {
             return
           }
           break
         case 'macadjs':
-          if (single_quid_mc_op(job, core.macadjs, i)) {
+          if (this.single_quid_mc_op(job, core.macadjs, i)) {
             return
           }
           break
         case 'macadjt':
-          if (single_quid_mc_op(job, core.macadjt, i)) {
+          if (this.single_quid_mc_op(job, core.macadjt, i)) {
             return
           }
           break
         case 'macu':
-          if (single_quid_mc_op(job, core.macu, i)) {
+          if (this.single_quid_mc_op(job, core.macu, i)) {
             return
           }
           break
         case 'macmtrx':
-          if (single_quid_mc_mtrx_op(job, core.macmtrx, i)) {
+          if (this.single_quid_mc_mtrx_op(job, core.macmtrx, i)) {
             return
           }
           break
         case 'ucmtrx':
-          if (single_quid_mc_mtrx_op(job, core.ucmtrx, i)) {
+          if (this.single_quid_mc_mtrx_op(job, core.ucmtrx, i)) {
             return
           }
           break
         case 'multiplex_1qb_mtrx':
-          if (single_quid_mc_mtrx_op(job, core.multiplex_1qb_mtrx, i)) {
+          if (this.single_quid_mc_mtrx_op(job, core.multiplex_1qb_mtrx, i)) {
             return
           }
           break
         case 'mx':
-          if (single_quid_mc_op(job, core.mx, i)) {
+          if (this.single_quid_mc_op(job, core.mx, i)) {
             return
           }
           break
         case 'my':
-          if (single_quid_mc_op(job, core.my, i)) {
+          if (this.single_quid_mc_op(job, core.my, i)) {
             return
           }
           break
         case 'mz':
-          if (single_quid_mc_op(job, core.mz, i)) {
+          if (this.single_quid_mc_op(job, core.mz, i)) {
             return
           }
           break
         case 'r':
-          if (single_quid_op(job, core.r, i)) {
+          if (this.single_quid_op(job, core.r, i)) {
             return
           }
           break
         case 'mcr':
-          if (single_quid_mc_op(job, core.mcr, i)) {
+          if (this.single_quid_mc_op(job, core.mcr, i)) {
             return
           }
           break
@@ -592,7 +591,7 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    qrack.then(async (core) => { await runQrackProgram(core, reqBody.program) })
+    qrack.then(async (core) => { await this.runQrackProgram(core, reqBody.program, job) })
       .catch(async (e) => {
         // Job status 2: FAILURE
         job.jobStatusTypeId = 2
@@ -611,7 +610,7 @@ class JobService extends ModelService {
 
     const outputArray = await outputService.getByJobId(jobId)
     const output = {}
-    for (p in outputArray) {
+    for (const p in outputArray) {
       output[p.name] = p.value
     }
 
