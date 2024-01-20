@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "RESTful API for Qrack quantum computer simulator",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "jest --runInBand ./coverage",
     "db:schema": "node ./scripts/db/schema.mjs",

@@ -1,26 +1,19 @@
 // jobService.js
 
 // Database Model
-import db from '../model/index.js'
+const db = require('../model/index')
 
 // Data Access Layer
-import ModelService from './modelService.js'
+const ModelService = require('./modelService')
 
 // Services
-import OutputService from './outputService.js'
+const OutputService = require('./outputService')
 
 // Qrack
-import Qrack from '../Qrack.js'
-import QrackWASM from '../QrackWASM.js'
+const loadWebAssembly = require('../QrackWASM')
 
 const outputService = new OutputService()
 const Job = db.job
-
-const qrack = Qrack({
-  locateFile: () => {
-    return QrackWASM
-  }
-})
 
 class JobService extends ModelService {
   constructor () {
@@ -201,7 +194,7 @@ class JobService extends ModelService {
     await job.save()
 
     const p = reqBody.program
-    qrack.then(async (core) => {
+    loadWebAssembly().then(async (core) => {
       let tmp, tmp2, tmpLongVec, tmpCharVec, mtrx
       for (i in p) {
         switch (i.name) {
@@ -623,4 +616,4 @@ class JobService extends ModelService {
   }
 }
 
-export default JobService
+module.exports = JobService

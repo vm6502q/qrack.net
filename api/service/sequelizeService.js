@@ -58,4 +58,4 @@ class SequelizeService {
   }
 }
 
-export default SequelizeService
+module.exports = SequelizeService

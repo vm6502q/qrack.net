@@ -1,9 +1,9 @@
 // qrackController.js
 
-import { routeWrapper } from '../util/controllerUtil.js'
+const { routeWrapper } = require('../util/controllerUtil')
 
 // Service
-import JobService from '../service/jobService.js'
+const JobService = require('../service/jobService')
 const jobService = new JobService()
 
 class QrackController {
@@ -24,4 +24,4 @@ class QrackController {
   }
 }
 
-export default QrackController
+module.exports = QrackController
