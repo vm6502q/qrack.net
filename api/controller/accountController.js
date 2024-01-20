@@ -68,7 +68,7 @@ class AccountController {
   }
 
   // Change password if UUID is valid for user.
-  static async password (req, res) {
+  static async recover_password (req, res) {
     routeWrapper(res,
       async () => await userService.tryPasswordRecoveryChange(req.body),
       'Successfully changed password.',
@@ -77,11 +77,6 @@ class AccountController {
 
   // Change password if cookie and old password are valid.
   static async update_password (req, res) {
-    if (req.auth.role !== 'web') {
-      sendResponse(res, 403, 'Authorization role lacks privileges.')
-      return
-    }
-
     routeWrapper(res,
       async () => await userService.tryPasswordChange(req.auth.id, req.body),
       'Successfully changed password.',

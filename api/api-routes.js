@@ -19,17 +19,19 @@ router.get('/', function (req, res) {
 router.route('/register')
   .post(accountController.new)
 router.route('/login')
-  .post(accountController.login)
+  .put(accountController.login)
 router.route('/logout')
   .get(accountController.logout)
 router.route('/recover')
   .post(accountController.recover)
 router.route('/password')
-  .post(accountController.password)
+  .post(accountController.recover_password)
 router.route('/user/password')
   .post(accountController.update_password)
 router.route('/qrack/:id')
   .get(qrackController.read)
+router.route('/qrack')
+  .get(qrackController.new)
 
 // Export API routes.
 module.exports = router
