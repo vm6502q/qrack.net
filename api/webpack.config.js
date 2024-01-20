@@ -11,20 +11,17 @@ module.exports = {
   module: {
     rules: [
       {
-        include: [path.join(__dirname)],
-        test: /\.(js|jsx)$/,
-        loader: 'babel-loader'
+        test: /Qrack\.(js|jsx)$/,
+        loader: 'exports-loader',
+        options: {
+          exports: 'Qrack'
+        }
       },
       {
-        test: /\.(wasm)$/,
+        test: /Qrack\.(wasm)$/,
         loader: 'file-loader',
         type: 'javascript/auto'
       }
-    ]
-  },
-  resolveLoader: {
-    modules: [
-      __dirname + '/node_modules'
     ]
   }
 }
