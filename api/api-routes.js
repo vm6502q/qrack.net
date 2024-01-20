@@ -31,7 +31,7 @@ router.route('/user/password')
 router.route('/qrack/:id')
   .get(qrackController.read)
 router.route('/qrack')
-  .get(qrackController.new)
+  .post(qrackController.new)
 
 // Export API routes.
 module.exports = router
