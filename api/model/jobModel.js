@@ -11,4 +11,4 @@ function jobModel (sequelize, DataTypes) {
   return Model
 }
 
-module.exports = jobModel
+export default jobModel

@@ -1,13 +1,15 @@
 'use strict'
 
-const Sequelize = require('sequelize')
-const config = require('../config/config')
+import fs from 'fs'
+import path from 'path'
+import Sequelize from 'sequelize'
+import config from '../config/config.js'
 
-const jobModel = require('./jobModel')
-const jobStatusTypeModel = require('./jobStatusTypeModel')
-const outputModel = require('./outputModel')
-const outputTypeModel = require('./outputTypeModel')
-const userModel = require('./userModel')
+import jobModel from './jobModel.js'
+import jobStatusTypeModel from './jobStatusTypeModel.js'
+import outputModel from './outputModel.js'
+import outputTypeModel from './outputTypeModel.js'
+import userModel from './userModel.js'
 
 let sequelize
 if (config.use_env_variable) {
@@ -32,4 +34,4 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize
 
-module.exports = db
+export default db

@@ -20,4 +20,4 @@ function outputModel (sequelize, DataTypes) {
   return Model
 }
 
-module.exports = outputModel
+export default outputModel

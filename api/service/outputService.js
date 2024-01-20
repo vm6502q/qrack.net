@@ -1,9 +1,9 @@
 // outputService.js
 
 // Data Access Layer
-const ModelService = require('./modelService')
+import ModelService from './modelService.js'
 // Database Model
-const db = require('../model/index')
+import db from '../model/index.js'
 const Output = db.output
 
 class OutputService extends ModelService {
@@ -55,4 +55,4 @@ class OutputService extends ModelService {
   }
 }
 
-module.exports = OutputService
+export default OutputService

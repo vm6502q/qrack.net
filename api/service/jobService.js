@@ -1,23 +1,24 @@
 // jobService.js
 
 // Database Model
-const db = require('../model/index')
+import db from '../model/index.js'
 
 // Data Access Layer
-const ModelService = require('./modelService')
+import ModelService from './modelService.js'
 
 // Services
-const OutputService = require('./outputService')
+import OutputService from './outputService.js'
 
 // Qrack
-const Qrack = require('../Qrack')
+import Qrack from '../Qrack.js'
+import QrackWASM from '../Qrack.wasm'
 
 const outputService = new OutputService()
 const Job = db.job
 
 const qrack = Qrack({
   locateFile: () => {
-    return '../Qrack.wasm'
+    return QrackWASM
   }
 })
 
@@ -622,4 +623,4 @@ class JobService extends ModelService {
   }
 }
 
-module.exports = JobService
+export default JobService

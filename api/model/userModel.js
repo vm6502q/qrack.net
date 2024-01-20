@@ -2,7 +2,7 @@
 
 'use strict'
 
-const { v4 } = require('uuid')
+import { v4 } from 'uuid'
 const recoveryExpirationMinutes = 30
 const millisPerMinute = 60000
 
@@ -48,4 +48,4 @@ function userModel (sequelize, DataTypes) {
   return Model
 }
 
-module.exports = userModel
+export default userModel

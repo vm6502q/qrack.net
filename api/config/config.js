@@ -1,4 +1,4 @@
-const config = require('../config')
+import config from '../config.js'
 
 config.database = config.pgPool.database
 config.username = config.pgPool.user
@@ -7,4 +7,4 @@ config.dialect = 'postgres'
 config.host = config.pgPool.host
 config.port = config.pgPool.port
 
-module.exports = config
+export default config

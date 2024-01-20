@@ -1,4 +1,4 @@
-const crypto = require('crypto')
+import crypto from 'crypto'
 
 const config = {}
 
@@ -54,4 +54,4 @@ config.pgPool = (process.env.QRACKNET_MODE === 'TESTING')
 
 config.pgConnectionString = 'postgres://' + config.pgPool.user + ':' + config.pgPool.password + '@' + config.pgPool.host + ':' + config.pgPool.port + '/' + config.pgPool.database
 
-module.exports = config
+export default config

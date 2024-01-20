@@ -16,4 +16,4 @@ function outputTypeModel (sequelize, DataTypes) {
   return Model
 }
 
-module.exports = outputTypeModel
+export default outputTypeModel
