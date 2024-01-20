@@ -42,57 +42,37 @@ class JobService extends ModelService {
     return { success: true, body: job }
   }
 
-  async invalid_argument_error (job) {
-    // Job status 2: FAILURE
-    job.jobStatusTypeId = 2
-    job.statusMessage =
-     'All simulator IDs and quantum neuron IDs should be specified as names in the output space of the job. ' +
-     '(Methods that produce output, at all, always save it to the "output space" of the job, to the ' +
-     'variable named by the "output" parameter of the job program line that produces output.)'
-    await job.save()
-  }
-
   async validate_sid (name, job) {
     const v = await outputService.getByJobIdAndName(job.id, name)
     if (!v) {
-      await this.invalid_argument_error(job)
-      return null
+      throw new Error(
+        'All simulator IDs and quantum neuron IDs should be specified as names in the output space of the job. ' +
+        '(Methods that produce output, at all, always save it to the "output space" of the job, to the ' +
+        'variable named by the "output" parameter of the job program line that produces output.)'
+      )
     }
     switch (v.outputTypeId) {
       case 1:
         return parseInt(v.value)
       default:
-        return null
+        throw new Error("Quid instruction parameter does not have quid outputTypeId.")
     }
   }
 
   async single_quid_op (job, fn, i) {
     const tmp = this.validate_sid(i.parameters[0], job)
-    if (!tmp) {
-      return true
-    }
     i.parameters.shift()
     fn(tmp, ...i.parameters)
-
-    return false
   }
 
   async single_quid_output_op (job, fn, i, oType) {
     const tmp = this.validate_sid(i.parameters[0], job)
-    if (!tmp) {
-      return true
-    }
     i.parameters.shift()
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, ...i.parameters), oType)
-
-    return false
   }
 
   async single_quid_mc_op (job, fn, i, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
-    if (!tmp) {
-      return true
-    }
     i.parameters.shift()
     const tmpLongVec = core.VectorLong(i.parameters[0])
     i.parameters.shift()
@@ -103,9 +83,6 @@ class JobService extends ModelService {
 
   async single_quid_mc_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
-    if (!tmp) {
-      return true
-    }
     i.parameters.shift()
     const tmpLongVec = core.VectorLong(i.parameters[0])
     i.parameters.shift()
@@ -116,9 +93,6 @@ class JobService extends ModelService {
 
   async single_quid_mc_pauli_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
-    if (!tmp) {
-      return true
-    }
     i.parameters.shift()
     const tmpLongVec = core.VectorLong(i.parameters[0])
     i.parameters.shift()
@@ -131,9 +105,6 @@ class JobService extends ModelService {
 
   async single_quid_mc_mtrx_op (job, fn, i, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
-    if (!tmp) {
-      return true
-    }
     i.parameters.shift()
     const tmpLongVec = core.VectorLong(i.parameters[0])
     i.parameters.shift()
@@ -146,9 +117,6 @@ class JobService extends ModelService {
 
   async single_quid_mc2_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
-    if (!tmp) {
-      return true
-    }
     i.parameters.shift()
     const tmpLongVec = core.VectorLong(i.parameters[0])
     i.parameters.shift()
@@ -161,9 +129,6 @@ class JobService extends ModelService {
 
   async single_quid_mc_double_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
-    if (!tmp) {
-      return true
-    }
     i.parameters.shift()
     const tmpLongVec = core.VectorLong(i.parameters[0])
     i.parameters.shift()
@@ -193,160 +158,97 @@ class JobService extends ModelService {
           }
           break
         case 'destroy':
-          if (this.single_quid_op(job, core.destroy, i)) {
-            return
-          }
+          this.single_quid_op(job, core.destroy, i)
           break
         case 'seed':
-          if (this.single_quid_op(job, core.seed, i)) {
-            return
-          }
+          this.single_quid_op(job, core.seed, i)
           break
         case 'try_separate_1qb':
-          if (this.single_quid_output_op(job, core.try_separate_1qb, i, 2)) {
-            return
-          }
+          this.single_quid_output_op(job, core.try_separate_1qb, i, 2)
           break
         case 'try_separate_2qb':
-          if (this.single_quid_output_op(job, core.try_separate_2qb, i, 2)) {
-            return
-          }
+          this.single_quid_output_op(job, core.try_separate_2qb, i, 2)
           break
         case 'try_separate_tol':
-          if (this.single_quid_mc_output_op(job, core.try_separate_tol, i, 2)) {
-            return
-          }
+          this.single_quid_mc_output_op(job, core.try_separate_tol, i, 2)
           break
         case 'get_unitary_fidelity':
-          if (this.single_quid_output_op(job, core.get_unitary_fidelity, i, 2)) {
-            return
-          }
+          this.single_quid_output_op(job, core.get_unitary_fidelity, i, 2)
           break
         case 'reset_unitary_fidelity':
-          if (this.single_quid_op(job, core.reset_unitary_fidelity, i)) {
-            return
-          }
+          this.single_quid_op(job, core.reset_unitary_fidelity, i)
           break
         case 'set_sdrp':
-          if (this.single_quid_op(job, core.set_sdrp, i)) {
-            return
-          }
+          this.single_quid_op(job, core.set_sdrp, i)
           break
         case 'set_reactive_separate':
-          if (this.single_quid_op(job, core.set_reactive_separate, i)) {
-            return
-          }
+          this.single_quid_op(job, core.set_reactive_separate, i)
           break
         case 'set_t_injection':
-          if (this.single_quid_op(job, core.set_t_injection, i)) {
-            return
-          }
+          this.single_quid_op(job, core.set_t_injection, i)
           break
         case 'prob':
-          if (this.single_quid_output_op(job, core.prob, i, 3)) {
-            return
-          }
+          this.single_quid_output_op(job, core.prob, i, 3)
           break
         case 'prob_rdm':
-          if (this.single_quid_output_op(job, core.prob_rdm, i, 3)) {
-            return
-          }
+          this.single_quid_output_op(job, core.prob_rdm, i, 3)
           break
         case 'perm_prob':
-          if (this.single_quid_mc2_output_op(job, core.perm_prob, i, 3)) {
-            return
-          }
+          this.single_quid_mc2_output_op(job, core.perm_prob, i, 3)
           break
         case 'perm_prob_rdm':
-          if (this.single_quid_mc_pauli_output_op(job, core.perm_prob_rdm, i, 3)) {
-            return
-          }
+          this.single_quid_mc_pauli_output_op(job, core.perm_prob_rdm, i, 3)
           break
         case 'fact_exp':
-          if (this.single_quid_mc2_output_op(job, core.fact_exp, i, 3)) {
-            return
-          }
+          this.single_quid_mc2_output_op(job, core.fact_exp, i, 3)
           break
         case 'fact_exp_rdm':
-          if (this.single_quid_mc2_output_op(job, core.fact_exp_rdm, i, 3)) {
-            return
-          }
+          this.single_quid_mc2_output_op(job, core.fact_exp_rdm, i, 3)
           break
         case 'fact_exp_fp':
-          if (this.single_quid_mc_double_output_op(job, core.fact_exp_fp, i, 3)) {
-            return
-          }
+          this.single_quid_mc_double_output_op(job, core.fact_exp_fp, i, 3)
           break
         case 'fact_exp_fp_rdm':
-          if (this.single_quid_mc_double_output_op(job, core.fact_exp_fp_rdm, i, 3)) {
-            return
-          }
+          this.single_quid_mc_double_output_op(job, core.fact_exp_fp_rdm, i, 3)
           break
         case 'phase_parity':
-          if (this.single_quid_mc_op(job, core.phase_parity, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.phase_parity, i)
           break
         case 'joint_ensemble_prob':
-          if (this.single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3)) {
-            return
-          }
+          this.single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3)
           break
         case 'compose':
           tmp = this.validate_sid(i.parameters[0], job)
-          if (!tmp) {
-            return
-          }
           i.parameters.shift()
           tmp2 = this.validate_sid(i.parameters[0], job)
-          if (!tmp2) {
-            return
-          }
           i.parameters.shift()
           tmpLongVec = core.VectorLong(i.parameters[0])
           i.parameters.shift()
           core.compose(tmp, tmp2, tmpLongVec)
           break
         case 'decompose':
-          if (this.single_quid_mc_output_op(job, core.decompose, i, 1)) {
-            return
-          }
+          this.single_quid_mc_output_op(job, core.decompose, i, 1)
           break
         case 'dispose':
-          if (this.single_quid_mc_op(job, core.dispose, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.dispose, i)
           break
         case 'reset_all':
-          if (this.single_quid_op(job, core.reset_all, i)) {
-            return
-          }
+          this.single_quid_op(job, core.reset_all, i)
           break
         case 'measure':
-          if (this.single_quid_output_op(job, core.measure, i, 2)) {
-            return
-          }
+          this.single_quid_output_op(job, core.measure, i, 2)
           break
         case 'force_measure':
-          if (this.single_quid_output_op(job, core.force_measure, i, 2)) {
-            return
-          }
+          this.single_quid_output_op(job, core.force_measure, i, 2)
           break
         case 'measure_basis':
-          if (this.single_quid_mc_pauli_output_op(job, core.measure_basis, i, 3)) {
-            return
-          }
+          this.single_quid_mc_pauli_output_op(job, core.measure_basis, i, 3)
           break
         case 'measure_all':
-          if (this.single_quid_output_op(job, core.measure_all, i, 4)) {
-            return
-          }
+          this.single_quid_output_op(job, core.measure_all, i, 4)
           break
         case 'measure_shots':
           tmp = this.validate_sid(i.parameters[0], job)
-          if (!tmp) {
-            return
-          }
           i.parameters.shift()
           tmpLongVec = core.VectorLong(i.parameters[0])
           i.parameters.shift()
@@ -357,201 +259,122 @@ class JobService extends ModelService {
           await outputService.createOrUpdate(job.id, i.output, new Array(tmpLongVec.size()).fill(0).map((_, id) => tmpLongVec.get(id)), 5)
           break
         case 'x':
-          if (this.single_quid_op(job, core.x, i)) {
-            return
-          }
+          this.single_quid_op(job, core.x, i)
           break
         case 'y':
-          if (this.single_quid_op(job, core.y, i)) {
-            return
-          }
+          this.single_quid_op(job, core.y, i)
           break
         case 'z':
-          if (this.single_quid_op(job, core.z, i)) {
-            return
-          }
+          this.single_quid_op(job, core.z, i)
           break
         case 'h':
-          if (this.single_quid_op(job, core.h, i)) {
-            return
-          }
+          this.single_quid_op(job, core.h, i)
           break
         case 's':
-          if (this.single_quid_op(job, core.s, i)) {
-            return
-          }
+          this.single_quid_op(job, core.s, i)
           break
         case 't':
-          if (this.single_quid_op(job, core.t, i)) {
-            return
-          }
+          this.single_quid_op(job, core.t, i)
           break
         case 'adjs':
-          if (this.single_quid_op(job, core.adjs, i)) {
-            return
-          }
+          this.single_quid_op(job, core.adjs, i)
           break
         case 'adjt':
-          if (this.single_quid_op(job, core.adjt, i)) {
-            return
-          }
+          this.single_quid_op(job, core.adjt, i)
           break
         case 'u':
-          if (this.single_quid_op(job, core.u, i)) {
-            return
-          }
+          this.single_quid_op(job, core.u, i)
           break
         case 'mtrx':
           tmp = this.validate_sid(i.parameters[0], job)
-          if (!tmp) {
-            return
-          }
           i.parameters.shift()
           tmpDoubleVec = core.VectorDouble(i.parameters[0])
           i.parameters.shift()
           core.mtrx(tmp, tmpDoubleVec, ...i.parameters)
           break
         case 'mcx':
-          if (this.single_quid_mc_op(job, core.mcx, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mcx, i)
           break
         case 'mcy':
-          if (this.single_quid_mc_op(job, core.mcy, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mcy, i)
           break
         case 'mcz':
-          if (this.single_quid_mc_op(job, core.mcz, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mcz, i)
           break
         case 'mch':
-          if (this.single_quid_mc_op(job, core.mch, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mch, i)
           break
         case 'mcs':
-          if (this.single_quid_mc_op(job, core.mcs, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mcs, i)
           break
         case 'mct':
-          if (this.single_quid_mc_op(job, core.mct, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mct, i)
           break
         case 'mcadjs':
-          if (this.single_quid_mc_op(job, core.mcadjs, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mcadjs, i)
           break
         case 'mcadjt':
-          if (this.single_quid_mc_op(job, core.mcadjt, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mcadjt, i)
           break
         case 'mcu':
-          if (this.single_quid_mc_op(job, core.mcu, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mcu, i)
           break
         case 'mcmtrx':
-          if (this.single_quid_mc_mtrx_op(job, core.mcmtrx, i)) {
-            return
-          }
+          this.single_quid_mc_mtrx_op(job, core.mcmtrx, i)
           break
         case 'macx':
-          if (this.single_quid_mc_op(job, core.macx, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.macx, i)
           break
         case 'macy':
-          if (this.single_quid_mc_op(job, core.macy, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.macy, i)
           break
         case 'macz':
-          if (this.single_quid_mc_op(job, core.macz, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.macz, i)
           break
         case 'mach':
-          if (this.single_quid_mc_op(job, core.mach, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mach, i)
           break
         case 'macs':
-          if (this.single_quid_mc_op(job, core.macs, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.macs, i)
           break
         case 'mact':
-          if (this.single_quid_mc_op(job, core.mact, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mact, i)
           break
         case 'macadjs':
-          if (this.single_quid_mc_op(job, core.macadjs, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.macadjs, i)
           break
         case 'macadjt':
-          if (this.single_quid_mc_op(job, core.macadjt, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.macadjt, i)
           break
         case 'macu':
-          if (this.single_quid_mc_op(job, core.macu, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.macu, i)
           break
         case 'macmtrx':
-          if (this.single_quid_mc_mtrx_op(job, core.macmtrx, i)) {
-            return
-          }
+          this.single_quid_mc_mtrx_op(job, core.macmtrx, i)
           break
         case 'ucmtrx':
-          if (this.single_quid_mc_mtrx_op(job, core.ucmtrx, i)) {
-            return
-          }
+          this.single_quid_mc_mtrx_op(job, core.ucmtrx, i)
           break
         case 'multiplex_1qb_mtrx':
-          if (this.single_quid_mc_mtrx_op(job, core.multiplex_1qb_mtrx, i)) {
-            return
-          }
+          this.single_quid_mc_mtrx_op(job, core.multiplex_1qb_mtrx, i)
           break
         case 'mx':
-          if (this.single_quid_mc_op(job, core.mx, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mx, i)
           break
         case 'my':
-          if (this.single_quid_mc_op(job, core.my, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.my, i)
           break
         case 'mz':
-          if (this.single_quid_mc_op(job, core.mz, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mz, i)
           break
         case 'r':
-          if (this.single_quid_op(job, core.r, i)) {
-            return
-          }
+          this.single_quid_op(job, core.r, i)
           break
         case 'mcr':
-          if (this.single_quid_mc_op(job, core.mcr, i)) {
-            return
-          }
+          this.single_quid_mc_op(job, core.mcr, i)
           break
         default:
-          // Job status 2: FAILURE
-          job.jobStatusTypeId = 2
-          job.statusMessage = 'One or more of your job program operation line names do not match a defined operation name.'
-          await job.save()
-          return
+          throw new Error('One or more of your job program operation line names do not match a defined operation name.')
       }
     }
 
@@ -562,7 +385,6 @@ class JobService extends ModelService {
   }
 
   validateCreateRequest (reqBody) {
-    console.log(reqBody)
     if (reqBody.program === undefined) {
       return { success: false, error: 'Job creation request must contain the "program" parameter.' }
     }
@@ -594,8 +416,8 @@ class JobService extends ModelService {
     qrack.then(async (core) => { await this.runQrackProgram(core, reqBody.program, job) })
       .catch(async (e) => {
         // Job status 2: FAILURE
-        job.jobStatusTypeId = 2
-        job.statusMessage = e.toString()
+        job.dataValues.jobStatusTypeId = 2
+        job.dataValues.statusMessage = e.toString()
         await job.save()
       })
 
@@ -611,7 +433,7 @@ class JobService extends ModelService {
     const outputArray = await outputService.getByJobId(jobId)
     const output = {}
     for (const p in outputArray) {
-      output[p.name] = p.value
+      output[p.name] = p.valuerun
     }
 
     return { success: true, body: { status: job.status, output } }
