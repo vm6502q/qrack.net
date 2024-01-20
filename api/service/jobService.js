@@ -404,6 +404,7 @@ class JobService extends ModelService {
     job.userId = userId
     // Job status 3: RUNNING
     job.jobStatusTypeId = 3
+    job.statusMessage = "RUNNING"
 
     const result = await this.create(job)
     if (!result.success) {
@@ -416,8 +417,9 @@ class JobService extends ModelService {
     qrack.then(async (core) => { await this.runQrackProgram(core, reqBody.program, job) })
       .catch(async (e) => {
         // Job status 2: FAILURE
-        job.dataValues.jobStatusTypeId = 2
-        job.dataValues.statusMessage = e.toString()
+        console.log(job)
+        job.jobStatusTypeId = 2
+        job.statusMessage = e.toString()
         await job.save()
       })
 
