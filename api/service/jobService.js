@@ -1,5 +1,8 @@
 // jobService.js
 
+const fs = require('node:fs')
+const path = require('path')
+
 // Database Model
 const db = require('../model/index')
 
@@ -14,7 +17,7 @@ const Qrack = require('../Qrack')
 
 const qrack = Qrack({
   locateFile: () => {
-    return '../Qrack.wasm'
+    return path.resolve(__dirname, '../Qrack.wasm');
   }
 })
 
