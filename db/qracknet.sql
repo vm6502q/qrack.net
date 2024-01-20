@@ -5,7 +5,7 @@
 -- Dumped from database version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
 -- Dumped by pg_dump version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
 
--- Started on 2024-01-20 15:23:23 EST
+-- Started on 2024-01-20 16:37:34 EST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,7 +23,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 202 (class 1259 OID 18946)
+-- TOC entry 202 (class 1259 OID 20473)
 -- Name: jobStatusTypes; Type: TABLE; Schema: public; Owner: qracknet
 --
 
@@ -38,7 +38,7 @@ CREATE TABLE public."jobStatusTypes" (
 ALTER TABLE public."jobStatusTypes" OWNER TO qracknet;
 
 --
--- TOC entry 211 (class 1259 OID 18988)
+-- TOC entry 203 (class 1259 OID 20479)
 -- Name: jobStatusTypes_id_seq; Type: SEQUENCE; Schema: public; Owner: qracknet
 --
 
@@ -54,8 +54,8 @@ CREATE SEQUENCE public."jobStatusTypes_id_seq"
 ALTER TABLE public."jobStatusTypes_id_seq" OWNER TO qracknet;
 
 --
--- TOC entry 3019 (class 0 OID 0)
--- Dependencies: 211
+-- TOC entry 3024 (class 0 OID 0)
+-- Dependencies: 203
 -- Name: jobStatusTypes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qracknet
 --
 
@@ -63,7 +63,7 @@ ALTER SEQUENCE public."jobStatusTypes_id_seq" OWNED BY public."jobStatusTypes".i
 
 
 --
--- TOC entry 203 (class 1259 OID 18952)
+-- TOC entry 204 (class 1259 OID 20481)
 -- Name: jobs; Type: TABLE; Schema: public; Owner: qracknet
 --
 
@@ -80,7 +80,7 @@ CREATE TABLE public.jobs (
 ALTER TABLE public.jobs OWNER TO qracknet;
 
 --
--- TOC entry 210 (class 1259 OID 18985)
+-- TOC entry 205 (class 1259 OID 20487)
 -- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: qracknet
 --
 
@@ -96,8 +96,8 @@ CREATE SEQUENCE public.jobs_id_seq
 ALTER TABLE public.jobs_id_seq OWNER TO qracknet;
 
 --
--- TOC entry 3020 (class 0 OID 0)
--- Dependencies: 210
+-- TOC entry 3025 (class 0 OID 0)
+-- Dependencies: 205
 -- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qracknet
 --
 
@@ -105,7 +105,7 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 
 --
--- TOC entry 204 (class 1259 OID 18958)
+-- TOC entry 206 (class 1259 OID 20489)
 -- Name: outputTypes; Type: TABLE; Schema: public; Owner: qracknet
 --
 
@@ -120,7 +120,7 @@ CREATE TABLE public."outputTypes" (
 ALTER TABLE public."outputTypes" OWNER TO qracknet;
 
 --
--- TOC entry 209 (class 1259 OID 18982)
+-- TOC entry 207 (class 1259 OID 20495)
 -- Name: outputTypes_id_seq; Type: SEQUENCE; Schema: public; Owner: qracknet
 --
 
@@ -136,8 +136,8 @@ CREATE SEQUENCE public."outputTypes_id_seq"
 ALTER TABLE public."outputTypes_id_seq" OWNER TO qracknet;
 
 --
--- TOC entry 3021 (class 0 OID 0)
--- Dependencies: 209
+-- TOC entry 3026 (class 0 OID 0)
+-- Dependencies: 207
 -- Name: outputTypes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qracknet
 --
 
@@ -145,7 +145,7 @@ ALTER SEQUENCE public."outputTypes_id_seq" OWNED BY public."outputTypes".id;
 
 
 --
--- TOC entry 205 (class 1259 OID 18964)
+-- TOC entry 208 (class 1259 OID 20497)
 -- Name: outputs; Type: TABLE; Schema: public; Owner: qracknet
 --
 
@@ -163,7 +163,7 @@ CREATE TABLE public.outputs (
 ALTER TABLE public.outputs OWNER TO qracknet;
 
 --
--- TOC entry 208 (class 1259 OID 18979)
+-- TOC entry 209 (class 1259 OID 20503)
 -- Name: outputs_id_seq; Type: SEQUENCE; Schema: public; Owner: qracknet
 --
 
@@ -179,8 +179,8 @@ CREATE SEQUENCE public.outputs_id_seq
 ALTER TABLE public.outputs_id_seq OWNER TO qracknet;
 
 --
--- TOC entry 3022 (class 0 OID 0)
--- Dependencies: 208
+-- TOC entry 3027 (class 0 OID 0)
+-- Dependencies: 209
 -- Name: outputs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qracknet
 --
 
@@ -188,7 +188,7 @@ ALTER SEQUENCE public.outputs_id_seq OWNED BY public.outputs.id;
 
 
 --
--- TOC entry 206 (class 1259 OID 18970)
+-- TOC entry 210 (class 1259 OID 20505)
 -- Name: users; Type: TABLE; Schema: public; Owner: qracknet
 --
 
@@ -210,7 +210,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO qracknet;
 
 --
--- TOC entry 207 (class 1259 OID 18976)
+-- TOC entry 211 (class 1259 OID 20511)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: qracknet
 --
 
@@ -226,8 +226,8 @@ CREATE SEQUENCE public.users_id_seq
 ALTER TABLE public.users_id_seq OWNER TO qracknet;
 
 --
--- TOC entry 3023 (class 0 OID 0)
--- Dependencies: 207
+-- TOC entry 3028 (class 0 OID 0)
+-- Dependencies: 211
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qracknet
 --
 
@@ -235,7 +235,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- TOC entry 2859 (class 2604 OID 18990)
+-- TOC entry 2859 (class 2604 OID 20513)
 -- Name: jobStatusTypes id; Type: DEFAULT; Schema: public; Owner: qracknet
 --
 
@@ -243,7 +243,7 @@ ALTER TABLE ONLY public."jobStatusTypes" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 2860 (class 2604 OID 18987)
+-- TOC entry 2860 (class 2604 OID 20514)
 -- Name: jobs id; Type: DEFAULT; Schema: public; Owner: qracknet
 --
 
@@ -251,7 +251,7 @@ ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id
 
 
 --
--- TOC entry 2861 (class 2604 OID 18984)
+-- TOC entry 2861 (class 2604 OID 20515)
 -- Name: outputTypes id; Type: DEFAULT; Schema: public; Owner: qracknet
 --
 
@@ -259,7 +259,7 @@ ALTER TABLE ONLY public."outputTypes" ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 2862 (class 2604 OID 18981)
+-- TOC entry 2862 (class 2604 OID 20516)
 -- Name: outputs id; Type: DEFAULT; Schema: public; Owner: qracknet
 --
 
@@ -267,7 +267,7 @@ ALTER TABLE ONLY public.outputs ALTER COLUMN id SET DEFAULT nextval('public.outp
 
 
 --
--- TOC entry 2863 (class 2604 OID 18978)
+-- TOC entry 2863 (class 2604 OID 20517)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: qracknet
 --
 
@@ -275,7 +275,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3004 (class 0 OID 18946)
+-- TOC entry 3009 (class 0 OID 20473)
 -- Dependencies: 202
 -- Data for Name: jobStatusTypes; Type: TABLE DATA; Schema: public; Owner: qracknet
 --
@@ -289,8 +289,8 @@ COPY public."jobStatusTypes" (id, "createdAt", "updatedAt", name) FROM stdin;
 
 
 --
--- TOC entry 3005 (class 0 OID 18952)
--- Dependencies: 203
+-- TOC entry 3011 (class 0 OID 20481)
+-- Dependencies: 204
 -- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: qracknet
 --
 
@@ -299,8 +299,8 @@ COPY public.jobs (id, "createdAt", "updatedAt", "jobStatusTypeId", "statusMessag
 
 
 --
--- TOC entry 3006 (class 0 OID 18958)
--- Dependencies: 204
+-- TOC entry 3013 (class 0 OID 20489)
+-- Dependencies: 206
 -- Data for Name: outputTypes; Type: TABLE DATA; Schema: public; Owner: qracknet
 --
 
@@ -312,8 +312,8 @@ COPY public."outputTypes" (id, "createdAt", "updatedAt", name) FROM stdin;
 
 
 --
--- TOC entry 3007 (class 0 OID 18964)
--- Dependencies: 205
+-- TOC entry 3015 (class 0 OID 20497)
+-- Dependencies: 208
 -- Data for Name: outputs; Type: TABLE DATA; Schema: public; Owner: qracknet
 --
 
@@ -322,8 +322,8 @@ COPY public.outputs (id, "createdAt", "updatedAt", "jobId", "outputTypeId", name
 
 
 --
--- TOC entry 3008 (class 0 OID 18970)
--- Dependencies: 206
+-- TOC entry 3017 (class 0 OID 20505)
+-- Dependencies: 210
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: qracknet
 --
 
@@ -332,8 +332,8 @@ COPY public.users (id, "createdAt", "updatedAt", username, "usernameNormal", "pa
 
 
 --
--- TOC entry 3024 (class 0 OID 0)
--- Dependencies: 211
+-- TOC entry 3029 (class 0 OID 0)
+-- Dependencies: 203
 -- Name: jobStatusTypes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: qracknet
 --
 
@@ -341,8 +341,8 @@ SELECT pg_catalog.setval('public."jobStatusTypes_id_seq"', 1, false);
 
 
 --
--- TOC entry 3025 (class 0 OID 0)
--- Dependencies: 210
+-- TOC entry 3030 (class 0 OID 0)
+-- Dependencies: 205
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: qracknet
 --
 
@@ -350,8 +350,8 @@ SELECT pg_catalog.setval('public.jobs_id_seq', 1, false);
 
 
 --
--- TOC entry 3026 (class 0 OID 0)
--- Dependencies: 209
+-- TOC entry 3031 (class 0 OID 0)
+-- Dependencies: 207
 -- Name: outputTypes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: qracknet
 --
 
@@ -359,8 +359,8 @@ SELECT pg_catalog.setval('public."outputTypes_id_seq"', 1, false);
 
 
 --
--- TOC entry 3027 (class 0 OID 0)
--- Dependencies: 208
+-- TOC entry 3032 (class 0 OID 0)
+-- Dependencies: 209
 -- Name: outputs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: qracknet
 --
 
@@ -368,8 +368,8 @@ SELECT pg_catalog.setval('public.outputs_id_seq', 1, false);
 
 
 --
--- TOC entry 3028 (class 0 OID 0)
--- Dependencies: 207
+-- TOC entry 3033 (class 0 OID 0)
+-- Dependencies: 211
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: qracknet
 --
 
@@ -377,7 +377,7 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, false);
 
 
 --
--- TOC entry 2867 (class 2606 OID 18992)
+-- TOC entry 2869 (class 2606 OID 20519)
 -- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: qracknet
 --
 
@@ -386,7 +386,7 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 2869 (class 2606 OID 18994)
+-- TOC entry 2871 (class 2606 OID 20521)
 -- Name: outputTypes outputTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: qracknet
 --
 
@@ -395,7 +395,7 @@ ALTER TABLE ONLY public."outputTypes"
 
 
 --
--- TOC entry 2871 (class 2606 OID 18996)
+-- TOC entry 2876 (class 2606 OID 20523)
 -- Name: outputs outputs_pkey; Type: CONSTRAINT; Schema: public; Owner: qracknet
 --
 
@@ -404,7 +404,7 @@ ALTER TABLE ONLY public.outputs
 
 
 --
--- TOC entry 2865 (class 2606 OID 18998)
+-- TOC entry 2865 (class 2606 OID 20525)
 -- Name: jobStatusTypes statusTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: qracknet
 --
 
@@ -413,7 +413,7 @@ ALTER TABLE ONLY public."jobStatusTypes"
 
 
 --
--- TOC entry 2873 (class 2606 OID 19000)
+-- TOC entry 2878 (class 2606 OID 20527)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: qracknet
 --
 
@@ -422,42 +422,82 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2874 (class 2606 OID 19001)
--- Name: jobs jobs_jobstatustypeid_fk; Type: FK CONSTRAINT; Schema: public; Owner: qracknet
+-- TOC entry 2866 (class 1259 OID 20533)
+-- Name: fki_jobs_jobStatusTypeId_fkey; Type: INDEX; Schema: public; Owner: qracknet
+--
+
+CREATE INDEX "fki_jobs_jobStatusTypeId_fkey" ON public.jobs USING btree ("jobStatusTypeId");
+
+
+--
+-- TOC entry 2867 (class 1259 OID 20539)
+-- Name: fki_jobs_userId_fkey; Type: INDEX; Schema: public; Owner: qracknet
+--
+
+CREATE INDEX "fki_jobs_userId_fkey" ON public.jobs USING btree ("userId");
+
+
+--
+-- TOC entry 2872 (class 1259 OID 20545)
+-- Name: fki_outputs_jobId_fkey; Type: INDEX; Schema: public; Owner: qracknet
+--
+
+CREATE INDEX "fki_outputs_jobId_fkey" ON public.outputs USING btree ("jobId");
+
+
+--
+-- TOC entry 2873 (class 1259 OID 20546)
+-- Name: fki_outputs_jobId_name_fkey; Type: INDEX; Schema: public; Owner: qracknet
+--
+
+CREATE INDEX "fki_outputs_jobId_name_fkey" ON public.outputs USING btree ("jobId", name);
+
+
+--
+-- TOC entry 2874 (class 1259 OID 20552)
+-- Name: fki_outputs_outputTypeId_fkey; Type: INDEX; Schema: public; Owner: qracknet
+--
+
+CREATE INDEX "fki_outputs_outputTypeId_fkey" ON public.outputs USING btree ("outputTypeId");
+
+
+--
+-- TOC entry 2879 (class 2606 OID 20528)
+-- Name: jobs jobs_jobStatusTypeId_fk; Type: FK CONSTRAINT; Schema: public; Owner: qracknet
 --
 
 ALTER TABLE ONLY public.jobs
-    ADD CONSTRAINT jobs_jobstatustypeid_fk FOREIGN KEY ("jobStatusTypeId") REFERENCES public."jobStatusTypes"(id) NOT VALID;
+    ADD CONSTRAINT "jobs_jobStatusTypeId_fk" FOREIGN KEY ("jobStatusTypeId") REFERENCES public."jobStatusTypes"(id) NOT VALID;
 
 
 --
--- TOC entry 2875 (class 2606 OID 19006)
--- Name: jobs jobs_userid_fk; Type: FK CONSTRAINT; Schema: public; Owner: qracknet
+-- TOC entry 2880 (class 2606 OID 20534)
+-- Name: jobs jobs_userId_fk; Type: FK CONSTRAINT; Schema: public; Owner: qracknet
 --
 
 ALTER TABLE ONLY public.jobs
-    ADD CONSTRAINT jobs_userid_fk FOREIGN KEY ("userId") REFERENCES public.users(id) ON DELETE CASCADE NOT VALID;
+    ADD CONSTRAINT "jobs_userId_fk" FOREIGN KEY ("userId") REFERENCES public.users(id) ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 2876 (class 2606 OID 19011)
--- Name: outputs outputs_jobid_fk; Type: FK CONSTRAINT; Schema: public; Owner: qracknet
---
-
-ALTER TABLE ONLY public.outputs
-    ADD CONSTRAINT outputs_jobid_fk FOREIGN KEY ("jobId") REFERENCES public.jobs(id) NOT VALID;
-
-
---
--- TOC entry 2877 (class 2606 OID 19016)
--- Name: outputs outputs_typeid_fk; Type: FK CONSTRAINT; Schema: public; Owner: qracknet
+-- TOC entry 2881 (class 2606 OID 20540)
+-- Name: outputs outputs_jobId_fk; Type: FK CONSTRAINT; Schema: public; Owner: qracknet
 --
 
 ALTER TABLE ONLY public.outputs
-    ADD CONSTRAINT outputs_typeid_fk FOREIGN KEY ("outputTypeId") REFERENCES public."outputTypes"(id) NOT VALID;
+    ADD CONSTRAINT "outputs_jobId_fk" FOREIGN KEY ("jobId") REFERENCES public.jobs(id) NOT VALID;
 
 
--- Completed on 2024-01-20 15:23:23 EST
+--
+-- TOC entry 2882 (class 2606 OID 20547)
+-- Name: outputs outputs_outputTypeId_fk; Type: FK CONSTRAINT; Schema: public; Owner: qracknet
+--
+
+ALTER TABLE ONLY public.outputs
+    ADD CONSTRAINT "outputs_outputTypeId_fk" FOREIGN KEY ("outputTypeId") REFERENCES public."outputTypes"(id) NOT VALID;
+
+
+-- Completed on 2024-01-20 16:37:34 EST
 
 --
 -- PostgreSQL database dump complete
