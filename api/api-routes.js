@@ -11,7 +11,7 @@ const router = express.Router()
 router.get('/', function (req, res) {
   res.json({
     status: 'API is working',
-    message: 'This is the Metriq public REST API.'
+    message: 'This is the QrackNet public REST API.'
   })
 })
 

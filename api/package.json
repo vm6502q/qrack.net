@@ -22,6 +22,7 @@
   "dependencies": {
     "@types/sequelize": "^4.28.10",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
     "child-process-promise": "^2.2.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
@@ -40,6 +41,8 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "webpack": "^5.89.0",
+    "webpack-dev-server": "^4.15.1"
   }
 }

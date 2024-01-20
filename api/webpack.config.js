@@ -13,12 +13,20 @@ module.exports = {
       "async_hooks": false,
       "aws-sdk": false,
       "child_process": false,
+      "@swc/core": false,
+      "dgram": false,
       "dns": false,
+      "esbuild": false,
+      "fsevents": false,
+      "inspector": false,
       "mock-aws-s3": false,
+      "module": false,
       "net": false,
       "nock": false,
       "node-pre-gyp": false,
-      "tls": false
+      "tls": false,
+      "uglify-js": false,
+      "worker_threads": false
     }
   },
   module: {
