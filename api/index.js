@@ -26,7 +26,7 @@ app.use(compression())
 const unless = function (paths, middleware) {
   return function (req, res, next) {
     for (let i = 0; i < paths.length; i++) {
-      if (req.path.startsWith(paths[i])) {
+      if (req.path === paths[i]) {
         if (req.cookies && req.cookies.token) {
           try {
             const decoded = jwtDecode(req.cookies.token)
@@ -50,7 +50,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 // Set up cookie/header authorization checks.
-const publicApiRoutes = ['/', '/api/login', '/api/register', '/api/recover', '/api/password']
+const publicApiRoutes = ['/', '/api', '/api/login', '/api/register', '/api/recover', '/api/password']
 app.use(unless(publicApiRoutes,
   expressJwt.expressjwt({
     secret: config.api.token.secretKey,
