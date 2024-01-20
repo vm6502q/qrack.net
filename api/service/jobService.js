@@ -11,7 +11,7 @@ import OutputService from './outputService.js'
 
 // Qrack
 import Qrack from '../Qrack.js'
-import QrackWASM from '../Qrack.wasm'
+import QrackWASM from '../QrackWASM.js'
 
 const outputService = new OutputService()
 const Job = db.job
