@@ -8,7 +8,7 @@ const ModelService = require('./modelService')
 const db = require('../model/index.js')
 
 // Password hasher
-const bcrypt = require('bcrypt')
+const bcryptjs = require('bcryptjs')
 const { v4 } = require('uuid')
 const jwt = require('jsonwebtoken')
 
@@ -87,7 +87,7 @@ class UserService extends ModelService {
     user.affiliation = reqBody.affiliation ? reqBody.affiliation : ''
     user.name = reqBody.name ? reqBody.name : ''
     user.email = reqBody.email.trim().toLowerCase()
-    user.passwordHash = await bcrypt.hash(reqBody.password, saltRounds)
+    user.passwordHash = await bcryptjs.hash(reqBody.password, saltRounds)
 
     const result = await this.create(user)
     if (!result.success) {
@@ -106,7 +106,7 @@ class UserService extends ModelService {
       return { success: false, error: 'User not found.' }
     }
 
-    const isPasswordValid = bcrypt.compareSync(reqBody.password, user.passwordHash)
+    const isPasswordValid = bcryptjs.compareSync(reqBody.password, user.passwordHash)
     if (!isPasswordValid) {
       return { success: false, error: 'Password incorrect.' }
     }
@@ -228,7 +228,7 @@ class UserService extends ModelService {
       return { success: false, error: 'Supplied bad recovery token.' }
     }
 
-    user.passwordHash = await bcrypt.hash(reqBody.password, saltRounds)
+    user.passwordHash = await bcryptjs.hash(reqBody.password, saltRounds)
     user.recoveryToken = null
     user.recoveryTokenExpiration = null
     await user.save()
@@ -270,12 +270,12 @@ class UserService extends ModelService {
       return { success: false, error: 'User not found.' }
     }
 
-    const isPasswordValid = bcrypt.compareSync(reqBody.oldPassword, user.passwordHash)
+    const isPasswordValid = bcryptjs.compareSync(reqBody.oldPassword, user.passwordHash)
     if (!isPasswordValid) {
       return { success: false, error: 'Password incorrect.' }
     }
 
-    user.passwordHash = await bcrypt.hash(reqBody.password, saltRounds)
+    user.passwordHash = await bcryptjs.hash(reqBody.password, saltRounds)
     user.recoveryToken = null
     user.recoveryTokenExpiration = null
     await user.save()
