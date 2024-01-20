@@ -559,6 +559,31 @@ class JobService extends ModelService {
               return
             }
             break
+          case 'mx':
+            if (single_quid_mc_mtrx_op(job, core.mx, i)) {
+              return
+            }
+            break
+          case 'my':
+            if (single_quid_mc_mtrx_op(job, core.my, i)) {
+              return
+            }
+            break
+          case 'mz':
+            if (single_quid_mc_mtrx_op(job, core.mz, i)) {
+              return
+            }
+            break
+          case 'r':
+            if (single_quid_op(job, core.r, i)) {
+              return
+            }
+            break
+          case 'mcr':
+            if (single_quid_mc_op(job, core.mcr, i)) {
+              return
+            }
+            break
           default:
             // Job status 2: FAILURE
             job.jobStatusTypeId = 2

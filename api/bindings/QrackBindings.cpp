@@ -243,7 +243,7 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
         QrackWrapper::R(sid, phi, q, b);
     }));
     // multi-controlled single-qubit rotations
-    function("mcr", optional_override([](long long sid, double phi, std::vector<long long> c, long long q, char b) -> void {
+    function("mcr", optional_override([](long long sid, std::vector<long long> c, double phi, long long q, char b) -> void {
         QrackWrapper::MCR(sid, phi, c, q, b);
     }));
 
