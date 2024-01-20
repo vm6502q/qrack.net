@@ -7,8 +7,8 @@ config.isDebug = true
 config.app = { port: process.env.PORT || 8080 }
 
 config.api = {
-  url: config.isDebug ? 'localhost:8080' : 'qrack.net',
   protocol: config.isDebug ? 'http://' : 'https://',
+  url: config.isDebug ? 'localhost:8080' : 'qrack.net',
   endpoint: '/api',
   getUriPrefix: () => { return config.api.protocol + config.api.url + config.api.endpoint }
 }
