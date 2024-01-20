@@ -560,17 +560,17 @@ class JobService extends ModelService {
             }
             break
           case 'mx':
-            if (single_quid_mc_mtrx_op(job, core.mx, i)) {
+            if (single_quid_mc_op(job, core.mx, i)) {
               return
             }
             break
           case 'my':
-            if (single_quid_mc_mtrx_op(job, core.my, i)) {
+            if (single_quid_mc_op(job, core.my, i)) {
               return
             }
             break
           case 'mz':
-            if (single_quid_mc_mtrx_op(job, core.mz, i)) {
+            if (single_quid_mc_op(job, core.mz, i)) {
               return
             }
             break
