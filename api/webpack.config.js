@@ -11,14 +11,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /Qrack\.(js|jsx)$/,
+        test: path.resolve(__dirname, 'Qrack.js'),
         loader: 'exports-loader',
         options: {
           exports: 'Qrack'
         }
       },
       {
-        test: /Qrack\.(wasm)$/,
+        test: path.resolve(__dirname, 'Qrack.wasm'),
         loader: 'file-loader',
         type: 'javascript/auto'
       }
