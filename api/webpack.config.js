@@ -10,6 +10,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
     fallback: {
+      "async_hooks": false,
       "aws-sdk": false,
       "child_process": false,
       "dns": false,
