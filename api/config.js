@@ -4,30 +4,30 @@ const config = {}
 
 config.isDebug = true
 
-config.app = {}
-config.app.port = process.env.PORT || 8080
+config.app = { port: process.env.PORT || 8080 }
 
-config.api = {}
-config.api.url = config.isDebug ? 'localhost:8080' : 'qrack.net'
-config.api.protocol = config.isDebug ? 'http://' : 'https://'
-config.api.endpoint = '/api'
-config.api.getUriPrefix = () => {
-  return config.api.protocol + config.api.url + config.api.endpoint
+config.api = {
+  url: config.isDebug ? 'localhost:8080' : 'qrack.net',
+  protocol: config.isDebug ? 'http://' : 'https://',
+  endpoint: '/api',
+  getUriPrefix: () => { return config.api.protocol + config.api.url + config.api.endpoint }
 }
 
-config.api.token = {}
-// NEVER store a valid secret key in files that might be checked into source code repositories!!!
-config.api.token.secretKey = process.env.QRACKNET_SECRET_KEY ? process.env.QRACKNET_SECRET_KEY : crypto.randomBytes(256).toString('base64')
-// Token is valid for 60 minutes (unless refreshed).
-config.api.token.expiresIn = 3600
-// Algorithm used for encrypting JWT
-config.api.token.algorithm = 'HS256'
+config.api.token = {
+  // NEVER store a valid secret key in files that might be checked into source code repositories!!!
+  secretKey: process.env.QRACKNET_SECRET_KEY ? process.env.QRACKNET_SECRET_KEY : crypto.randomBytes(256).toString('base64'),
+  // Token is valid for 60 minutes (unless refreshed).
+  expiresIn: 3600,
+  // Algorithm used for encrypting JWT
+  algorithm: 'HS256'
+}
 
-config.supportEmail = {}
-config.supportEmail.service = process.env.QRACKNET_SUPPORT_EMAIL_SERVICE
-config.supportEmail.account = process.env.QRACKNET_SUPPORT_EMAIL_ACCOUNT
-config.supportEmail.password = process.env.QRACKNET_SUPPORT_EMAIL_PASSWORD
-config.supportEmail.address = process.env.QRACKNET_SUPPORT_EMAIL_ADDRESS
+config.supportEmail = {
+  service: process.env.QRACKNET_SUPPORT_EMAIL_SERVICE,
+  account: process.env.QRACKNET_SUPPORT_EMAIL_ACCOUNT,
+  password: process.env.QRACKNET_SUPPORT_EMAIL_PASSWORD,
+  address: process.env.QRACKNET_SUPPORT_EMAIL_ADDRESS
+}
 
 config.pgPool = {
   user: 'qracknet',

@@ -17,10 +17,10 @@ const Qrack = require('../Qrack')
 
 const qrack = Qrack({
   locateFile: () => {
-    return path.resolve(__dirname, '../Qrack.wasm');
+    return path.resolve(__dirname, '../Qrack.wasm')
   }
 }).catch((e) => {
-  console.log("Could not load Qrack: " + e.toString())
+  console.log('Could not load Qrack: ' + e.toString())
 })
 
 const outputService = new OutputService()
@@ -185,7 +185,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async runQrackProgram(core, p) {
+  async runQrackProgram (core, p) {
     let tmp, tmp2, tmpLongVec, tmpCharVec
     for (i in p) {
       switch (i.name) {
