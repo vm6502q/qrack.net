@@ -1,4 +1,3 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -41,8 +40,5 @@ export default {
       'Cross-Origin-Opener-Policy': 'same-origin'
     },
     allowedHosts: 'all'
-  },
-  plugins: [
-    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html'), favicon: './favicon.ico' })
-  ]
+  }
 }

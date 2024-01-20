@@ -1,16 +1,18 @@
 // jobService.js
 
+// Database Model
+import db from '../model/index.js'
+
 // Data Access Layer
 import ModelService from './modelService.js'
 
 // Services
 import OutputService from './outputService.js'
 
-// Database Model
-import db from '../model/index.js'
-
+// Qrack
 import Qrack from '../Qrack.js'
 import QrackWASM from '../Qrack.wasm'
+
 const outputService = new OutputService()
 const Job = db.job
 
