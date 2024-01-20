@@ -1,14 +1,14 @@
 // controllerUtil.js
 
 // Config for JWT expiration
-import config from '../config.js'
+const config = require('../config')
 
 // Service classes
-import UserService from '../service/userService.js'
+const UserService = require('../service/userService')
 // Service instances
 const userService = new UserService()
 
-export function sendResponse (res, code, m) {
+function sendResponse (res, code, m) {
   const body = JSON.stringify({ message: m })
   res.writeHead(code, {
     'Content-Length': Buffer.byteLength(body),
@@ -17,7 +17,7 @@ export function sendResponse (res, code, m) {
     .end(body)
 }
 
-export async function routeWrapper (res, serviceFn, successMessage, userId) {
+async function routeWrapper (res, serviceFn, successMessage, userId) {
   try {
     // Call the service function, to perform the intended action.
     const result = await serviceFn()
@@ -42,10 +42,12 @@ export async function routeWrapper (res, serviceFn, successMessage, userId) {
   }
 }
 
-export function setJwtCookie (res, token) {
+function setJwtCookie (res, token) {
   if (config.isDebug) {
     res.cookie('token', token, { maxAge: config.api.token.expiresIn * 1000, httpOnly: true, sameSite: 'Strict' })
   } else {
     res.cookie('token', token, { maxAge: config.api.token.expiresIn * 1000, httpOnly: true, sameSite: 'Strict', secure: true })
   }
 }
+
+module.exports = { sendResponse, routeWrapper, setJwtCookie }

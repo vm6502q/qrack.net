@@ -1,19 +1,18 @@
 // userService.js
 
-import { Op } from 'sequelize'
-
+const { Op } = require('sequelize')
+const config = require('../config')
 // Data Access Layer
-import ModelService from './modelService.js'
+const ModelService = require('./modelService')
 // Database Model
-import config from '../config.js'
-import db from '../model/index.js'
+const db = require('../model/index.js')
 
 // Password hasher
-import bcrypt from 'bcrypt'
-import { v4 } from 'uuid'
-import jwt from 'jsonwebtoken'
+const bcrypt = require('bcrypt')
+const { v4 } = require('uuid')
+const jwt = require('jsonwebtoken')
 
-import nodemailer from 'nodemailer'
+const nodemailer = require('nodemailer')
 const User = db.user
 const saltRounds = 10
 
@@ -296,4 +295,4 @@ class UserService extends ModelService {
   }
 }
 
-export default UserService
+module.exports = UserService

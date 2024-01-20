@@ -1,9 +1,9 @@
 // accountController.js
 
-import { routeWrapper, sendResponse, setJwtCookie } from '../util/controllerUtil.js'
+const { routeWrapper, sendResponse, setJwtCookie } = require('../util/controllerUtil')
 
 // Service class
-import UserService from '../service/userService.js'
+const UserService = require('../service/userService')
 // Service instance
 const userService = new UserService()
 
@@ -89,4 +89,4 @@ class AccountController {
   }
 }
 
-export default AccountController
+module.exports = AccountController

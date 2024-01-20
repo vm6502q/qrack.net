@@ -1,10 +1,10 @@
 // api-routes.js
 
 // Initialize ExpressJS router.
-import express from 'express'
+const express = require('express')
 // Controllers
-import accountController from './controller/accountController.js'
-import qrackController from './controller/qrackController.js'
+const accountController = require('./controller/accountController')
+const qrackController = require('./controller/qrackController')
 const router = express.Router()
 
 // Set default API response.
@@ -32,4 +32,4 @@ router.route('/qrack/:id')
   .get(qrackController.read)
 
 // Export API routes.
-export default router
+module.exports = router

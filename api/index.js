@@ -1,22 +1,22 @@
 // Get the connection string
-import config from './config.js'
+const config = require('./config')
 // Import routes.
-import apiRoutes from './api-routes.js'
+const apiRoutes = require('./api-routes')
 // Import express
-import express from 'express'
+const express = require('express')
 // Import Sequelize
-import { Sequelize } from 'sequelize'
+const { Sequelize } = require('sequelize')
 // Import express JWT auth
-import expressJwt from 'express-jwt'
+const expressJwt = require('express-jwt')
 // Import JWT decoder
-import jwtDecode from 'jwt-decode'
+const jwtDecode = require('jwt-decode')
 // Import cookie-parser middleware
-import cookieParser from 'cookie-parser'
+const cookieParser = require('cookie-parser')
 // Compress API responses for better performance
-import compression from 'compression'
+const compression = require('compression')
 
 // Service class, for middleware
-import UserService from './service/userService.js'
+const UserService = require('./service/userService')
 process.env.QRACKNET_MODE = undefined
 
 // Initialize the app
