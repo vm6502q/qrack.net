@@ -43,16 +43,6 @@ class JobService extends ModelService {
     return { success: true, body: job }
   }
 
-  async validateCreatRequest (reqBody) {
-    if (!reqBody.program) {
-      return { success: false, message: 'Job creation request must contain the "program" parameter.' }
-    }
-    if (!Array.isArray(reqBody.program)) {
-      return { success: false, message: 'Job creation request "program" parameter must be an array.' }
-    }
-    return { success: true }
-  }
-
   async invalid_argument_error (job) {
     // Job status 2: FAILURE
     job.jobStatusTypeId = 2
@@ -572,8 +562,19 @@ class JobService extends ModelService {
     await job.save()
   }
 
-  async create (reqBody, userId) {
-    const validationResult = await this.validateCreateRequest(reqBody)
+  validateCreateRequest (reqBody) {
+    console.log(reqBody)
+    if (reqBody.program === undefined) {
+      return { success: false, error: 'Job creation request must contain the "program" parameter.' }
+    }
+    if (!Array.isArray(reqBody.program)) {
+      return { success: false, error: 'Job creation request "program" parameter must be an array.' }
+    }
+    return { success: true }
+  }
+
+  async new (reqBody, userId) {
+    const validationResult = this.validateCreateRequest(reqBody)
     if (!validationResult.success) {
       return validationResult
     }

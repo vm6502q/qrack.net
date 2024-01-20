@@ -10,9 +10,9 @@ class QrackController {
   static async new (req, res) {
     routeWrapper(res,
       async () => {
-        return await jobService.create(req.body, req.auth.id)
+        return await jobService.new(req.body, req.auth.id)
       },
-      'Retrieved job status and output by ID.')
+      'Created new job for user.')
   }
 
   static async read (req, res) {
