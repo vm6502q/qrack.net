@@ -15,7 +15,7 @@ async function loginWrapper (res, serviceFn, successMessage) {
       // If successful, pass the service function result as the API response.
       const jsonResponse = { message: successMessage, data: result.body }
       // If this route should log in a web user, also generate a token and set a cookie for it.
-      const token = await userService.generateWebJwt(result.body.id)
+      const token = await userService.generateJwt(result.body.id)
       setJwtCookie(res, token)
       jsonResponse.token = token
       // Success - send the API response.

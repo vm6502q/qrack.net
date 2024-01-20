@@ -24,24 +24,18 @@ class UserService extends ModelService {
     super(User)
   }
 
-  async sanitize (user) {
-    return {
-      id: user.id,
-      email: user.email,
-      passwordHash: '[REDACTED]',
-      username: user.username,
-      usernameNormal: user.usernameNormal,
-      affiliation: user.affiliation,
-      name: user.name,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    }
+  sanitize (user) {
+    user.passwordHash = '[REDACTED]',
+    user.recoveryToken = '[REDACTED]',
+    user.recoveryTokenExpiration = '[REDACTED]'
+
+    return user
   }
 
-  async generateJwt (userId, role, isExpiring) {
-    const meta = { algorithm: config.api.token.algorithm }
-    if (isExpiring) {
-      meta.expiresIn = config.api.token.expiresIn
+  async generateJwt (userId) {
+    const meta = {
+      algorithm: config.api.token.algorithm,
+      expiresIn: config.api.token.expiresIn
     }
     return jwt.sign({ id: userId }, config.api.token.secretKey, meta)
   }
@@ -73,7 +67,7 @@ class UserService extends ModelService {
     if (!user) {
       return { success: false, error: 'User ID not found.' }
     }
-    return { success: true, body: await this.sanitize(user) }
+    return { success: true, body: this.sanitize(user) }
   }
 
   async register (reqBody) {
@@ -98,7 +92,7 @@ class UserService extends ModelService {
     user = result.body
     await user.save()
 
-    return { success: true, body: await this.sanitize(user) }
+    return { success: true, body: this.sanitize(user.dataValues) }
   }
 
   async login (reqBody) {
@@ -112,7 +106,7 @@ class UserService extends ModelService {
       return { success: false, error: 'Password incorrect.' }
     }
 
-    return { success: true, body: await this.sanitize(user) }
+    return { success: true, body: this.sanitize(user) }
   }
 
   validateEmail (email) {
