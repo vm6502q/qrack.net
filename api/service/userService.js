@@ -33,7 +33,8 @@ class UserService extends ModelService {
       usernameNormal: user.usernameNormal,
       affiliation: user.affiliation,
       name: user.name,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
     }
   }
 
