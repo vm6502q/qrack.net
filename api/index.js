@@ -14,17 +14,6 @@ const jwtDecode = require('jwt-decode')
 const cookieParser = require('cookie-parser')
 // Compress API responses for better performance
 const compression = require('compression')
-// Webpack server
-const Webpack = require("webpack");
-const WebpackDevServer = require('webpack-dev-server');
-
-// load from webpack.config.js
-const compiler = Webpack(webpackConfig);
-const server = new WebpackDevServer(compiler, {
-    stats: {
-        colors: true
-    }
-});
 
 // Service class, for middleware
 const UserService = require('./service/userService')
@@ -131,14 +120,7 @@ app.get('*', function (req, res) {
   res.redirect('/')
 })
 
-// define parent url path
-server.use("/api", app);
-server.use(bodyParser.urlencoded({
-    extended: true
-}));
-
-server.use(bodyParser.json());
-
-server.listen(8080, "localhost", () => {
-    console.log("Starting server on http://localhost:8080");
-});
+// Launch the app, to listen to the specified port.
+app.listen(config.app.port, function () {
+  console.log('Running RestHub on port ' + config.app.port)
+})
