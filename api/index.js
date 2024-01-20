@@ -111,7 +111,7 @@ if (!config.supportEmail.service || !config.supportEmail.account || !config.supp
 }
 
 // Set up a message for the default URL.
-app.get('/', (req, res) => res.send('Metriq API'))
+app.get('/', (req, res) => res.send('QrackNet API'))
 
 // Use API routes in the app.
 app.use('/api', apiRoutes)
