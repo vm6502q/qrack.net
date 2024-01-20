@@ -1,18 +1,18 @@
 // jobService.js
 
 // Data Access Layer
-const ModelService = require('./modelService')
+import ModelService from './modelService.js'
 
 // Services
-const OutputService = require('./outputService.js')
-const outputService = OutputService()
+import OutputService from './outputService.js'
 
 // Database Model
-const db = require('../model/index')
-const Job = db.job
+import db from '../model/index.js'
 
-const Qrack = require('./Qrack.js')
-const QrackWASM = require('./Qrack.wasm')
+import Qrack from '../Qrack.js'
+import QrackWASM from '../Qrack.wasm'
+const outputService = new OutputService()
+const Job = db.job
 
 const qrack = Qrack({
   locateFile: () => {
@@ -25,29 +25,16 @@ class JobService extends ModelService {
     super(Job)
   }
 
-  async sanitize (job) {
-    return {
-      id: job.id,
-      userId: job.userId,
-      status: job.status
-    }
-  }
-
-  async get (jobId) {
+  async get (jobId, userId) {
     const job = await this.getByPk(jobId)
     if (!job) {
       return { success: false, error: 'Job ID not found.' }
     }
-
-    return { success: true, body: user }
-  }
-
-  async getSanitized (userId) {
-    const job = await this.getByPk(jobId)
-    if (!job) {
-      return { success: false, error: 'Job ID not found.' }
+    if (job.userId != userId) {
+      return { success: false, error: 'You are not authorized for this Job ID.' }
     }
-    return { success: true, body: await this.sanitize(job) }
+
+    return { success: true, body: job }
   }
 
   async validateCreatRequest (reqBody) {
@@ -84,7 +71,7 @@ class JobService extends ModelService {
     }
   }
 
-  async single_quid_op(job, fn, i) {
+  async single_quid_op (job, fn, i) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -95,7 +82,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_output_op(job, fn, i, o_type) {
+  async single_quid_output_op (job, fn, i, o_type) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -106,7 +93,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc_op(job, fn, i) {
+  async single_quid_mc_op (job, fn, i) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -119,7 +106,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc_output_op(job, fn, i, o_type) {
+  async single_quid_mc_output_op (job, fn, i, o_type) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -132,7 +119,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc_pauli_output_op(job, fn, i, o_type) {
+  async single_quid_mc_pauli_output_op (job, fn, i, o_type) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -147,7 +134,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc_mtrx_op(job, fn, i) {
+  async single_quid_mc_mtrx_op (job, fn, i) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -162,7 +149,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc2_output_op(job, fn, i, o_type) {
+  async single_quid_mc2_output_op (job, fn, i, o_type) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -177,7 +164,7 @@ class JobService extends ModelService {
     return false
   }
 
-  async single_quid_mc_double_output_op(job, fn, i, o_type) {
+  async single_quid_mc_double_output_op (job, fn, i, o_type) {
     const tmp = this.validate_sid(i.parameters[0], job)
     if (!tmp) {
       return true
@@ -398,7 +385,7 @@ class JobService extends ModelService {
             if (single_quid_op(job, core.x, i)) {
               return
             }
-            break;
+            break
           case 'y':
             if (single_quid_op(job, core.y, i)) {
               return
@@ -604,7 +591,22 @@ class JobService extends ModelService {
       await job.save()
     })
 
-    return { success: true, body: await this.sanitize(job) }
+    return { success: true, body: job }
+  }
+
+  async getStatusAndOutput (jobId) {
+    const job = await this.getByPk(jobId)
+    if (!job) {
+      return { success: false, error: 'Job ID not found.' }
+    }
+
+    const outputArray = await outputService.getByJobId(jobId)
+    const output = {}
+    for (p in outputArray) {
+      output[p.name] = p.value
+    }
+
+    return { success: true, body: { status: job.status, output } }
   }
 
   async delete (jobId) {
@@ -615,8 +617,8 @@ class JobService extends ModelService {
 
     await job.destroy()
 
-    return { success: true, body: this.sanitize(job) }
+    return { success: true, body: job }
   }
 }
 
-module.exports = JobService
+export default JobService
