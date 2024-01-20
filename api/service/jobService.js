@@ -10,7 +10,13 @@ const ModelService = require('./modelService')
 const OutputService = require('./outputService')
 
 // Qrack
-const loadWebAssembly = require('../QrackWASM')
+const Qrack = require('../Qrack')
+
+const qrack = Qrack({
+  locateFile: () => {
+    return '../Qrack.wasm'
+  }
+})
 
 const outputService = new OutputService()
 const Job = db.job
@@ -194,7 +200,7 @@ class JobService extends ModelService {
     await job.save()
 
     const p = reqBody.program
-    loadWebAssembly().then(async (core) => {
+    qrack.then(async (core) => {
       let tmp, tmp2, tmpLongVec, tmpCharVec, mtrx
       for (i in p) {
         switch (i.name) {
