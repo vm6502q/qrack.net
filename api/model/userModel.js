@@ -35,10 +35,12 @@ function userModel (sequelize, DataTypes) {
       allowNull: false
     },
     recoveryToken: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     recoveryTokenExpiration: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {})
   Model.generateRecovery = function () {
