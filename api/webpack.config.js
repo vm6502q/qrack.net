@@ -7,6 +7,19 @@ module.exports = {
     fs: 'empty'
   },
   mode: 'production',
+  resolve: {
+    extensions: [".ts", ".js"],
+    fallback: {
+      "aws-sdk": false,
+      "child_process": false,
+      "dns": false,
+      "mock-aws-s3": false,
+      "net": false,
+      "nock": false,
+      "node-pre-gyp": false,
+      "tls": false
+    }
+  },
   module: {
     rules: [
       {
