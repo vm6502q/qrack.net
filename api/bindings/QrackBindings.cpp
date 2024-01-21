@@ -362,13 +362,13 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("mcdiv", optional_override([](int sid, std::vector<int> c, std::vector<int> q, std::vector<int> o, int a) -> void {
         QrackWrapper::MCDIV(sid, a, c, q, o);
     }));
-    function("mcmuln", optional_override([](int sid, std::vector<int> c, int m, std::vector<int> q, std::vector<int> o, int a) -> void {
+    function("mcmuln", optional_override([](int sid, std::vector<int> c, std::vector<int> q, std::vector<int> o, int a, int m) -> void {
         QrackWrapper::MCMULN(sid, a, c, m, q, o);
     }));
-    function("mcdivn", optional_override([](int sid, std::vector<int> c, int m, std::vector<int> q, std::vector<int> o, int a) -> void {
+    function("mcdivn", optional_override([](int sid, std::vector<int> c, std::vector<int> q, std::vector<int> o, int a, int m) -> void {
         QrackWrapper::MCDIVN(sid, a, c, m, q, o);
     }));
-    function("mcpown", optional_override([](int sid, std::vector<int> c, int m, std::vector<int> q, std::vector<int> o, int a) -> void {
+    function("mcpown", optional_override([](int sid, std::vector<int> c, std::vector<int> q, std::vector<int> o, int a, int m) -> void {
         QrackWrapper::MCPOWN(sid, a, c, m, q, o);
     }));
 
