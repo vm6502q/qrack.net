@@ -448,7 +448,24 @@ class JobService extends ModelService {
     const output = {}
     for (let i = 0; i < outputArray.length; ++i) {
       const p = outputArray[i]
-      output[p.dataValues.name] = p.dataValues.value
+      switch (p.outputTypeId) {
+        case 1:
+          output[p.dataValues.name] = parseInt(p.dataValues.value)
+          break
+        case 2:
+          output[p.dataValues.name] = (p.dataValues.value === 'true')
+          break
+        case 3:
+          output[p.dataValues.name] = parseFloat(p.dataValues.value)
+          break
+        case 4:
+            output[p.dataValues.name] = parseInt(p.dataValues.value)
+            break
+        case 5:
+        default:
+          output[p.dataValues.name] = p.dataValues.value
+          break
+      }
     }
 
 
