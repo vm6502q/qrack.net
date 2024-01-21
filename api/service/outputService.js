@@ -41,7 +41,7 @@ class OutputService extends ModelService {
     output.jobId = jobId
     output.outputTypeId = outputTypeId
     output.name = name
-    if (outputTypeId === 5) {
+    if (outputTypeId >= 5) {
       if (value.size() === 0) {
         output.value = ''
       } else {

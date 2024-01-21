@@ -224,9 +224,7 @@ class JobService extends ModelService {
           await outputService.createOrUpdate(job.id, i.output, core.init_qbdd(...i.parameters), 1)
           break
         case 'init_clone':
-          if (this.single_quid_output_op(job, core.init_clone, i, 1)) {
-            return
-          }
+          this.single_quid_output_op(job, core.init_clone, i, 1)
           break
         case 'destroy':
           this.single_quid_op(job, core.destroy, i)
@@ -586,6 +584,50 @@ class JobService extends ModelService {
         case 'mcpown':
           this.single_quid_mc3_op(job, core.mcpown, i, core)
           break
+        case 'init_qneuron':
+          this.single_quid_mc_output_op(job, core.init_qneuron, i, 1, core)
+          break
+        case 'clone_qneuron':
+          this.single_quid_output_op(job, core.clone_qneuron, i, 1)
+          break
+        case 'destroy_qneuron':
+          this.single_quid_op(job, core.destroy_qneuron, i)
+          break
+        case 'set_qneuron_angles':
+          tmp = this.validate_sid(i.parameters[0], job)
+          i.parameters.shift()
+          tmpDoubleVec = new core.VectorDouble()
+          for (let j = 0; j < i.parameters[0].length; ++j) {
+            tmpDoubleVec.push_back(i.parameters[0][j])
+          }
+          i.parameters.shift()
+          core.set_qneuron_angles(tmp, tmpDoubleVec, ...i.parameters)
+          tmpDoubleVec.delete()
+          break
+        case 'get_qneuron_angles':
+          this.single_quid_output_op(job, core.init_clone, i, 6)
+          break
+        case 'set_qneuron_alpha':
+          this.single_quid_op(job, core.set_qneuron_alpha, i)
+          break
+        case 'set_qneuron_activation_fn':
+          this.single_quid_op(job, core.set_qneuron_activation_fn, i)
+          break
+        case 'qneuron_predict':
+          this.single_quid_op(job, core.qneuron_predict, i)
+          break
+        case 'qneuron_unpredict':
+          this.single_quid_op(job, core.qneuron_unpredict, i)
+          break
+        case 'qneuron_learn_cycle':
+          this.single_quid_op(job, core.qneuron_learn_cycle, i)
+          break
+        case 'qneuron_learn':
+          this.single_quid_op(job, core.qneuron_learn, i)
+          break
+        case 'qneuron_learn_permutation':
+          this.single_quid_op(job, core.qneuron_learn_permutation, i)
+          break
         default:
           throw new Error('One or more of your job program operation line names do not match a defined operation name.')
       }
@@ -661,6 +703,7 @@ class JobService extends ModelService {
     const output = {}
     for (let i = 0; i < outputArray.length; ++i) {
       const p = outputArray[i]
+      let valStrings, o
       switch (p.outputTypeId) {
         case 1:
           output[p.dataValues.name] = parseInt(p.dataValues.value)
@@ -675,10 +718,18 @@ class JobService extends ModelService {
           output[p.dataValues.name] = parseInt(p.dataValues.value)
           break
         case 5:
-          const valStrings = p.dataValues.value.split(',')
-          const o = []
+          valStrings = p.dataValues.value.split(',')
+          o = []
           for (let i = 0; i < valStrings.length; ++i) {
             o.push(parseInt(valStrings[i]))
+          }
+          output[p.dataValues.name] = o
+          break
+        case 6:
+          valStrings = p.dataValues.value.split(',')
+          o = []
+          for (let i = 0; i < valStrings.length; ++i) {
+            o.push(parseFloat(valStrings[i]))
           }
           output[p.dataValues.name] = o
           break

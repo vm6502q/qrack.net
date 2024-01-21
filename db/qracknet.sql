@@ -310,6 +310,7 @@ COPY public."outputTypes" (id, "createdAt", "updatedAt", name) FROM stdin;
 3	2024-01-19 00:00:00-05	2024-01-19 00:00:00-05	double
 4	2024-01-19 00:00:00-05	2024-01-19 00:00:00-05	bitCapInt
 5	2024-01-19 00:00:00-05	2024-01-19 00:00:00-05	std::vector<bitCapInt>
+6	2024-01-19 00:00:00-05	2024-01-19 00:00:00-05	std::vector<double>
 \.
 
 
