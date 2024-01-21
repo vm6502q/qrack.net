@@ -141,7 +141,8 @@ class JobService extends ModelService {
 
   async runQrackProgram (core, p, job) {
     let tmp, tmp2, tmpLongVec, tmpCharVec, tmpDoubleVec
-    for (const i in p) {
+    for (let lcv = 0; lcv < p.length; ++lcv) {
+      const i = p[lcv]
       switch (i.name) {
         case 'init_general':
           await outputService.createOrUpdate(job.id, i.output, core.init_general(...i.parameters), 1)
@@ -414,10 +415,11 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    qrack.then(async (core) => { await this.runQrackProgram(core, reqBody.program, job) })
+    qrack.then(async (core) => {
+      return await this.runQrackProgram(core, reqBody.program, job)
+    })
       .catch(async (e) => {
         // Job status 2: FAILURE
-        console.log(job)
         job.jobStatusTypeId = 2
         job.statusMessage = e.toString()
         await job.save()
