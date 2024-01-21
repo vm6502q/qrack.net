@@ -131,6 +131,24 @@ class JobService extends ModelService {
     tmpDoubleVec.delete()
   }
 
+  async single_quid_mc2_op (job, fn, i, core) {
+    const tmp = this.validate_sid(i.parameters[0], job)
+    i.parameters.shift()
+    const tmpIntVec = new core.VectorInt()
+    for (let j = 0; j < i.parameters[0].length; ++j) {
+      tmpIntVec.push_back(i.parameters[0][j])
+    }
+    i.parameters.shift()
+    const tmpIntVec2 = new core.VectorInt()
+    for (let j = 0; j < i.parameters[0].length; ++j) {
+      tmpIntVec2.push_back(i.parameters[0][j])
+    }
+    i.parameters.shift()
+    fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters)
+    tmpIntVec.delete()
+    tmpIntVec2.delete()
+  }
+
   async single_quid_mc2_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
@@ -147,6 +165,30 @@ class JobService extends ModelService {
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters), oType)
     tmpIntVec.delete()
     tmpIntVec2.delete()
+  }
+
+  async single_quid_mc3_op (job, fn, i, core) {
+    const tmp = this.validate_sid(i.parameters[0], job)
+    i.parameters.shift()
+    const tmpIntVec = new core.VectorInt()
+    for (let j = 0; j < i.parameters[0].length; ++j) {
+      tmpIntVec.push_back(i.parameters[0][j])
+    }
+    i.parameters.shift()
+    const tmpIntVec2 = new core.VectorInt()
+    for (let j = 0; j < i.parameters[0].length; ++j) {
+      tmpIntVec2.push_back(i.parameters[0][j])
+    }
+    i.parameters.shift()
+    const tmpIntVec3 = new core.VectorInt()
+    for (let j = 0; j < i.parameters[0].length; ++j) {
+      tmpIntVec3.push_back(i.parameters[0][j])
+    }
+    i.parameters.shift()
+    fn(tmp, tmpIntVec, tmpIntVec2, tmpIntVec3, ...i.parameters)
+    tmpIntVec.delete()
+    tmpIntVec2.delete()
+    tmpIntVec3.delete()
   }
 
   async single_quid_mc_double_output_op (job, fn, i, oType, core) {
@@ -495,6 +537,54 @@ class JobService extends ModelService {
           break
         case 'iqft':
           this.single_quid_mc_op(job, core.iqft, i, core)
+          break
+        case 'add':
+          this.single_quid_mc_op(job, core.add, i, core)
+          break
+        case 'sub':
+          this.single_quid_mc_op(job, core.sub, i, core)
+          break
+        case 'adds':
+          this.single_quid_mc_op(job, core.adds, i, core)
+          break
+        case 'subs':
+          this.single_quid_mc_op(job, core.subs, i, core)
+          break
+        case 'mcadd':
+          this.single_quid_mc2_op(job, core.mcadd, i, core)
+          break
+        case 'mcsub':
+          this.single_quid_mc2_op(job, core.mcsub, i, core)
+          break
+        case 'mul':
+          this.single_quid_mc2_op(job, core.mul, i, core)
+          break
+        case 'div':
+          this.single_quid_mc2_op(job, core.div, i, core)
+          break
+        case 'muln':
+          this.single_quid_mc2_op(job, core.muln, i, core)
+          break
+        case 'divn':
+          this.single_quid_mc2_op(job, core.divn, i, core)
+          break
+        case 'pown':
+          this.single_quid_mc2_op(job, core.pown, i, core)
+          break
+        case 'mcmul':
+          this.single_quid_mc3_op(job, core.mcmul, i, core)
+          break
+        case 'mcdiv':
+          this.single_quid_mc3_op(job, core.mcdiv, i, core)
+          break
+        case 'mcmuln':
+          this.single_quid_mc3_op(job, core.mcmuln, i, core)
+          break
+        case 'mcdivn':
+          this.single_quid_mc3_op(job, core.mcdivn, i, core)
+          break
+        case 'mcpown':
+          this.single_quid_mc3_op(job, core.mcpown, i, core)
           break
         default:
           throw new Error('One or more of your job program operation line names do not match a defined operation name.')
