@@ -454,6 +454,42 @@ class JobService extends ModelService {
         case 'macswap':
           this.single_quid_mc_op(job, core.macswap, i, core)
           break
+        case 'and':
+          this.single_quid_op(job, core.and, i)
+          break
+        case 'or':
+          this.single_quid_op(job, core.or, i)
+          break
+        case 'xor':
+          this.single_quid_op(job, core.xor, i)
+          break
+        case 'nand':
+          this.single_quid_op(job, core.nand, i)
+          break
+        case 'nor':
+          this.single_quid_op(job, core.nor, i)
+          break
+        case 'xnor':
+          this.single_quid_op(job, core.xnor, i)
+          break
+        case 'cland':
+          this.single_quid_op(job, core.cland, i)
+          break
+        case 'clor':
+          this.single_quid_op(job, core.clor, i)
+          break
+        case 'clxor':
+          this.single_quid_op(job, core.clxor, i)
+          break
+        case 'clnand':
+          this.single_quid_op(job, core.clnand, i)
+          break
+        case 'clnor':
+          this.single_quid_op(job, core.clnor, i)
+          break
+        case 'clxnor':
+          this.single_quid_op(job, core.clxnor, i)
+          break
         default:
           throw new Error('One or more of your job program operation line names do not match a defined operation name.')
       }
