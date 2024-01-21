@@ -1,0 +1,39 @@
+{
+  "name": "qracknet-api",
+  "version": "0.1.0",
+  "description": "RESTful API for Qrack quantum computer simulator",
+  "main": "index.js",
+  "scripts": {
+    "db:schema": "node ./scripts/db/schema.mjs",
+    "db:migrate": "node ./scripts/db/migrate.mjs",
+    "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "db:seed": "npx sequelize-cli db:seed --seed",
+    "db:seed:all": "npx sequelize-cli db:seed:all"
+  },
+  "keywords": [
+    "api",
+    "restful",
+    "json",
+    "quantum"
+  ],
+  "author": "Unitary Fund",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@types/sequelize": "^4.28.10",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "express-jwt": "^8.4.1",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
+    "nodemailer": "^6.6.2",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.6.5",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
+  }
+}

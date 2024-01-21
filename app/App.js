@@ -1,12 +1,13 @@
 import './App.css'
-import React, { useState, useEffect } from 'react'
-
-import BenchmarkChart from './components/BenchmarkChart.js'
+import React, { Suspense, useState, useEffect } from 'react'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 import Qrack from './Qrack.js'
 import QrackWASM from './Qrack.wasm'
 
 import logo from './assets/img/qrack_logo.png'
+
+const BenchmarkChart = React.lazy(() => import('./components/BenchmarkChart.js'))
 
 const qrack = Qrack({
   locateFile: () => {
@@ -60,7 +61,9 @@ function App () {
         <h1 className='app-title'>WebAssembly Qrack With React.js From Scratch!</h1>
         <h4>QFT (including random unitary initialization, 1 sample)</h4>
       </div>
-      <BenchmarkChart data={fullData} width={width} height={400} xLabel='Qubits' xType='number' yLabel='Time (ms)' yType='number' />
+      <Suspense fallback={<div>Loading and running benchmark...</div>}>
+        <BenchmarkChart data={fullData} width={width} height={400} xLabel='Qubits' xType='number' yLabel='Time (ms)' yType='number' />
+      </Suspense>
       <div className='container text-center'>
         <div>
           <p>These benchmarks for the <b>open source</b> <a href='https://github.com/vm6502q/qrack'>vm6502q/qrack</a> quantum computer simulator library <b>were just run in your browser!</b></p>
@@ -70,7 +73,7 @@ function App () {
         <div className='qrack-logo'>
           <b>
             <h4>Powered by Qrack</h4>
-            <a href='https://github.com/vm6502q/qrack'><img src={logo} width='192px' /></a>
+            <a href='https://github.com/vm6502q/qrack'><LazyLoadImage src={logo} width='192px' /></a>
             <h4 className='qrack-logo-bottom-text'>You rock!</h4>
           </b>
         </div>

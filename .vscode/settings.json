@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "functional": "cpp",
         "cctype": "cpp",
         "clocale": "cpp",
         "cmath": "cpp",
@@ -14,7 +15,6 @@
         "array": "cpp",
         "atomic": "cpp",
         "strstream": "cpp",
-        "bit": "cpp",
         "*.tcc": "cpp",
         "bitset": "cpp",
         "cfenv": "cpp",
@@ -24,21 +24,19 @@
         "cstdint": "cpp",
         "deque": "cpp",
         "list": "cpp",
-        "map": "cpp",
-        "set": "cpp",
         "unordered_map": "cpp",
-        "unordered_set": "cpp",
         "vector": "cpp",
         "exception": "cpp",
         "algorithm": "cpp",
-        "functional": "cpp",
         "iterator": "cpp",
+        "map": "cpp",
         "memory": "cpp",
         "memory_resource": "cpp",
         "numeric": "cpp",
         "optional": "cpp",
         "random": "cpp",
         "ratio": "cpp",
+        "set": "cpp",
         "string": "cpp",
         "string_view": "cpp",
         "system_error": "cpp",
@@ -63,6 +61,7 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "bit": "cpp"
     }
 }

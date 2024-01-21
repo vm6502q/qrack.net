@@ -8,7 +8,7 @@ emcmake cmake -DENABLE_RDRAND=OFF -DUINTPOW=5 -DENABLE_PTHREAD=OFF -DSEED_DEVRAN
 
 The library is already built in this example. To recompile the WASM, just run `make all` in the project root directory.
 
-This example provides a pre-built copy of the [Qrack v7 API](https://github.com/vm6502q/qrack).
+This example provides a pre-built copy of the [Qrack API](https://github.com/unitaryfund/qrack).
 
 The website code is based upon the following example reference, with thanks: 
 
