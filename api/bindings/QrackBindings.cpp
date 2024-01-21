@@ -248,11 +248,11 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     }));
 
     // exponential of Pauli operators
-    function("exp", optional_override([](int sid, double phi, std::vector<int> q, std::vector<char> b) -> void {
+    function("exp", optional_override([](int sid, std::vector<int> q, std::vector<char> b double phi) -> void {
         QrackWrapper::Exp(sid, phi, q, b);
     }));
     // multi-controlled exponential of Pauli operators
-    function("mcexp", optional_override([](int sid, double phi, std::vector<int> c, std::vector<int> q, std::vector<char> b) -> void {
+    function("mcexp", optional_override([](int sid, std::vector<int> c, std::vector<int> q, std::vector<char> b double phi) -> void {
         QrackWrapper::MCExp(sid, phi, c, q, b);
     }));
 

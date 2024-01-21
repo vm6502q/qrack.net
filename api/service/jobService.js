@@ -81,8 +81,6 @@ class JobService extends ModelService {
     i.parameters.shift()
     fn(tmp, tmpIntVec, ...i.parameters)
     tmpIntVec.delete()
-
-    return false
   }
 
   async single_quid_mc_output_op (job, fn, i, oType, core) {
@@ -95,8 +93,6 @@ class JobService extends ModelService {
     i.parameters.shift()
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, ...i.parameters), oType)
     tmpIntVec.delete()
-
-    return false
   }
 
   async single_quid_mc_pauli_output_op (job, fn, i, oType, core) {
@@ -115,8 +111,6 @@ class JobService extends ModelService {
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpCharVec, ...i.parameters), oType)
     tmpIntVec.delete()
     tmpCharVec.delete()
-
-    return false
   }
 
   async single_quid_mc_mtrx_op (job, fn, i, core) {
@@ -135,8 +129,6 @@ class JobService extends ModelService {
     fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters)
     tmpIntVec.delete()
     tmpDoubleVec.delete()
-
-    return false
   }
 
   async single_quid_mc2_output_op (job, fn, i, oType, core) {
@@ -155,8 +147,6 @@ class JobService extends ModelService {
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters), oType)
     tmpIntVec.delete()
     tmpIntVec2.delete()
-
-    return false
   }
 
   async single_quid_mc_double_output_op (job, fn, i, oType, core) {
@@ -175,12 +165,10 @@ class JobService extends ModelService {
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters), oType)
     tmpIntVec.delete()
     tmpDoubleVec.delete()
-
-    return false
   }
 
   async runQrackProgram (core, p, job) {
-    let tmp, tmp2, tmpIntVec, tmpCharVec, tmpDoubleVec
+    let tmp, tmp2, tmpIntVec, tmpIntVec2, tmpCharVec, tmpDoubleVec
     for (let lcv = 0; lcv < p.length; ++lcv) {
       const i = p[lcv]
       switch (i.name) {
@@ -266,6 +254,7 @@ class JobService extends ModelService {
           tmpIntVec = new core.VectorInt(i.parameters[0])
           i.parameters.shift()
           core.compose(tmp, tmp2, tmpIntVec)
+          tmpIntVec.delete()
           break
         case 'decompose':
           this.single_quid_mc_output_op(job, core.decompose, i, 1, core)
@@ -324,6 +313,7 @@ class JobService extends ModelService {
           tmpDoubleVec = new core.VectorDouble(i.parameters[0])
           i.parameters.shift()
           core.mtrx(tmp, tmpDoubleVec, ...i.parameters)
+          tmpDoubleVec.delete()
           break
         case 'mcx':
           this.single_quid_mc_op(job, core.mcx, i, core)
@@ -401,10 +391,68 @@ class JobService extends ModelService {
           this.single_quid_mc_op(job, core.mz, i, core)
           break
         case 'r':
-          this.single_quid_op(job, core.r, i, core)
+          this.single_quid_op(job, core.r, i)
           break
         case 'mcr':
           this.single_quid_mc_op(job, core.mcr, i, core)
+          break
+        case 'exp':
+          tmp = this.validate_sid(i.parameters[0], job)
+          i.parameters.shift()
+          tmpIntVec = new core.VectorInt()
+          for (let j = 0; j < i.parameters[0].length; ++j) {
+            tmpIntVec.push_back(i.parameters[0][j])
+          }
+          i.parameters.shift()
+          tmpCharVec = new core.VectorChar()
+          for (let j = 0; j < i.parameters[0].length; ++j) {
+            tmpCharVec.push_back(i.parameters[0][j])
+          }
+          i.parameters.shift()
+          core.exp(tmp, tmpIntVec, tmpCharVec, ...i.parameters)
+          tmpIntVec.delete()
+          tmpCharVec.delete()
+          break
+        case 'mcexp':
+          tmp = this.validate_sid(i.parameters[0], job)
+          i.parameters.shift()
+          tmpIntVec = new core.VectorInt()
+          for (let j = 0; j < i.parameters[0].length; ++j) {
+            tmpIntVec.push_back(i.parameters[0][j])
+          }
+          i.parameters.shift()
+          tmpIntVec2 = new core.VectorInt()
+          for (let j = 0; j < i.parameters[0].length; ++j) {
+            tmpIntVec2.push_back(i.parameters[0][j])
+          }
+          i.parameters.shift()
+          tmpCharVec = new core.VectorChar()
+          for (let j = 0; j < i.parameters[0].length; ++j) {
+            tmpCharVec.push_back(i.parameters[0][j])
+          }
+          i.parameters.shift()
+          core.mcexp(tmp, tmpIntVec, tmpIntVec2, tmpCharVec, ...i.parameters)
+          tmpIntVec.delete()
+          tmpIntVec2.delete()
+          tmpCharVec.delete()
+          break
+        case 'swap':
+          this.single_quid_op(job, core.swap, i)
+          break
+        case 'iswap':
+          this.single_quid_op(job, core.iswap, i)
+          break
+        case 'adjiswap':
+          this.single_quid_op(job, core.adjiswap, i)
+          break
+        case 'fsim':
+          this.single_quid_op(job, core.fsim, i)
+          break
+        case 'mcswap':
+          this.single_quid_mc_op(job, core.mcswap, i, core)
+          break
+        case 'macswap':
+          this.single_quid_mc_op(job, core.macswap, i, core)
           break
         default:
           throw new Error('One or more of your job program operation line names do not match a defined operation name.')
