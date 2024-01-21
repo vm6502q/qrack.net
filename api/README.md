@@ -149,6 +149,8 @@ Releases a qubit ID.
 - `sid`: Simulator ID.
 - `q`: Qubit ID.
 
+These are the gates:
+
 - `x(quid sid, bitLenInt q)`
 - `y(quid sid, bitLenInt q)`
 - `z(quid sid, bitLenInt q)`
@@ -202,6 +204,8 @@ Rotates qubit by the specified angle around the specified Pauli axis.
 - `sid`: Simulator ID.
 - `c`: Array of control qubit IDs.
 - `q`: Qubit ID.
+
+These are the gates:
 
 - `mcx(quid sid, std::vector<bitLenInt> c, bitLenInt q)`
 - `mcy(quid sid, std::vector<bitLenInt> c, bitLenInt q)`
@@ -286,6 +290,8 @@ Multi-controlled, single-target multiplexer gate
 
 - `sid`: Simulator ID.
 - `q`: Array of qubit IDs.
+
+These are the gates:
 
 - `mx(quid sid, std::vector<bitLenInt> q)`
 - `my(quid sid, std::vector<bitLenInt> q)`
@@ -381,6 +387,8 @@ If controls are all |0>, swap the two input qubits
 - `qi2`: Input qubit ID (2).
 - `qo`: Output qubit ID.
 
+These are the gates:
+
 - `and(quid sid, bitLenInt qi1, bitLenInt qi2, bitLenInt qo)`
 - `or(quid sid, bitLenInt qi1, bitLenInt qi2, bitLenInt qo)`
 - `xor(quid sid, bitLenInt qi1, bitLenInt qi2, bitLenInt qo)`
@@ -396,6 +404,8 @@ If controls are all |0>, swap the two input qubits
 - `ci`: Input classical bit value.
 - `qi`: Input qubit ID.
 - `qo`: Output qubit ID.
+
+These are the gates:
 
 - `cland(quid sid, bool ci, bitLenInt qi, bitLenInt qo)`
 - `clor(quid sid, bool ci, bitLenInt qi, bitLenInt qo)`
