@@ -224,67 +224,67 @@ class JobService extends ModelService {
           await outputService.createOrUpdate(job.id, i.output, core.init_qbdd(...i.parameters), 1)
           break
         case 'init_clone':
-          this.single_quid_output_op(job, core.init_clone, i, 1)
+          await this.single_quid_output_op(job, core.init_clone, i, 1)
           break
         case 'destroy':
-          this.single_quid_op(job, core.destroy, i)
+          await this.single_quid_op(job, core.destroy, i)
           break
         case 'seed':
-          this.single_quid_op(job, core.seed, i)
+          await this.single_quid_op(job, core.seed, i)
           break
         case 'try_separate_1qb':
-          this.single_quid_output_op(job, core.try_separate_1qb, i, 2)
+          await this.single_quid_output_op(job, core.try_separate_1qb, i, 2)
           break
         case 'try_separate_2qb':
-          this.single_quid_output_op(job, core.try_separate_2qb, i, 2)
+          await this.single_quid_output_op(job, core.try_separate_2qb, i, 2)
           break
         case 'try_separate_tol':
-          this.single_quid_mc_output_op(job, core.try_separate_tol, i, 2, core)
+          await this.single_quid_mc_output_op(job, core.try_separate_tol, i, 2, core)
           break
         case 'get_unitary_fidelity':
-          this.single_quid_output_op(job, core.get_unitary_fidelity, i, 2)
+          await this.single_quid_output_op(job, core.get_unitary_fidelity, i, 2)
           break
         case 'reset_unitary_fidelity':
-          this.single_quid_op(job, core.reset_unitary_fidelity, i)
+          await this.single_quid_op(job, core.reset_unitary_fidelity, i)
           break
         case 'set_sdrp':
-          this.single_quid_op(job, core.set_sdrp, i)
+          await this.single_quid_op(job, core.set_sdrp, i)
           break
         case 'set_reactive_separate':
-          this.single_quid_op(job, core.set_reactive_separate, i)
+          await this.single_quid_op(job, core.set_reactive_separate, i)
           break
         case 'set_t_injection':
-          this.single_quid_op(job, core.set_t_injection, i)
+          await this.single_quid_op(job, core.set_t_injection, i)
           break
         case 'prob':
-          this.single_quid_output_op(job, core.prob, i, 3)
+          await this.single_quid_output_op(job, core.prob, i, 3)
           break
         case 'prob_rdm':
-          this.single_quid_output_op(job, core.prob_rdm, i, 3)
+          await this.single_quid_output_op(job, core.prob_rdm, i, 3)
           break
         case 'perm_prob':
-          this.single_quid_mc2_output_op(job, core.perm_prob, i, 3, core)
+          await this.single_quid_mc2_output_op(job, core.perm_prob, i, 3, core)
           break
         case 'perm_prob_rdm':
-          this.single_quid_mc_pauli_output_op(job, core.perm_prob_rdm, i, 3, core)
+          await this.single_quid_mc_pauli_output_op(job, core.perm_prob_rdm, i, 3, core)
           break
         case 'fact_exp':
-          this.single_quid_mc2_output_op(job, core.fact_exp, i, 3, core)
+          await this.single_quid_mc2_output_op(job, core.fact_exp, i, 3, core)
           break
         case 'fact_exp_rdm':
-          this.single_quid_mc2_output_op(job, core.fact_exp_rdm, i, 3, core)
+          await this.single_quid_mc2_output_op(job, core.fact_exp_rdm, i, 3, core)
           break
         case 'fact_exp_fp':
-          this.single_quid_mc_double_output_op(job, core.fact_exp_fp, i, 3, core)
+          await this.single_quid_mc_double_output_op(job, core.fact_exp_fp, i, 3, core)
           break
         case 'fact_exp_fp_rdm':
-          this.single_quid_mc_double_output_op(job, core.fact_exp_fp_rdm, i, 3, core)
+          await this.single_quid_mc_double_output_op(job, core.fact_exp_fp_rdm, i, 3, core)
           break
         case 'phase_parity':
-          this.single_quid_mc_op(job, core.phase_parity, i, core)
+          await this.single_quid_mc_op(job, core.phase_parity, i, core)
           break
         case 'joint_ensemble_prob':
-          this.single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3, core)
+          await this.single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3, core)
           break
         case 'compose':
           tmp = this.validate_sid(i.parameters[0], job)
@@ -297,55 +297,55 @@ class JobService extends ModelService {
           tmpIntVec.delete()
           break
         case 'decompose':
-          this.single_quid_mc_output_op(job, core.decompose, i, 1, core)
+          await this.single_quid_mc_output_op(job, core.decompose, i, 1, core)
           break
         case 'dispose':
-          this.single_quid_mc_op(job, core.dispose, i, core)
+          await this.single_quid_mc_op(job, core.dispose, i, core)
           break
         case 'reset_all':
-          this.single_quid_op(job, core.reset_all, i)
+          await this.single_quid_op(job, core.reset_all, i)
           break
         case 'measure':
-          this.single_quid_output_op(job, core.measure, i, 2)
+          await this.single_quid_output_op(job, core.measure, i, 2)
           break
         case 'force_measure':
-          this.single_quid_output_op(job, core.force_measure, i, 2)
+          await this.single_quid_output_op(job, core.force_measure, i, 2)
           break
         case 'measure_basis':
-          this.single_quid_mc_pauli_output_op(job, core.measure_basis, i, 3, core)
+          await this.single_quid_mc_pauli_output_op(job, core.measure_basis, i, 3, core)
           break
         case 'measure_all':
-          this.single_quid_output_op(job, core.measure_all, i, 4)
+          await this.single_quid_output_op(job, core.measure_all, i, 4)
           break
         case 'measure_shots':
-          this.single_quid_mc_output_op(job, core.measure_shots, i, 5, core)
+          await this.single_quid_mc_output_op(job, core.measure_shots, i, 5, core)
           break
         case 'x':
-          this.single_quid_op(job, core.x, i)
+          await this.single_quid_op(job, core.x, i)
           break
         case 'y':
-          this.single_quid_op(job, core.y, i)
+          await this.single_quid_op(job, core.y, i)
           break
         case 'z':
-          this.single_quid_op(job, core.z, i)
+          await this.single_quid_op(job, core.z, i)
           break
         case 'h':
-          this.single_quid_op(job, core.h, i)
+          await this.single_quid_op(job, core.h, i)
           break
         case 's':
-          this.single_quid_op(job, core.s, i)
+          await this.single_quid_op(job, core.s, i)
           break
         case 't':
-          this.single_quid_op(job, core.t, i)
+          await this.single_quid_op(job, core.t, i)
           break
         case 'adjs':
-          this.single_quid_op(job, core.adjs, i)
+          await this.single_quid_op(job, core.adjs, i)
           break
         case 'adjt':
-          this.single_quid_op(job, core.adjt, i)
+          await this.single_quid_op(job, core.adjt, i)
           break
         case 'u':
-          this.single_quid_op(job, core.u, i)
+          await this.single_quid_op(job, core.u, i)
           break
         case 'mtrx':
           tmp = this.validate_sid(i.parameters[0], job)
@@ -356,85 +356,85 @@ class JobService extends ModelService {
           tmpDoubleVec.delete()
           break
         case 'mcx':
-          this.single_quid_mc_op(job, core.mcx, i, core)
+          await this.single_quid_mc_op(job, core.mcx, i, core)
           break
         case 'mcy':
-          this.single_quid_mc_op(job, core.mcy, i, core)
+          await this.single_quid_mc_op(job, core.mcy, i, core)
           break
         case 'mcz':
-          this.single_quid_mc_op(job, core.mcz, i, core)
+          await this.single_quid_mc_op(job, core.mcz, i, core)
           break
         case 'mch':
-          this.single_quid_mc_op(job, core.mch, i, core)
+          await this.single_quid_mc_op(job, core.mch, i, core)
           break
         case 'mcs':
-          this.single_quid_mc_op(job, core.mcs, i, core)
+          await this.single_quid_mc_op(job, core.mcs, i, core)
           break
         case 'mct':
-          this.single_quid_mc_op(job, core.mct, i, core)
+          await this.single_quid_mc_op(job, core.mct, i, core)
           break
         case 'mcadjs':
-          this.single_quid_mc_op(job, core.mcadjs, i, core)
+          await this.single_quid_mc_op(job, core.mcadjs, i, core)
           break
         case 'mcadjt':
-          this.single_quid_mc_op(job, core.mcadjt, i, core)
+          await this.single_quid_mc_op(job, core.mcadjt, i, core)
           break
         case 'mcu':
-          this.single_quid_mc_op(job, core.mcu, i, core)
+          await this.single_quid_mc_op(job, core.mcu, i, core)
           break
         case 'mcmtrx':
-          this.single_quid_mc_mtrx_op(job, core.mcmtrx, i, core)
+          await this.single_quid_mc_mtrx_op(job, core.mcmtrx, i, core)
           break
         case 'macx':
-          this.single_quid_mc_op(job, core.macx, i, core)
+          await this.single_quid_mc_op(job, core.macx, i, core)
           break
         case 'macy':
-          this.single_quid_mc_op(job, core.macy, i, core)
+          await this.single_quid_mc_op(job, core.macy, i, core)
           break
         case 'macz':
-          this.single_quid_mc_op(job, core.macz, i, core)
+          await this.single_quid_mc_op(job, core.macz, i, core)
           break
         case 'mach':
-          this.single_quid_mc_op(job, core.mach, i, core)
+          await this.single_quid_mc_op(job, core.mach, i, core)
           break
         case 'macs':
-          this.single_quid_mc_op(job, core.macs, i, core)
+          await this.single_quid_mc_op(job, core.macs, i, core)
           break
         case 'mact':
-          this.single_quid_mc_op(job, core.mact, i, core)
+          await this.single_quid_mc_op(job, core.mact, i, core)
           break
         case 'macadjs':
-          this.single_quid_mc_op(job, core.macadjs, i, core)
+          await this.single_quid_mc_op(job, core.macadjs, i, core)
           break
         case 'macadjt':
-          this.single_quid_mc_op(job, core.macadjt, i, core)
+          await this.single_quid_mc_op(job, core.macadjt, i, core)
           break
         case 'macu':
-          this.single_quid_mc_op(job, core.macu, i, core)
+          await this.single_quid_mc_op(job, core.macu, i, core)
           break
         case 'macmtrx':
-          this.single_quid_mc_mtrx_op(job, core.macmtrx, i, core)
+          await this.single_quid_mc_mtrx_op(job, core.macmtrx, i, core)
           break
         case 'ucmtrx':
-          this.single_quid_mc_mtrx_op(job, core.ucmtrx, i, core)
+          await this.single_quid_mc_mtrx_op(job, core.ucmtrx, i, core)
           break
         case 'multiplex_1qb_mtrx':
-          this.single_quid_mc_mtrx_op(job, core.multiplex_1qb_mtrx, i, core)
+          await this.single_quid_mc_mtrx_op(job, core.multiplex_1qb_mtrx, i, core)
           break
         case 'mx':
-          this.single_quid_mc_op(job, core.mx, i, core)
+          await this.single_quid_mc_op(job, core.mx, i, core)
           break
         case 'my':
-          this.single_quid_mc_op(job, core.my, i, core)
+          await this.single_quid_mc_op(job, core.my, i, core)
           break
         case 'mz':
-          this.single_quid_mc_op(job, core.mz, i, core)
+          await this.single_quid_mc_op(job, core.mz, i, core)
           break
         case 'r':
-          this.single_quid_op(job, core.r, i)
+          await this.single_quid_op(job, core.r, i)
           break
         case 'mcr':
-          this.single_quid_mc_op(job, core.mcr, i, core)
+          await this.single_quid_mc_op(job, core.mcr, i, core)
           break
         case 'exp':
           tmp = this.validate_sid(i.parameters[0], job)
@@ -477,121 +477,121 @@ class JobService extends ModelService {
           tmpCharVec.delete()
           break
         case 'swap':
-          this.single_quid_op(job, core.swap, i)
+          await this.single_quid_op(job, core.swap, i)
           break
         case 'iswap':
-          this.single_quid_op(job, core.iswap, i)
+          await this.single_quid_op(job, core.iswap, i)
           break
         case 'adjiswap':
-          this.single_quid_op(job, core.adjiswap, i)
+          await this.single_quid_op(job, core.adjiswap, i)
           break
         case 'fsim':
-          this.single_quid_op(job, core.fsim, i)
+          await this.single_quid_op(job, core.fsim, i)
           break
         case 'mcswap':
-          this.single_quid_mc_op(job, core.mcswap, i, core)
+          await this.single_quid_mc_op(job, core.mcswap, i, core)
           break
         case 'macswap':
-          this.single_quid_mc_op(job, core.macswap, i, core)
+          await this.single_quid_mc_op(job, core.macswap, i, core)
           break
         case 'and':
-          this.single_quid_op(job, core.and, i)
+          await this.single_quid_op(job, core.and, i)
           break
         case 'or':
-          this.single_quid_op(job, core.or, i)
+          await this.single_quid_op(job, core.or, i)
           break
         case 'xor':
-          this.single_quid_op(job, core.xor, i)
+          await this.single_quid_op(job, core.xor, i)
           break
         case 'nand':
-          this.single_quid_op(job, core.nand, i)
+          await this.single_quid_op(job, core.nand, i)
           break
         case 'nor':
-          this.single_quid_op(job, core.nor, i)
+          await this.single_quid_op(job, core.nor, i)
           break
         case 'xnor':
-          this.single_quid_op(job, core.xnor, i)
+          await this.single_quid_op(job, core.xnor, i)
           break
         case 'cland':
-          this.single_quid_op(job, core.cland, i)
+          await this.single_quid_op(job, core.cland, i)
           break
         case 'clor':
-          this.single_quid_op(job, core.clor, i)
+          await this.single_quid_op(job, core.clor, i)
           break
         case 'clxor':
-          this.single_quid_op(job, core.clxor, i)
+          await this.single_quid_op(job, core.clxor, i)
           break
         case 'clnand':
-          this.single_quid_op(job, core.clnand, i)
+          await this.single_quid_op(job, core.clnand, i)
           break
         case 'clnor':
-          this.single_quid_op(job, core.clnor, i)
+          await this.single_quid_op(job, core.clnor, i)
           break
         case 'clxnor':
-          this.single_quid_op(job, core.clxnor, i)
+          await this.single_quid_op(job, core.clxnor, i)
           break
         case 'qft':
-          this.single_quid_mc_op(job, core.qft, i, core)
+          await this.single_quid_mc_op(job, core.qft, i, core)
           break
         case 'iqft':
-          this.single_quid_mc_op(job, core.iqft, i, core)
+          await this.single_quid_mc_op(job, core.iqft, i, core)
           break
         case 'add':
-          this.single_quid_mc_op(job, core.add, i, core)
+          await this.single_quid_mc_op(job, core.add, i, core)
           break
         case 'sub':
-          this.single_quid_mc_op(job, core.sub, i, core)
+          await this.single_quid_mc_op(job, core.sub, i, core)
           break
         case 'adds':
-          this.single_quid_mc_op(job, core.adds, i, core)
+          await this.single_quid_mc_op(job, core.adds, i, core)
           break
         case 'subs':
-          this.single_quid_mc_op(job, core.subs, i, core)
+          await this.single_quid_mc_op(job, core.subs, i, core)
           break
         case 'mcadd':
-          this.single_quid_mc2_op(job, core.mcadd, i, core)
+          await this.single_quid_mc2_op(job, core.mcadd, i, core)
           break
         case 'mcsub':
-          this.single_quid_mc2_op(job, core.mcsub, i, core)
+          await this.single_quid_mc2_op(job, core.mcsub, i, core)
           break
         case 'mul':
-          this.single_quid_mc2_op(job, core.mul, i, core)
+          await this.single_quid_mc2_op(job, core.mul, i, core)
           break
         case 'div':
-          this.single_quid_mc2_op(job, core.div, i, core)
+          await this.single_quid_mc2_op(job, core.div, i, core)
           break
         case 'muln':
-          this.single_quid_mc2_op(job, core.muln, i, core)
+          await this.single_quid_mc2_op(job, core.muln, i, core)
           break
         case 'divn':
-          this.single_quid_mc2_op(job, core.divn, i, core)
+          await this.single_quid_mc2_op(job, core.divn, i, core)
           break
         case 'pown':
-          this.single_quid_mc2_op(job, core.pown, i, core)
+          await this.single_quid_mc2_op(job, core.pown, i, core)
           break
         case 'mcmul':
-          this.single_quid_mc3_op(job, core.mcmul, i, core)
+          await this.single_quid_mc3_op(job, core.mcmul, i, core)
           break
         case 'mcdiv':
-          this.single_quid_mc3_op(job, core.mcdiv, i, core)
+          await this.single_quid_mc3_op(job, core.mcdiv, i, core)
           break
         case 'mcmuln':
-          this.single_quid_mc3_op(job, core.mcmuln, i, core)
+          await this.single_quid_mc3_op(job, core.mcmuln, i, core)
           break
         case 'mcdivn':
-          this.single_quid_mc3_op(job, core.mcdivn, i, core)
+          await this.single_quid_mc3_op(job, core.mcdivn, i, core)
           break
         case 'mcpown':
-          this.single_quid_mc3_op(job, core.mcpown, i, core)
+          await this.single_quid_mc3_op(job, core.mcpown, i, core)
           break
         case 'init_qneuron':
-          this.single_quid_mc_output_op(job, core.init_qneuron, i, 1, core)
+          await this.single_quid_mc_output_op(job, core.init_qneuron, i, 1, core)
           break
         case 'clone_qneuron':
-          this.single_quid_output_op(job, core.clone_qneuron, i, 1)
+          await this.single_quid_output_op(job, core.clone_qneuron, i, 1)
           break
         case 'destroy_qneuron':
-          this.single_quid_op(job, core.destroy_qneuron, i)
+          await this.single_quid_op(job, core.destroy_qneuron, i)
           break
         case 'set_qneuron_angles':
           tmp = this.validate_sid(i.parameters[0], job)
@@ -605,28 +605,28 @@ class JobService extends ModelService {
           tmpDoubleVec.delete()
           break
         case 'get_qneuron_angles':
-          this.single_quid_output_op(job, core.get_qneuron_angles, i, 6)
+          await this.single_quid_output_op(job, core.get_qneuron_angles, i, 6)
           break
         case 'set_qneuron_alpha':
-          this.single_quid_op(job, core.set_qneuron_alpha, i)
+          await this.single_quid_op(job, core.set_qneuron_alpha, i)
           break
         case 'set_qneuron_activation_fn':
-          this.single_quid_op(job, core.set_qneuron_activation_fn, i)
+          await this.single_quid_op(job, core.set_qneuron_activation_fn, i)
           break
         case 'qneuron_predict':
-          this.single_quid_op(job, core.qneuron_predict, i)
+          await this.single_quid_op(job, core.qneuron_predict, i)
           break
         case 'qneuron_unpredict':
-          this.single_quid_op(job, core.qneuron_unpredict, i)
+          await this.single_quid_op(job, core.qneuron_unpredict, i)
           break
         case 'qneuron_learn_cycle':
-          this.single_quid_op(job, core.qneuron_learn_cycle, i)
+          await this.single_quid_op(job, core.qneuron_learn_cycle, i)
           break
         case 'qneuron_learn':
-          this.single_quid_op(job, core.qneuron_learn, i)
+          await this.single_quid_op(job, core.qneuron_learn, i)
           break
         case 'qneuron_learn_permutation':
-          this.single_quid_op(job, core.qneuron_learn_permutation, i)
+          await this.single_quid_op(job, core.qneuron_learn_permutation, i)
           break
         default:
           throw new Error('One or more of your job program operation line names do not match a defined operation name.')
