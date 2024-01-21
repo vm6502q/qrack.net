@@ -605,7 +605,7 @@ class JobService extends ModelService {
           tmpDoubleVec.delete()
           break
         case 'get_qneuron_angles':
-          this.single_quid_output_op(job, core.init_clone, i, 6)
+          this.single_quid_output_op(job, core.get_qneuron_angles, i, 6)
           break
         case 'set_qneuron_alpha':
           this.single_quid_op(job, core.set_qneuron_alpha, i)

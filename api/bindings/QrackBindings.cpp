@@ -372,8 +372,8 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
         QrackWrapper::MCPOWN(sid, a, c, m, q, o);
     }));
 
-    function("init_qneuron", optional_override([](int nid, std::vector<int> c, int q, char f, double a, double tol) -> int {
-        return QrackWrapper::init_qneuron(nid, c, q, f, a, tol);
+    function("init_qneuron", optional_override([](int sid, std::vector<int> c, int q, char f, double a, double tol) -> int {
+        return QrackWrapper::init_qneuron(sid, c, q, f, a, tol);
     }));
     function("clone_qneuron", optional_override([](int nid) -> int {
         return QrackWrapper::clone_qneuron(nid);
