@@ -186,15 +186,15 @@ bool QrackWrapper::Measure(int sid, std::vector<int> q, std::vector<char> b) {
         "QrackWrapper::Measure() 'q' and 'b' parameter vectors should have same size!");
     return Qrack::Measure((Qrack::quid)sid, _q);
 }
-unsigned int QrackWrapper::MAll(int sid) {
-    return (unsigned int)Qrack::MAll((Qrack::quid)sid);
+int QrackWrapper::MAll(int sid) {
+    return (int)Qrack::MAll((Qrack::quid)sid);
 }
-std::vector<unsigned int> QrackWrapper::MeasureShots(int sid, std::vector<int> q, unsigned s) {
-    std::vector<unsigned long long> o = Qrack::MeasureShots((Qrack::quid)sid, transform_qbids(q), s);
-    std::vector<unsigned int> toRet;
+std::vector<int> QrackWrapper::MeasureShots(int sid, std::vector<int> q, int s) {
+    std::vector<unsigned long long> o = Qrack::MeasureShots((Qrack::quid)sid, transform_qbids(q), (unsigned)s);
+    std::vector<int> toRet;
     toRet.reserve(o.size());
     for (size_t i = 0U; i < o.size(); ++i) {
-        toRet.push_back((unsigned int)o[i]);
+        toRet.push_back((int)o[i]);
     }
     return toRet;
 }

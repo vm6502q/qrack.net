@@ -41,7 +41,21 @@ class OutputService extends ModelService {
     output.jobId = jobId
     output.outputTypeId = outputTypeId
     output.name = name
-    output.value = value.toString()
+    if (outputTypeId === 5) {
+      if (value.size() === 0) {
+        output.value = ''
+      } else {
+        const maxLcv = value.size() - 1
+        let o = ''
+        for (let i = 0; i < maxLcv; ++i) {
+          o = o + (value.get(i)).toString() + ','
+        }
+        o = o + (value.get(maxLcv)).toString()
+        output.value = o
+      }
+    } else {
+      output.value = value.toString()
+    }
 
     const result = await this.create(output)
     if (!result.success) {

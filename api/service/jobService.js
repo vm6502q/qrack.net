@@ -74,13 +74,13 @@ class JobService extends ModelService {
   async single_quid_mc_op (job, fn, i, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
-    const tmpLongVec = new core.VectorLong()
+    const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
-      tmpLongVec.push_back(i.parameters[0][j])
+      tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    fn(tmp, tmpLongVec, ...i.parameters)
-    tmpLongVec.delete()
+    fn(tmp, tmpIntVec, ...i.parameters)
+    tmpIntVec.delete()
 
     return false
   }
@@ -88,13 +88,13 @@ class JobService extends ModelService {
   async single_quid_mc_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
-    const tmpLongVec = new core.VectorLong()
+    const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
-      tmpLongVec.push_back(i.parameters[0][j])
+      tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, ...i.parameters), oType)
-    tmpLongVec.delete()
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, ...i.parameters), oType)
+    tmpIntVec.delete()
 
     return false
   }
@@ -102,9 +102,9 @@ class JobService extends ModelService {
   async single_quid_mc_pauli_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
-    const tmpLongVec = new core.VectorLong()
+    const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
-      tmpLongVec.push_back(i.parameters[0][j])
+      tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
     const tmpCharVec = new core.VectorChar()
@@ -112,8 +112,8 @@ class JobService extends ModelService {
       tmpCharVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpCharVec, ...i.parameters), oType)
-    tmpLongVec.delete()
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpCharVec, ...i.parameters), oType)
+    tmpIntVec.delete()
     tmpCharVec.delete()
 
     return false
@@ -122,18 +122,18 @@ class JobService extends ModelService {
   async single_quid_mc_mtrx_op (job, fn, i, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
-    const tmpLongVec = new core.VectorLong()
+    const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
-      tmpLongVec.push_back(i.parameters[0][j])
+      tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    const tmpDoubleVec = new core.VectorLong()
+    const tmpDoubleVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpDoubleVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    fn(tmp, tmpLongVec, tmpDoubleVec, ...i.parameters)
-    tmpLongVec.delete()
+    fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters)
+    tmpIntVec.delete()
     tmpDoubleVec.delete()
 
     return false
@@ -142,19 +142,19 @@ class JobService extends ModelService {
   async single_quid_mc2_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
-    const tmpLongVec = new core.VectorLong()
+    const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
-      tmpLongVec.push_back(i.parameters[0][j])
+      tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    const tmpLongVec2 = new core.VectorLong()
+    const tmpIntVec2 = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
-      tmpLongVec2.push_back(i.parameters[0][j])
+      tmpIntVec2.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpLongVec2, ...i.parameters), oType)
-    tmpLongVec.delete()
-    tmpLongVec2.delete()
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters), oType)
+    tmpIntVec.delete()
+    tmpIntVec2.delete()
 
     return false
   }
@@ -162,25 +162,25 @@ class JobService extends ModelService {
   async single_quid_mc_double_output_op (job, fn, i, oType, core) {
     const tmp = this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
-    const tmpLongVec = new core.VectorLong()
+    const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
-      tmpLongVec.push_back(i.parameters[0][j])
+      tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    const tmpDoubleVec = new core.VectorLong()
+    const tmpDoubleVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpDoubleVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpLongVec, tmpDoubleVec, ...i.parameters), oType)
-    tmpLongVec.delete()
+    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters), oType)
+    tmpIntVec.delete()
     tmpDoubleVec.delete()
 
     return false
   }
 
   async runQrackProgram (core, p, job) {
-    let tmp, tmp2, tmpLongVec, tmpCharVec, tmpDoubleVec
+    let tmp, tmp2, tmpIntVec, tmpCharVec, tmpDoubleVec
     for (let lcv = 0; lcv < p.length; ++lcv) {
       const i = p[lcv]
       switch (i.name) {
@@ -263,9 +263,9 @@ class JobService extends ModelService {
           i.parameters.shift()
           tmp2 = this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
-          tmpLongVec = new core.VectorLong(i.parameters[0])
+          tmpIntVec = new core.VectorInt(i.parameters[0])
           i.parameters.shift()
-          core.compose(tmp, tmp2, tmpLongVec)
+          core.compose(tmp, tmp2, tmpIntVec)
           break
         case 'decompose':
           this.single_quid_mc_output_op(job, core.decompose, i, 1, core)
@@ -291,13 +291,19 @@ class JobService extends ModelService {
         case 'measure_shots':
           tmp = this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
-          tmpLongVec = new core.VectorLong(i.parameters[0])
+          tmpIntVec = new core.VectorInt()
+          for (let j = 0; j < i.parameters[0].length; ++j) {
+            tmpIntVec.push_back(i.parameters[0][j])
+          }
           i.parameters.shift()
-          tmpCharVec = new core.VectorChar(i.parameters[0])
+          tmpCharVec = new core.VectorChar()
+          for (let j = 0; j < i.parameters[0].length; ++j) {
+            tmpCharVec.push_back(i.parameters[0][j])
+          }
           i.parameters.shift()
-          tmpLongVec = new core.measure_shots(tmp, tmpLongVec, tmpCharVec)
-          // See https://github.com/emscripten-core/emscripten/issues/11070
-          await outputService.createOrUpdate(job.id, i.output, new Array(tmpLongVec.size()).fill(0).map((_, id) => tmpLongVec.get(id)), 5)
+          await outputService.createOrUpdate(job.id, i.output, core.measure_shots(tmp, tmpIntVec, tmpCharVec), 5)
+          tmpIntVec.delete()
+          tmpCharVec.delete()
           break
         case 'x':
           this.single_quid_op(job, core.x, i)
@@ -477,7 +483,8 @@ class JobService extends ModelService {
     const statusObj = await job.getJobStatusType()
     const status = {
       id: statusObj.id,
-      name: statusObj.name
+      name: statusObj.name,
+      message: job.statusMessage
     }
 
     const outputObj = await outputService.getByJobId(jobId)

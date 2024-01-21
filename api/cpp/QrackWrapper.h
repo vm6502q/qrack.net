@@ -44,8 +44,8 @@ public:
     static bool M(int sid, int q);
     static bool ForceM(int sid, int q, bool r);
     static bool Measure(int sid, std::vector<int> q, std::vector<char> b);
-    static unsigned int MAll(int sid);
-    static std::vector<unsigned int> MeasureShots(int sid, std::vector<int> q, unsigned s);
+    static int MAll(int sid);
+    static std::vector<int> MeasureShots(int sid, std::vector<int> q, int s);
     static void ResetAll(int sid);
 
     // single-qubit gates
