@@ -5,9 +5,9 @@
 using namespace emscripten;
 
 EMSCRIPTEN_BINDINGS(QrackWrapper) {
-    // emscripten::register_vector<int>("VectorLong");
-    // emscripten::register_vector<double>("VectorDouble");
-    // emscripten::register_vector<char>("VectorChar");
+    emscripten::register_vector<int>("VectorLong");
+    emscripten::register_vector<double>("VectorDouble");
+    emscripten::register_vector<char>("VectorChar");
 
     // Utility
     function("init_general", optional_override([](int length) -> int {
