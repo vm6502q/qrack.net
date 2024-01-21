@@ -140,7 +140,6 @@ class JobService extends ModelService {
   }
 
   async runQrackProgram (core, p, job) {
-    console.log(core)
     let tmp, tmp2, tmpLongVec, tmpCharVec, tmpDoubleVec
     for (let lcv = 0; lcv < p.length; ++lcv) {
       const i = p[lcv]
@@ -435,13 +434,25 @@ class JobService extends ModelService {
       return { success: false, error: 'Job ID not found.' }
     }
 
-    const outputArray = await outputService.getByJobId(jobId)
-    const output = {}
-    for (const p in outputArray) {
-      output[p.name] = p.valuerun
+    const statusObj = await job.getJobStatusType()
+    const status = {
+      id: statusObj.id,
+      name: statusObj.name
     }
 
-    return { success: true, body: { status: job.status, output } }
+    const outputObj = await outputService.getByJobId(jobId)
+    if (!outputObj.success) {
+      return outputObj
+    }
+    const outputArray = outputObj.body
+    const output = {}
+    for (let i = 0; i < outputArray.length; ++i) {
+      const p = outputArray[i]
+      output[p.dataValues.name] = p.dataValues.value
+    }
+
+
+    return { success: true, body: { status, output } }
   }
 
   async delete (jobId) {
