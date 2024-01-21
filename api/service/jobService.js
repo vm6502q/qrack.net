@@ -490,6 +490,12 @@ class JobService extends ModelService {
         case 'clxnor':
           this.single_quid_op(job, core.clxnor, i)
           break
+        case 'qft':
+          this.single_quid_mc_op(job, core.qft, i, core)
+          break
+        case 'iqft':
+          this.single_quid_mc_op(job, core.iqft, i, core)
+          break
         default:
           throw new Error('One or more of your job program operation line names do not match a defined operation name.')
       }
