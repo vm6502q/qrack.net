@@ -140,6 +140,7 @@ class JobService extends ModelService {
   }
 
   async runQrackProgram (core, p, job) {
+    console.log(core)
     let tmp, tmp2, tmpLongVec, tmpCharVec, tmpDoubleVec
     for (let lcv = 0; lcv < p.length; ++lcv) {
       const i = p[lcv]

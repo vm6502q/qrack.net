@@ -12,7 +12,7 @@ class OutputService extends ModelService {
   }
 
   async get (outputId) {
-    const output = await this.getByPk(outputId)
+    const output = await this.SequelizeServiceInstance.getByPk(outputId)
     if (!output) {
       return { success: false, error: 'Output ID not found.' }
     }
@@ -21,7 +21,7 @@ class OutputService extends ModelService {
   }
 
   async getByJobId (jobId) {
-    const output = await this.findAll({ jobId })
+    const output = await this.SequelizeServiceInstance.findAll({ jobId })
     if (!output) {
       return { success: false, error: 'Output ID not found.' }
     }
@@ -30,11 +30,11 @@ class OutputService extends ModelService {
   }
 
   async getByJobIdAndName (jobId, name) {
-    return await this.findOne({ jobId, name })
+    return await this.SequelizeServiceInstance.findOne({ jobId, name })
   }
 
   async createOrUpdate (jobId, name, value, outputTypeId) {
-    let output = await this.findOne({ jobId, name })
+    let output = await this.SequelizeServiceInstance.findOne({ jobId, name })
     if (!output) {
       output = await this.SequelizeServiceInstance.new()
     }
