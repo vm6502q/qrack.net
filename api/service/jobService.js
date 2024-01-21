@@ -289,21 +289,7 @@ class JobService extends ModelService {
           this.single_quid_output_op(job, core.measure_all, i, 4)
           break
         case 'measure_shots':
-          tmp = this.validate_sid(i.parameters[0], job)
-          i.parameters.shift()
-          tmpIntVec = new core.VectorInt()
-          for (let j = 0; j < i.parameters[0].length; ++j) {
-            tmpIntVec.push_back(i.parameters[0][j])
-          }
-          i.parameters.shift()
-          tmpCharVec = new core.VectorChar()
-          for (let j = 0; j < i.parameters[0].length; ++j) {
-            tmpCharVec.push_back(i.parameters[0][j])
-          }
-          i.parameters.shift()
-          await outputService.createOrUpdate(job.id, i.output, core.measure_shots(tmp, tmpIntVec, tmpCharVec), 5)
-          tmpIntVec.delete()
-          tmpCharVec.delete()
+          this.single_quid_mc_output_op(job, core.measure_shots, i, 5, core)
           break
         case 'x':
           this.single_quid_op(job, core.x, i)
@@ -506,9 +492,16 @@ class JobService extends ModelService {
           output[p.dataValues.name] = parseFloat(p.dataValues.value)
           break
         case 4:
-            output[p.dataValues.name] = parseInt(p.dataValues.value)
-            break
+          output[p.dataValues.name] = parseInt(p.dataValues.value)
+          break
         case 5:
+          const valStrings = p.dataValues.value.split(',')
+          const o = []
+          for (let i = 0; i < valStrings.length; ++i) {
+            o.push(parseInt(valStrings[i]))
+          }
+          output[p.dataValues.name] = o
+          break
         default:
           output[p.dataValues.name] = p.dataValues.value
           break
