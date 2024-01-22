@@ -4,8 +4,6 @@ const config = require('./config')
 const apiRoutes = require('./api-routes')
 // Import express
 const express = require('express')
-// Import express-bearer-token
-const bearerToken = require('express-bearer-token')
 // Import Sequelize
 const { Sequelize } = require('sequelize')
 // Import express JWT auth
@@ -25,23 +23,9 @@ process.env.QRACKNET_MODE = undefined
 const app = express()
 app.use(compression())
 
+// WARNING - All authentication is off!
 const unless = function (paths, middleware) {
-  return function (req, res, next) {
-    for (let i = 0; i < paths.length; i++) {
-      if (req.path === paths[i]) {
-        if (req.cookies && req.cookies.token) {
-          try {
-            const decoded = jwtDecode(req.cookies.token)
-            if (decoded && decoded.id) {
-              req.auth = { id: decoded.id }
-            }
-          } catch {}
-        }
-        return next()
-      }
-    }
-    return middleware(req, res, next)
-  }
+  return function (req, res, next) { return next() }
 }
 // Configure express to handle post requests.
 app.use(express.urlencoded({
