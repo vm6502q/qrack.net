@@ -60,19 +60,19 @@ class JobService extends ModelService {
   }
 
   async single_quid_op (job, fn, i) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     fn(tmp, ...i.parameters)
   }
 
   async single_quid_output_op (job, fn, i, oType) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, ...i.parameters), oType)
   }
 
   async single_quid_mc_op (job, fn, i, core) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -84,7 +84,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_output_op (job, fn, i, oType, core) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -96,7 +96,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_pauli_output_op (job, fn, i, oType, core) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -114,7 +114,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_mtrx_op (job, fn, i, core) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -132,7 +132,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc2_op (job, fn, i, core) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -150,7 +150,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc2_output_op (job, fn, i, oType, core) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -168,7 +168,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc3_op (job, fn, i, core) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -192,7 +192,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_double_output_op (job, fn, i, oType, core) {
-    const tmp = this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -287,9 +287,9 @@ class JobService extends ModelService {
           await this.single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3, core)
           break
         case 'compose':
-          tmp = this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
-          tmp2 = this.validate_sid(i.parameters[0], job)
+          tmp2 = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           tmpIntVec = new core.VectorInt(i.parameters[0])
           i.parameters.shift()
@@ -348,7 +348,7 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.u, i)
           break
         case 'mtrx':
-          tmp = this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           tmpDoubleVec = new core.VectorDouble(i.parameters[0])
           i.parameters.shift()
@@ -437,7 +437,7 @@ class JobService extends ModelService {
           await this.single_quid_mc_op(job, core.mcr, i, core)
           break
         case 'exp':
-          tmp = this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           tmpIntVec = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -454,7 +454,7 @@ class JobService extends ModelService {
           tmpCharVec.delete()
           break
         case 'mcexp':
-          tmp = this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           tmpIntVec = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -594,7 +594,7 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.destroy_qneuron, i)
           break
         case 'set_qneuron_angles':
-          tmp = this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           tmpDoubleVec = new core.VectorDouble()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -670,14 +670,7 @@ class JobService extends ModelService {
     await job.save()
 
     qrack.then(async (core) => {
-      try {
-        await this.runQrackProgram(core, reqBody.program, job)
-      } catch (e) {
-        // Job status 2: FAILURE
-        job.jobStatusTypeId = 2
-        job.statusMessage = e.toString()
-        await job.save()
-      }
+      await this.runQrackProgram(core, reqBody.program, job)
     })
       .catch(async (e) => {
         // Job status 2: FAILURE
