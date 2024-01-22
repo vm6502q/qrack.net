@@ -13,6 +13,7 @@ paths:
     put:
       summary: Accepts username and password and sets an authentication cookie if they match a user account on file
       description: Accepts username and password and sets an authentication cookie if they match a user account on file
+      operationId: login
       requestBody:
         required: true
         content:
@@ -68,6 +69,8 @@ paths:
   /logout:
     get:
       summary: Logs out of the current session by disposing the authentication cookie
+      description: Logs out of the current session by disposing the authentication cookie
+      operationId: logout
       responses:
         '200':    # status code
           description: Logout success message
@@ -87,6 +90,7 @@ paths:
     post:
       summary: Dispatches a QrackNet (JSON) script
       description: Dispatches a JSON "script" according to definition at https://github.com/vm6502q/qrack.net/blob/main/api/README.md
+      operationId: dispatchJobForUser
       requestBody:
         required: true
         content:
@@ -141,6 +145,7 @@ paths:
     get:
       summary: Returns the status and "output space" of the job
       description: Returns the status and global "output space" object of the job. (All methods that return any output write it to the job-specific "output space," with a name specified by the user.)
+      operationId: getJobForUser
       responses:
         '200':    # status code
           description: Reports whether the job is running, successfully completed, or failed, and gives an "output" object defined by the user's script for the job.
