@@ -10,6 +10,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "bootstrap": "^5.1.3",
     "css-loader": "^6.5.1",
