@@ -8,7 +8,7 @@ const ModelService = require('./modelService')
 const db = require('../model/index.js')
 
 // Password hasher
-const bcryptjs = require('bcryptjs')
+const bcrypt = require('bcrypt')
 const { v4 } = require('uuid')
 const jwt = require('jsonwebtoken')
 
@@ -62,14 +62,6 @@ class UserService extends ModelService {
     return { success: true, body: user }
   }
 
-  async getSanitized (userId) {
-    const user = await this.getByPk(userId)
-    if (!user) {
-      return { success: false, error: 'User ID not found.' }
-    }
-    return { success: true, body: this.sanitize(user) }
-  }
-
   async register (reqBody) {
     const validationResult = await this.validateRegistration(reqBody)
     if (!validationResult.success) {
@@ -82,7 +74,7 @@ class UserService extends ModelService {
     user.affiliation = reqBody.affiliation ? reqBody.affiliation : ''
     user.name = reqBody.name ? reqBody.name : ''
     user.email = reqBody.email.trim().toLowerCase()
-    user.passwordHash = await bcryptjs.hash(reqBody.password, saltRounds)
+    user.passwordHash = await bcrypt.hash(reqBody.password, saltRounds)
 
     const result = await this.create(user)
     if (!result.success) {
@@ -101,7 +93,7 @@ class UserService extends ModelService {
       return { success: false, error: 'User not found.' }
     }
 
-    const isPasswordValid = bcryptjs.compareSync(reqBody.password, user.passwordHash)
+    const isPasswordValid = bcrypt.compareSync(reqBody.password, user.passwordHash)
     if (!isPasswordValid) {
       return { success: false, error: 'Password incorrect.' }
     }
@@ -223,12 +215,12 @@ class UserService extends ModelService {
       return { success: false, error: 'Supplied bad recovery token.' }
     }
 
-    user.passwordHash = await bcryptjs.hash(reqBody.password, saltRounds)
+    user.passwordHash = await bcrypt.hash(reqBody.password, saltRounds)
     user.recoveryToken = null
     user.recoveryTokenExpiration = null
     await user.save()
 
-    return { success: true, body: await this.getSanitized(user.id) }
+    return { success: true, body: this.sanitize(user) }
   }
 
   async update (userId, reqBody) {
@@ -248,7 +240,7 @@ class UserService extends ModelService {
     }
 
     await user.save()
-    return await this.getSanitized(user.id)
+    return this.sanitize(user)
   }
 
   async tryPasswordChange (userId, reqBody) {
@@ -265,17 +257,17 @@ class UserService extends ModelService {
       return { success: false, error: 'User not found.' }
     }
 
-    const isPasswordValid = bcryptjs.compareSync(reqBody.oldPassword, user.passwordHash)
+    const isPasswordValid = bcrypt.compareSync(reqBody.oldPassword, user.passwordHash)
     if (!isPasswordValid) {
       return { success: false, error: 'Password incorrect.' }
     }
 
-    user.passwordHash = await bcryptjs.hash(reqBody.password, saltRounds)
+    user.passwordHash = await bcrypt.hash(reqBody.password, saltRounds)
     user.recoveryToken = null
     user.recoveryTokenExpiration = null
     await user.save()
 
-    return { success: true, body: await this.getSanitized(user.id) }
+    return { success: true, body: this.sanitize(user) }
   }
 
   async delete (userId) {

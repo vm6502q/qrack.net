@@ -77,10 +77,9 @@ class AccountController {
 
   // Change password if cookie and old password are valid.
   static async update_password (req, res) {
-    routeWrapper(res,
+    loginWrapper(res,
       async () => await userService.tryPasswordChange(req.auth.id, req.body),
-      'Successfully changed password.',
-      req.auth.id)
+      'Successfully changed password.')
   }
 }
 

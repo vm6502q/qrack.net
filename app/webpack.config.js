@@ -33,6 +33,7 @@ module.exports = {
     ]
   },
   devServer: {
+    port: 3000,
     headers: {
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin'

@@ -24,6 +24,20 @@ If the username and password are correct, set an authentication cookie
 - `password`: Account password.
 
 
+`GET /api/logout`
+
+If an authentication cookie is set, clear it.
+
+
+`POST /api/user/password`
+
+If the old password is correct, and the validation passes, change the user account password.
+
+- `oldPassword`: Current account password
+- `password`: New account password.
+- `passwordConfirm`: Must match `password`
+
+
 ## Script API Routes
 
 ##### `POST /api/qrack`
