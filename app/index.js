@@ -2,11 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './node_modules/bootstrap/dist/css/bootstrap.min.css'
 
-import App from './App'
+import MainRouter from './MainRouter'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <MainRouter />
   </React.StrictMode>,
   document.getElementById('root')
 )

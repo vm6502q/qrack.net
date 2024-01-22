@@ -31,7 +31,7 @@ function BenchmarkChart (props) {
       const xMinValue = d3.min(data, d => d.label)
       const xMaxValue = d3.max(data, d => d.label)
 
-      // set the dimensions and margins of the graph
+      // set the dimensions and mSwitchargins of the graph
 
       // append the svg object to the body of the page
       const svg = d3.select('#qrack-line-chart-container')

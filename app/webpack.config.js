@@ -33,6 +33,7 @@ module.exports = {
     ]
   },
   devServer: {
+    port: 3000,
     headers: {
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin'
@@ -41,5 +42,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html'), favicon: './favicon.ico' })
-  ]
+  ],
+  optimization: {
+    minimize: false
+  }
 }
