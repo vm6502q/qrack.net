@@ -710,7 +710,7 @@ Trains the quantum neuron for one epoch.
 - `nid`: Neuron ID.
 - `eta`: Learning rate.
 - `e`: Expected boolean inference result.
-- `r`: Boolean to reset/leave the output qubit state before learning
+- `r`: Boolean to reset/keep the output qubit state before learning
 
 
 ##### `qneuron_learn_permutation(quid nid, real1 eta, bool e, bool r)`
@@ -720,4 +720,4 @@ Trains the quantum neuron for one epoch, assuming a Z-basis eigenstate input.
 - `nid`: Neuron ID.
 - `eta`: Learning rate.
 - `e`: Expected boolean inference result.
-- `r`: Boolean to reset/leave the output qubit state before learning
+- `r`: Boolean to reset/keep the output qubit state before learning
