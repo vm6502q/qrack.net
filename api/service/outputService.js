@@ -21,7 +21,7 @@ class OutputService extends ModelService {
   }
 
   async getByJobId (jobId) {
-    const output = await this.SequelizeServiceInstance.findAll({ jobId })
+    const output = await this.SequelizeServiceInstance.findAll({ jobId, name: 'result' })
     if (!output) {
       return { success: false, error: 'Output ID not found.' }
     }

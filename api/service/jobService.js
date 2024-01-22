@@ -700,22 +700,22 @@ class JobService extends ModelService {
       return outputObj
     }
     const outputArray = outputObj.body
-    const output = {}
+    let result
     for (let i = 0; i < outputArray.length; ++i) {
       const p = outputArray[i]
       let valStrings, o
       switch (p.outputTypeId) {
         case 1:
-          output[p.dataValues.name] = parseInt(p.dataValues.value)
+          result = parseInt(p.dataValues.value)
           break
         case 2:
-          output[p.dataValues.name] = (p.dataValues.value === 'true')
+          result = (p.dataValues.value === 'true')
           break
         case 3:
-          output[p.dataValues.name] = parseFloat(p.dataValues.value)
+          result = parseFloat(p.dataValues.value)
           break
         case 4:
-          output[p.dataValues.name] = parseInt(p.dataValues.value)
+          result = parseInt(p.dataValues.value)
           break
         case 5:
           valStrings = p.dataValues.value.split(',')
@@ -723,7 +723,7 @@ class JobService extends ModelService {
           for (let i = 0; i < valStrings.length; ++i) {
             o.push(parseInt(valStrings[i]))
           }
-          output[p.dataValues.name] = o
+          result = o
           break
         case 6:
           valStrings = p.dataValues.value.split(',')
@@ -731,16 +731,16 @@ class JobService extends ModelService {
           for (let i = 0; i < valStrings.length; ++i) {
             o.push(parseFloat(valStrings[i]))
           }
-          output[p.dataValues.name] = o
+          result = o
           break
         default:
-          output[p.dataValues.name] = p.dataValues.value
+          result = p.dataValues.value
           break
       }
     }
 
 
-    return { success: true, body: { status, output } }
+    return { success: true, body: { status, result } }
   }
 
   async delete (jobId) {
