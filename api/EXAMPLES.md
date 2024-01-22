@@ -74,7 +74,7 @@ At the `POST /api/qrack` route, we give the following request body:
 }
 ```
 
-This time, we create a simulator with 2 qubits, rather than 1. We prepare the state similarly to before, with `h` gate. However, we also act a CNOT gate ("`mcx`," "multiply-controlled (Pauli) X") with one control qubit, as `[0]` array, where the gate can accept as many control qubits as we want, and the target qubit ID "`1`." These two gates, on a reset or freshly-initialized register, produce a Bell state. To demonstrate entanglement, we measure the qubits with `measure_shots`, for both qubits (`[0, 1]`), for `8` repetitions of the circuit.
+This time, we create a simulator with 2 qubits, rather than 1. We prepare the state similarly to before, with `h` gate. However, we also act a CNOT gate ("`mcx`," "multiply-controlled Pauli X") with one control qubit, as `[0]` array, where the gate can accept as many control qubits as we want, and the target qubit ID "`1`." These two gates, on a reset or freshly-initialized register, produce a Bell state. To demonstrate entanglement, we measure the qubits with `measure_shots`, for both qubits (`[0, 1]`), for `8` repetitions of the circuit.
 
 We receive a response like the following:
 ```
