@@ -63,7 +63,7 @@ Returns the status and "**output space**" of the job. All methods that return an
 
 Each method, as a line of the `program` array argument of the `POST /api/qrack` route has the following fields:
 
-- `name`: String with the method name of the script instruction (as listed below, exact match)
+- `name`: String with the method name of the script instruction (as listed below, exact match, without markdown)
 - `parameters`: Array of method parameters **in same order as defined in this reference document**. `quid` arguments are always specified as variables in the "output space" of global variables.
 - `output`: **This is only used and required if a method returns a value.** Gives a name to the output of this method in the "output space." (If the variable name already exists, it will be overwritten.)
 
