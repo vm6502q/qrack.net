@@ -4,6 +4,8 @@ const config = require('./config')
 const apiRoutes = require('./api-routes')
 // Import express
 const express = require('express')
+// Import express-bearer-token
+const bearerToken = require('express-bearer-token')
 // Import Sequelize
 const { Sequelize } = require('sequelize')
 // Import express JWT auth
