@@ -701,7 +701,6 @@ Sets the activation function of a quantum neuron.
 
 - `nid`: Neuron ID.
 - `e`: Expected boolean inference result.
-- `Returns`: Learning result.
 
 
 ##### `qneuron_learn(quid nid, real1 eta, bool e, bool r)`
