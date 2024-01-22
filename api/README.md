@@ -9,7 +9,7 @@ QrackNet API is open-source software to serve [unitaryfund/qrack](https://github
 If the request is valid and the username is not already in use, create an account and set an authentication cookie
 
 - `username`: Account username.
-- `affiliaion`: User professional or institutional affiliation
+- `affiliation`: User professional or institutional affiliation
 - `name`: User personal name
 - `email`: User email address
 - `password`: Account password.
