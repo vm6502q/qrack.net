@@ -71,24 +71,21 @@ Each method, as a line of the `program` array argument of the `POST /api/qrack` 
 
 ##### `init_general(bitLenInt length)`
 
-Initializes a simulator optimized for "BQP-complete" (general) problems.
-**Returns** a quid representing the simulator created.
+**Returns** a quid representing newly-initialized simulator optimized for "BQP-complete" (general) problems.
 
 - `length`: Number of qubits.
 
 
 ##### `init_stabilizer(bitLenInt length)`
 
-Initializes a simulator optimized for ("hybrid") stabilizer problems (with recourse to universal circuit logic as a fallback).
-**Returns** a quid representing the simulator created.
+**Returns** a quid representing newly-initialized simulator optimized for ("hybrid") stabilizer problems (with recourse to universal circuit logic as a fallback).
 
 - `length`: Number of qubits.
 
 
 ##### `init_qbdd(bitLenInt length)`
 
-Initializes a simulator optimized for low-entanglement problems (with "quantum binary decision diagrams" or "QBDD" simulation)
-**Returns** a quid representing the simulator created.
+**Returns** a quid representing newly-initialized simulator for low-entanglement problems (with "quantum binary decision diagrams" or "QBDD" simulation)
 
 - `length`: Number of qubits.
 
