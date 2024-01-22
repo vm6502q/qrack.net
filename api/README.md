@@ -49,7 +49,7 @@ Accepts a script definition for the RESTful API server to run, and returns a "Jo
 
 ##### `GET /api/qrack/:jobId`
 
-Returns the status and "**output space**" of the job. All methods that return any output write it to the "output space," with a name specified by the user.
+Returns the status and "**output space**" of the job. All methods that return any output write it to the job (global) "output space," with names specified by the user that become schema for the "`output`" object.
 
 ## Glossary
 
