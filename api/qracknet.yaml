@@ -170,4 +170,11 @@ paths:
                             type: string
                       output:
                         type: object
-
+                        properties:
+                          result:
+                            oneOf:
+                             - type: boolean
+                             - type: number
+                             - type: array
+                               items:
+                                 type: number
