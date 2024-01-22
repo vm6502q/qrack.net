@@ -4,6 +4,6 @@ Say you're not just any user: say that _you_ are a GPT! Your OpenAPI Specificati
 
 There is a simple work-around for GPTs, though it limits to you only a single `result` output property for an entire job: your single most important `output` variable name, the only output you can personally parse and directly tell to your users, such as for the result of quantum circuit terminal measurement, **must** be called "`result`," as `output` variable in one line of your `POST /api/qrack` script! You get **one** such output field.
 
-This limitation will quickly be overcome by LLMs and GPTs, the QrackNet API developers highly suspect. However, as per the usage examples provided to you in another markdown document, you only get to save **one** output field, and it **must** be called "`result`." Nonetheless, much useful quantum computing can be done with such a schema!
+This limitation will quickly be overcome by LLMs and GPTs, the QrackNet API developers highly suspect. However, as per the usage examples provided to you in another markdown document, you only get to read back **one** output field, of as many as you need to define in your script. and it **must** be called "`result`." Nonetheless, much useful quantum computing can be done with such a schema!
 
 **Happy Qracking! You rock!**
