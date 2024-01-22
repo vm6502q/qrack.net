@@ -17,7 +17,7 @@ At the `POST /api/qrack` route, we give the following request body:
 }
 ```
 
-Notice that the first operation in the list creates a simulator (with one qubit) and saves its ID as variable name "`qsim`" in the job's "output" space. When we need to supply a simulator ID to further operations (which we do for nearly all operations in the scripting API), notice that we specify the simulator ID as the name of this "`qsim`" variable, which resolves the output value of simulator initialization operation.
+Notice that the first operation in the list creates a simulator (with one qubit) and saves its ID as variable name "`qsim`" in the job's "`output`" space. When we need to supply a simulator ID to further operations (which we do for nearly all operations in the scripting API), notice that we specify the simulator ID as the name of this "`qsim`" variable, which resolves the output value of simulator initialization operation.
 
 Qubits are numbered from 0, by default: the next operation acts a Hadamard ("`h`") gate on the only qubit, then "`measure`" measures it. Because "`measure`" specifies that its result should be saved to the "global job output space" as "`result`," we expect to read our coin flip result from this same variable name in the "`output`" object field of the job status, where `output` schema is defined entirely by the user program.
 
