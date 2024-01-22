@@ -1,5 +1,7 @@
 # QrackNet Script API Reference
 
+QrackNet API is open-source software to serve [unitaryfund/qrack](https://github.com/unitaryfund/qrack) gate-based quantum computer simulation "jobs" via a [PyQrack](https://github.com/unitaryfund/pyqrack)-like (lower-level) scripting language, as a Node.js-based RESTful API on the web.
+
 ## Account API Routes
 
 `PUT /api/login`
