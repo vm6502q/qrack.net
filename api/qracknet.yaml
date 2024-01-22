@@ -36,45 +36,27 @@ paths:
                     type: string
                   data:
                     type: object
-                      properties:
-                        id:
-                          type: integer
-                        username:
-                          type: string
-                        usernameNormal:
-                          type: string
-                        affiliation:
-                          type: string
-                        name:
-                          type: string
-                        email:
-                          type: string
-                        createdAt:
-                          type: string
-                        updatedAt:
-                          type: string
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      usernameNormal:
+                        type: string
+                      affiliation:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
                   token:
                     type: string
         '400':
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '400':
-          description: Password incorrect
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '400':
-          description: Invalid request body schema
+          description: User not found / Password incorrect / Invalid request schema
           content:
             application/json:
               schema:
@@ -159,6 +141,7 @@ paths:
     get:
       summary: Returns the status and "output space" of the job
       description: Returns the status and global "output space" object of the job. (All methods that return any output write it to the job-specific "output space," with a name specified by the user.)
+      responses:
         '200':    # status code
           description: Reports whether the job is running, successfully completed, or failed, and gives an "output" object defined by the user's script for the job.
           content:
