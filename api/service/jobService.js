@@ -670,7 +670,14 @@ class JobService extends ModelService {
     await job.save()
 
     qrack.then(async (core) => {
-      return await this.runQrackProgram(core, reqBody.program, job)
+      try {
+        await this.runQrackProgram(core, reqBody.program, job)
+      } catch (e) {
+        // Job status 2: FAILURE
+        job.jobStatusTypeId = 2
+        job.statusMessage = e.toString()
+        await job.save()
+      }
     })
       .catch(async (e) => {
         // Job status 2: FAILURE

@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: QrackNet API
+  description: A RESTful API to expose Qrack library (https://github.com/unitaryfund/qrack) simulator functionality to users via the web
+  version: 0.1.0
+
+servers:
+  - url: https://qrack.net/api
+    description: Main (production) server
+
+paths:
+  /login:
+    put:
+      summary: Accepts username and password and sets an authentication cookie if they match a user account on file - { "username": "Dan", "password": "GerpyForseenBloom2" }
+      description: If the user puts `PUT` request body `{ "username": "Dan", "password": "GerpyForseenBloom2" }`, then they will receive a authentication token. (This is private but low-value information.)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':    # status code
+          description: Request status message, user object, and session JWT
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: object
+                      properties:
+                        id:
+                          type: integer
+                        username:
+                          type: string
+                        usernameNormal:
+                          type: string
+                        affiliation:
+                          type: string
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                  token:
+                    type: string
+        '400':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Password incorrect
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Invalid request body schema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /logout:
+    get:
+      summary: Logs out of the current session by disposing the authentication cookie
+      responses:
+        '200':    # status code
+          description: Logout success message
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '401':    # status code
+          description: No session cookie was held, upon API request
+      
+  /qrack:
+    post:
+      summary: Dispatches a QrackNet (JSON) script
+      description: Dispatches a JSON "script" according to definition at https://github.com/vm6502q/qrack.net/blob/main/api/README.md
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                program:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                       name:
+                         type: string
+                       parameters:
+                         type: array
+                         items:
+                           oneOf:
+                             - type: string
+                             - type: boolean
+                             - type: number
+                             - type: array
+                               items:
+                                 type: number
+      responses:
+        '200':    # status code
+          description: Created new job for user
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties: 
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      userId:
+                        type: integer
+                      jobStatusTypeId:
+                        type: integer
+                      statusMessage:
+                        type: string
+                      updatedAt:
+                        type: string
+                      createdAt:
+                        type: string
+        
