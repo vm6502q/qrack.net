@@ -1,6 +1,6 @@
 # Privacy Notice
 
-QrackNet is free, public, open-source software. We do not intend to directly host or serve any users for public RESTful API services, so we do not collect personal information (on services which we do not provide publicly). We simply provide the software that makes such instances work.
+QrackNet is free, public, open-source software intended to serve "jobs" for quantum computer simulation upon user request. We do not intend to directly host or serve any users for public RESTful API services, so we do not collect personal information (on services which we do not provide publicly). We simply provide the software that makes such instances work.
 
 As can be seen in the open-source code, the default RESTful API app configuration would collect personal information including username, password, name, professional affiliation, email, private recovery token and token expiration date (in event of attempt to recover a lost QrackNet API password), user job metadata and outputs, and time stamps of when a user account was created and last updated. The point of this suggestion, for information to be collected by users who might independently serve the software, is to provide basic functionality of the services, to protect the basic security of those servers, and to help server administrators understand who uses their services, as well as so server administrators might solicit and collect feedback, to improve the services.
 
