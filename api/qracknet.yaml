@@ -9,11 +9,76 @@ servers:
     description: Main (production) server
 
 paths:
+  /register:
+    post:
+      summary: Registers a new account, with username and password
+      description: If the request is valid and the username is not in use, the route creates a new account and sets an authentication cookie
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                affiliation:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                passwordConfirm:
+                  type: string
+      responses:
+        '200':    # status code
+          description: Request status message, user object, and session JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      usernameNormal:
+                        type: string
+                      affiliation:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+                  token:
+                    type: string
+        '400':
+          description: Username already exists / Password does not match confirmation / Invalid request schema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
   /login:
     put:
       summary: Accepts username and password and sets an authentication cookie if they match a user account on file
       description: Accepts username and password and sets an authentication cookie if they match a user account on file
-      operationId: login
+      operationId: loginUser
       requestBody:
         required: true
         content:
@@ -30,7 +95,7 @@ paths:
           description: Request status message, user object, and session JWT
           content:
             application/json:
-              schema: 
+              schema:
                 type: object
                 properties:
                   message:
@@ -70,13 +135,13 @@ paths:
     get:
       summary: Logs out of the current session by disposing the authentication cookie
       description: Logs out of the current session by disposing the authentication cookie
-      operationId: logout
+      operationId: logoutUser
       responses:
         '200':    # status code
           description: Logout success message
           content:
             application/json:
-              schema: 
+              schema:
                 type: object
                 properties:
                   success:
@@ -85,6 +150,65 @@ paths:
                     type: string
         '401':    # status code
           description: No session cookie was held, upon API request
+
+  /user/password:
+    post:
+      summary: Change personal user account password
+      description: If the session cookie is set and valid, and the supplied password matches the password hash on record, then update this user's password and refresh the session cookie
+      operationId: changeUserPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                password:
+                  type: string
+                passwordConfirm:
+                  type: string
+      responses:
+        '200':    # status code
+          description: Request status message, user object, and session JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      usernameNormal:
+                        type: string
+                      affiliation:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+                  token:
+                    type: string
+        '400':
+          description: User not found / Password incorrect / Invalid request schema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
 
   /qrack:
     post:
@@ -120,7 +244,7 @@ paths:
           description: Created new job for user
           content:
             application/json:
-              schema: 
+              schema:
                 type: object
                 properties: 
                   message:
