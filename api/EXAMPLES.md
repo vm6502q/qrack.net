@@ -118,4 +118,4 @@ Sometime later, we check on the job status and output:
 }
 ```
 
-Our job was successful, again. Our output "`result`" field (called so because we specified that name as "`output`" parameter to `measure_shots`) contains 8 "shots" of the circuit, as a terminal measurement result. Notice that `0` and `3` appear in the binary (integer) representation of our two qubits, but `1` and `2` do not. This is because, according to how we prepared our state, both qubits must separable be in the same state upon measurement, either both |0> or both |1>. (We have completed another successful example!)
+Our job was successful, again. Our output "`result`" field (called so because we specified that name as "`output`" parameter to `measure_shots`) contains 8 "shots" of the circuit, as a terminal measurement result. Notice that `0` and `3` appear in the binary (integer) representation of our two qubits, but `1` and `2` do not. This is because, according to how we prepared our state, both qubits must be in the same state upon measurement, either both |0> or both |1>. (We have completed another successful example!)
