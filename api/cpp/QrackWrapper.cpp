@@ -9,7 +9,7 @@ int QrackWrapper::init_stabilizer(int length) {
     return (int)Qrack::init_count_type((bitLenInt)length, false, false, true, true, false, false, false, false, false);
 }
 int QrackWrapper::init_qbdd(int length) {
-    return (int)Qrack::init_count_type((bitLenInt)length, true, false, true, false, true, false, false, false, false);
+    return (int)Qrack::init_qbdd_count((bitLenInt)length);
 }
 int QrackWrapper::init_clone(int sid) {
     return (int)Qrack::init_clone((Qrack::quid)sid);
