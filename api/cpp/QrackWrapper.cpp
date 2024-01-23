@@ -190,7 +190,7 @@ int QrackWrapper::MAll(int sid) {
     return (int)Qrack::MAll((Qrack::quid)sid);
 }
 std::vector<int> QrackWrapper::MeasureShots(int sid, std::vector<int> q, int s) {
-    std::vector<unsigned long long> o = Qrack::MeasureShots((Qrack::quid)sid, transform_qbids(q), (unsigned)s);
+    std::vector<long long unsigned int> o = Qrack::MeasureShots((Qrack::quid)sid, transform_qbids(q), (unsigned)s);
     std::vector<int> toRet;
     toRet.reserve(o.size());
     for (size_t i = 0U; i < o.size(); ++i) {
