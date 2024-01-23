@@ -42,9 +42,30 @@ class JobService extends ModelService {
     return { success: true, body: job }
   }
 
-  async validate_sid (name, job) {
+  async free_after_job (job, core) {
+    const s = await outputService.getSidsByJobId(job.id)
+    for (let i = 0; i < s.length; ++i) {
+      try {
+        await this.single_quid_op(job, core.destroy, { parameters: [s.value] })
+      } catch {
+        // Intentionally left blank
+      }
+    }
+
+    const n = await outputService.getNidsByJobId(job.id)
+    for (let i = 0; i < n.length; ++i) {
+      try {
+        await this.single_quid_op(job, core.destroy_qneuron, { parameters: [n.value] })
+      } catch {
+        // Intentionally left blank
+      }
+    }
+  }
+
+  async validate_sid (name, job, core) {
     const v = await outputService.getByJobIdAndName(job.id, name)
     if (!v) {
+      await this.free_after_job(job, core)
       throw new Error(
         'All simulator IDs and quantum neuron IDs should be specified as names in the output space of the job. ' +
         '(Methods that produce output, at all, always save it to the "output space" of the job, to the ' +
@@ -53,26 +74,28 @@ class JobService extends ModelService {
     }
     switch (v.outputTypeId) {
       case 1:
+      case 7:
         return parseInt(v.value)
       default:
+        await this.free_after_job(job, core)
         throw new Error('Quid instruction parameter does not have quid outputTypeId.')
     }
   }
 
-  async single_quid_op (job, fn, i) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+  async single_quid_op (job, fn, i, core) {
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     fn(tmp, ...i.parameters)
   }
 
-  async single_quid_output_op (job, fn, i, oType) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+  async single_quid_output_op (job, fn, i, oType, core) {
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     await outputService.createOrUpdate(job.id, i.output, fn(tmp, ...i.parameters), oType)
   }
 
   async single_quid_mc_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -84,7 +107,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -96,7 +119,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_pauli_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -114,7 +137,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_mtrx_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -132,7 +155,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc2_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -150,7 +173,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc2_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -168,7 +191,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc3_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -192,7 +215,7 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_double_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job)
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -287,9 +310,9 @@ class JobService extends ModelService {
           await this.single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3, core)
           break
         case 'compose':
-          tmp = await this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job, core)
           i.parameters.shift()
-          tmp2 = await this.validate_sid(i.parameters[0], job)
+          tmp2 = await this.validate_sid(i.parameters[0], job, core)
           i.parameters.shift()
           tmpIntVec = new core.VectorInt(i.parameters[0])
           i.parameters.shift()
@@ -348,7 +371,7 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.u, i)
           break
         case 'mtrx':
-          tmp = await this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job, core)
           i.parameters.shift()
           tmpDoubleVec = new core.VectorDouble(i.parameters[0])
           i.parameters.shift()
@@ -437,7 +460,7 @@ class JobService extends ModelService {
           await this.single_quid_mc_op(job, core.mcr, i, core)
           break
         case 'exp':
-          tmp = await this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job, core)
           i.parameters.shift()
           tmpIntVec = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -454,7 +477,7 @@ class JobService extends ModelService {
           tmpCharVec.delete()
           break
         case 'mcexp':
-          tmp = await this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job, core)
           i.parameters.shift()
           tmpIntVec = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -585,16 +608,16 @@ class JobService extends ModelService {
           await this.single_quid_mc3_op(job, core.mcpown, i, core)
           break
         case 'init_qneuron':
-          await this.single_quid_mc_output_op(job, core.init_qneuron, i, 1, core)
+          await this.single_quid_mc_output_op(job, core.init_qneuron, i, 7, core)
           break
         case 'clone_qneuron':
-          await this.single_quid_output_op(job, core.clone_qneuron, i, 1)
+          await this.single_quid_output_op(job, core.clone_qneuron, i, 7)
           break
         case 'destroy_qneuron':
           await this.single_quid_op(job, core.destroy_qneuron, i)
           break
         case 'set_qneuron_angles':
-          tmp = await this.validate_sid(i.parameters[0], job)
+          tmp = await this.validate_sid(i.parameters[0], job, core)
           i.parameters.shift()
           tmpDoubleVec = new core.VectorDouble()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -629,9 +652,12 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.qneuron_learn_permutation, i)
           break
         default:
+          await this.free_after_job(job, core)
           throw new Error('One or more of your job program operation line names do not match a defined operation name.')
       }
     }
+
+    await this.free_after_job(job, core)
 
     // Job status 1: SUCCESS
     job.jobStatusTypeId = 1

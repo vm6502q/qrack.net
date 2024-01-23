@@ -145,7 +145,7 @@ Releases a qubit ID.
 - `b`: Array of Pauli axes (for each qubit ID in `q`).
 
 
-##### `m(quid sid, bitLenInt q)`
+##### `measure(quid sid, bitLenInt q)`
 
 **Returns** a boolean (true for |1> and false for |0>) single-qubit measurement result, simulated according to the Born rules, collapsing the state.
 
@@ -153,7 +153,7 @@ Releases a qubit ID.
 - `q`: Qubit ID.
 
 
-##### `force_m(quid sid, bitLenInt q, bool r)`
+##### `force_measure(quid sid, bitLenInt q, bool r)`
 
 (**Returns** `r`.) Forces the measurement result of a single qubit and returns the result. This is a pseudo-quantum operation.
 
