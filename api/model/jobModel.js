@@ -7,7 +7,7 @@ function jobModel (sequelize, DataTypes) {
     statusMessage: {
       type: DataTypes.TEXT,
       allowNull: false
-    },
+    }
   }, {})
   Model.associate = function (db) {
     db.user.hasMany(db.job)

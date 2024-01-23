@@ -13,12 +13,12 @@ Accepts a script definition for the RESTful API server to run, and returns a "Jo
 
 ##### `GET /api/qrack/:jobId`
 
-Returns the status and "**output space**" of the job. All methods that return any output write it to the "output space," with a name specified by the user.
+Returns the status and "**output space**" of the job. All methods that return any output write it to the job (global) "output space," with names specified by the user that become schema for the "`output`" object.
 
 ## Glossary
 
 - `bitLenInt`: Bit-length integer - unsigned integer ID of qubit position in register.
-- `bitCapInt`: Bit-capacity integer - unsigned integer single-permutation value of a qubit register (typically "big integer").
+- `bitCapInt`: Bit-capacity integer - unsigned integer permutation basis eigenstate value of a qubit register (typically "big integer").
 - `real1`: Real number (1-dimensional) - floating-point real-valued number.
 - `Pauli`: Enum for Pauli bases - X is 1, Z is 2, Y is 3, and "identity" is 0.
 - `quid`: Quantum (simulator) unique identifier - unsigned integer that indexes and IDs running simulators and neurons.
@@ -27,49 +27,45 @@ Returns the status and "**output space**" of the job. All methods that return an
 
 Each method, as a line of the `program` array argument of the `POST /api/qrack` route has the following fields:
 
-- `name`: String with the method name of the script instruction (as listed below, exact match)
-- `parameters`: Array of method parameters **in same order as defined in this reference document**. `quid` arguments are always specified as variables in the "output space" of global variables.
-- `output`: **This is only used and required if a method returns a value.** Gives a name to the output of this method in the "output space." (If the variable name already exists, it will be overwritten.)
+- `name`: String with the method name of the script instruction (as listed below, exact match, without markdown)
+- `parameters`: Array of method parameters **in same order as defined in this reference document**. (In other words, supply "parameters" as **according to position in list**, not by "property" name, according this reference document, below.) `quid` arguments, only, are always specified as variable names from the job's live "output space" of global variables, not number "literals."
+- `output`: **This is only used and required if a method returns a value.** Gives a name to the output of this method in the job's "output space." (If the variable name already exists, it will be overwritten.)
 
 ### Simulator Initialization
 
 ##### `init_general(bitLenInt length)`
 
-Initializes a simulator optimized for "BQP-complete" (general) problems.
-**Returns** a quid representing the simulator created.
+**Returns** a `quid` representing a newly-initialized simulator optimized for "BQP-complete" (general) problems.
 
 - `length`: Number of qubits.
 
 
 ##### `init_stabilizer(bitLenInt length)`
 
-Initializes a simulator optimized for ("hybrid") stabilizer problems (with recourse to universal circuit logic as a fallback).
-**Returns** a quid representing the simulator created.
+**Returns** a `quid` representing a newly-initialized simulator optimized for ("hybrid") stabilizer problems (with recourse to universal circuit logic as a fallback).
 
 - `length`: Number of qubits.
 
 
 ##### `init_qbdd(bitLenInt length)`
 
-Initializes a simulator optimized for low-entanglement problems (with "quantum binary decision diagrams" or "QBDD" simulation)
-**Returns** a quid representing the simulator created.
+**Returns** a `quid` representing a newly-initialized simulator for low-entanglement problems (with "quantum binary decision diagrams" or "QBDD" simulation)
 
 - `length`: Number of qubits.
 
 
 ##### `init_clone(quid sid)`
 
-Clones a simulator instance.
-**Returns** a quid representing the simulator created.
+**Returns** a `quid` representing a newly-initialized clone of an existing simulator.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 
 
 ##### `destroy(quid sid)`
 
 Destroys or releases a simulator instance.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 
 
 ### Random Number Generation and Concurrency
@@ -78,7 +74,7 @@ Destroys or releases a simulator instance.
 
 Seeds the random number generator.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `s`: Seed value.
 
 
@@ -86,7 +82,7 @@ Seeds the random number generator.
 
 Sets CPU concurrency.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `p`: Number of parallel threads.
 
 ### Qubit Management
@@ -95,7 +91,7 @@ Sets CPU concurrency.
 
 Allocates a new qubit with a specific ID.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `qid`: Qubit ID.
 
 
@@ -103,7 +99,7 @@ Allocates a new qubit with a specific ID.
 
 Releases a qubit ID.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `qid`: Qubit ID.
 
 
@@ -111,16 +107,16 @@ Releases a qubit ID.
 
 **Returns** the total count of qubits in a simulator instance.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 
 
-### Quantum Probability and Measurement
+### Measurement and Expectation Value Methods
 
 ##### `prob(quid sid, bitLenInt q)`
 
-**Returns** the Z-basis expectation value of a qubit.
+**Returns** The probability (from 0.0 to 1.0) of the qubit being in the |1> state.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Qubit ID.
 
 
@@ -128,8 +124,73 @@ Releases a qubit ID.
 
 **Returns** a "best-guess" as to Z-basis expectation value of a qubit (for near-Clifford simulation) based on the "reduced density matrix" (with less overhead to calculate).
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Qubit ID.
+
+
+##### `perm_prob(quid sid, std::vector<bitLenInt> q, std::vector<Pauli> b)`
+
+**Returns** the probability (upon measurement) of collapsing into a specified permutation of a group of qubits.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of Pauli axes (for each qubit ID in `q`).
+
+
+##### `perm_prob_rdm(quid sid, std::vector<bitLenInt> q, std::vector<Pauli> b, bool r)
+
+**Returns** a "best-guess" as to permutation probability expectation value (for near-Clifford simulation) based on the "reduced density matrix" (with less overhead to calculate).
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of Pauli axes (for each qubit ID in `q`).
+
+
+##### `m(quid sid, bitLenInt q)`
+
+**Returns** a boolean (true for |1> and false for |0>) single-qubit measurement result, simulated according to the Born rules, collapsing the state.
+
+- `sid`: Simulator instance ID.
+- `q`: Qubit ID.
+
+
+##### `force_m(quid sid, bitLenInt q, bool r)`
+
+(**Returns** `r`.) Forces the measurement result of a single qubit and returns the result. This is a pseudo-quantum operation.
+
+- `sid`: Simulator instance ID.
+- `q`: Qubit ID.
+- `r`: Desired measurement result to force.
+
+
+##### `measure_basis(quid sid, std::vector<bitLenInt> q, std::vector<Pauli> b)
+
+**Returns** a single boolean measurement result upon collapse of an ensemble of qubits, jointly, via measurement, each in its specified Pauli basis.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of Pauli axes (for each qubit ID in `q`).
+
+
+##### `measure_all`(quid sid)
+
+**Returns** the bit string resulting from measuring all qubits according to the Born rules, collapsing the simulator state.
+
+- `sid`: Simulator instance ID.
+
+
+##### `measure_shots(quid sid, std::vector<bitLenInt> q, unsigned s)`
+
+**Returns** an array of bit strings resulted from repeatedly measuring a set of qubits for a specified number of shots in the Z-basis, without collapsing the simulator state.
+
+- `sid`: Simulator instance ID.
+- `q`: Vector of qubit identifiers.
+- `s`: Number of measurement shots.
+
+##### `reset_all(quid sid)`
+
+Resets the simulator state to the |0> permutation state for all qubits.
+
+- `sid`: Simulator instance ID.
 
 
 ### Single-qubit gates
@@ -138,7 +199,7 @@ Releases a qubit ID.
 
 **Each gate below takes the same two parameters:**
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Qubit ID.
 
 These are the gates:
@@ -158,7 +219,7 @@ These are the gates:
 
 General 3-parameter unitary single-qubit gate (covers all possible single-qubit gates)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Qubit ID.
 - `theta`: angle (radians)
 - `phi`: angle (radians)
@@ -169,7 +230,7 @@ General 3-parameter unitary single-qubit gate (covers all possible single-qubit 
 
 General 3-parameter unitary single-qubit gate (covers all possible single-qubit gates)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `m`: 8 floating-point numbers in a "flat" array representating alternating real/imaginary components of a (row-major) 2x2 complex unitary matrix.
 - `q`: Qubit ID.
 
@@ -178,7 +239,7 @@ General 3-parameter unitary single-qubit gate (covers all possible single-qubit 
 
 Rotates qubit by the specified angle around the specified Pauli axis.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `phi`: Angle of rotation in radians.
 - `q`: Qubit ID.
 - `b`: Pauli axis of rotation.
@@ -193,7 +254,7 @@ Rotates qubit by the specified angle around the specified Pauli axis.
 
 **Each gate below takes the same three parameters:**
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Qubit ID.
 
@@ -224,7 +285,7 @@ These are the gates:
 
 General 3-parameter unitary single-qubit gate (covers all possible single-qubit gates)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Qubit ID.
 - `theta`: angle
@@ -237,7 +298,7 @@ General 3-parameter unitary single-qubit gate (covers all possible single-qubit 
 
 General 3-parameter unitary single-qubit gate (covers all possible single-qubit gates)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `m`: 8 floating-point numbers representating alternating real/imaginary components of a (row-major) 2x2 complex unitary matrix.
 - `q`: Qubit ID.
@@ -247,7 +308,7 @@ General 3-parameter unitary single-qubit gate (covers all possible single-qubit 
 
 Rotates qubit by the specified angle around the specified Pauli axis.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `phi`: Angle of rotation in radians.
 - `q`: Qubit ID.
@@ -260,7 +321,7 @@ Rotates qubit by the specified angle around the specified Pauli axis.
 
 Multi-controlled gate that activates only for the specified permutation of controls
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `m`: 8 floating-point numbers in a "flat" array representating alternating real/imaginary components of a (row-major) 2x2 complex unitary matrix.
 - `q`: Qubit ID.
@@ -270,7 +331,7 @@ Multi-controlled gate that activates only for the specified permutation of contr
 
 Multi-controlled, single-target multiplexer gate
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `m`: For **each** permutation of control qubits, numbered from 0 as ascending binary (unsigned) integers, in an overall "flat" array, 8 floating-point numbers representating alternating real/imaginary components of a (row-major) 2x2 complex unitary matrix.
 - `q`: Qubit ID.
@@ -280,7 +341,7 @@ Multi-controlled, single-target multiplexer gate
 
 **These optimized gates apply the same Pauli operator to all specified qubits and take the same two arguments.**
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
 
 These are the gates:
@@ -296,7 +357,7 @@ These are the gates:
 
 Applies e^{-i * theta * b}, exponentiation of the specified Pauli operator corresponding to each qubit
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
 - `phi`: Angle of the rotation in radians.
 
@@ -305,7 +366,7 @@ Applies e^{-i * theta * b}, exponentiation of the specified Pauli operator corre
 
 Applies e^{-i * theta * b}, exponentiation of the specified Pauli operator corresponding to each qubit
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Array of qubit IDs.
 - `phi`: Angle of the rotation in radians.
@@ -316,7 +377,7 @@ Applies e^{-i * theta * b}, exponentiation of the specified Pauli operator corre
 
 Swap the two input qubits
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q1`: Qubit ID (1).
 - `q2`: Qubit ID (2).
 
@@ -325,7 +386,7 @@ Swap the two input qubits
 
 Swap the two input qubits and apply a factor of "i" if their states differ
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q1`: Qubit ID (1).
 - `q2`: Qubit ID (2).
 
@@ -334,7 +395,7 @@ Swap the two input qubits and apply a factor of "i" if their states differ
 
 Swap the two input qubits and apply a factor of "-i" if their states differ (inverse of `iswap`)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q1`: Qubit ID (1).
 - `q2`: Qubit ID (2).
 
@@ -343,7 +404,7 @@ Swap the two input qubits and apply a factor of "-i" if their states differ (inv
 
 Apply "fsim," which is a phased swap-like gate that is useful in fermionic simulation
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `theta`: angle (radians) (1)
 - `phi`: angle (radians) (2)
 - `q1`: Qubit ID (1).
@@ -354,7 +415,7 @@ Apply "fsim," which is a phased swap-like gate that is useful in fermionic simul
 
 If controls are all |1>, swap the two input qubits
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q1`: Qubit ID (1).
 - `q2`: Qubit ID (2).
@@ -364,7 +425,7 @@ If controls are all |1>, swap the two input qubits
 
 If controls are all |0>, swap the two input qubits
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q1`: Qubit ID (1).
 - `q2`: Qubit ID (2).
@@ -374,7 +435,7 @@ If controls are all |0>, swap the two input qubits
 
 **Each gate below takes the same four parameters:**
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `qi1`: Input qubit ID (1).
 - `qi2`: Input qubit ID (2).
 - `qo`: Output qubit ID.
@@ -392,7 +453,7 @@ These are the gates:
 
 **Each gate below takes the same four parameters:**
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `ci`: Input classical bit value.
 - `qi`: Input qubit ID.
 - `qo`: Output qubit ID.
@@ -412,7 +473,7 @@ These are the gates:
 
 Acts the quantum Fourier transform on the specified set of qubits (without terminal swap gates to reverse bit order)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
 
 
@@ -420,7 +481,7 @@ Acts the quantum Fourier transform on the specified set of qubits (without termi
 
 Acts the inverse of the quantum Fourier transform on the specified set of qubits (without terminal swap gates to reverse bit order)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
 
 ### Arithmetic Logic Unit (ALU)
@@ -429,7 +490,7 @@ Acts the inverse of the quantum Fourier transform on the specified set of qubits
 
 Add classical integer to quantum integer (in-place)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `a`: Classical integer operand.
 
@@ -438,7 +499,7 @@ Add classical integer to quantum integer (in-place)
 
 Subtract classical integer from quantum integer (in-place)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `a`: Classical integer operand.
 
@@ -447,7 +508,7 @@ Subtract classical integer from quantum integer (in-place)
 
 Add classical integer to quantum integer (in-place) and set an overflow flag
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `a`: Classical integer operand.
 - `s`: Qubit ID of overflow flag.
@@ -457,7 +518,7 @@ Add classical integer to quantum integer (in-place) and set an overflow flag
 
 Subtract classical integer from quantum integer (in-place) and set an overflow flag
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `a`: Classical integer operand.
 - `s`: Qubit ID of overflow flag.
@@ -467,7 +528,7 @@ Subtract classical integer from quantum integer (in-place) and set an overflow f
 
 If controls are all |1>, add classical integer to quantum integer (in-place)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Array of target qubit IDs.
 - `a`: Classical integer operand.
@@ -477,7 +538,7 @@ If controls are all |1>, add classical integer to quantum integer (in-place)
 
 If controls are all |1>, subtract classical integer from quantum integer (in-place)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Array of target qubit IDs.
 - `a`: Classical integer operand.
@@ -487,7 +548,7 @@ If controls are all |1>, subtract classical integer from quantum integer (in-pla
 
 Multiply quantum integer by classical integer (in-place)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `o`: Array of overflow qubit IDs.
 - `a`: Classical integer operand.
@@ -497,7 +558,7 @@ Multiply quantum integer by classical integer (in-place)
 
 Divide quantum integer by classical integer (in-place)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `o`: Array of overflow qubit IDs.
 - `a`: Classical integer operand.
@@ -507,7 +568,7 @@ Divide quantum integer by classical integer (in-place)
 
 Multiply quantum integer by classical integer (out-of-place, with modulus)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `o`: Array of output qubit IDs.
 - `a`: Classical integer operand.
@@ -518,7 +579,7 @@ Multiply quantum integer by classical integer (out-of-place, with modulus)
 
 Divide quantum integer by classical integer (out-of-place, with modulus)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `o`: Array of output qubit IDs.
 - `a`: Classical integer operand.
@@ -529,7 +590,7 @@ Divide quantum integer by classical integer (out-of-place, with modulus)
 
 Raise a classical base to a quantum power (out-of-place, with modulus)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `q`: Array of target qubit IDs.
 - `o`: Array of output qubit IDs.
 - `a`: Classical integer operand.
@@ -540,7 +601,7 @@ Raise a classical base to a quantum power (out-of-place, with modulus)
 
 If controls are all |1>, multiply quantum integer by classical integer (in-place)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Array of target qubit IDs.
 - `o`: Array of overflow qubit IDs.
@@ -551,7 +612,7 @@ If controls are all |1>, multiply quantum integer by classical integer (in-place
 
 If controls are all |1>, divide quantum integer by classical integer (in-place)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Array of target qubit IDs.
 - `o`: Array of overflow qubit IDs.
@@ -562,7 +623,7 @@ If controls are all |1>, divide quantum integer by classical integer (in-place)
 
 If controls are all |1>, multiply quantum integer by classical integer (out-of-place, with modulus)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Array of target qubit IDs.
 - `o`: Array of output qubit IDs.
@@ -574,7 +635,7 @@ If controls are all |1>, multiply quantum integer by classical integer (out-of-p
 
 If controls are all |1>, divide quantum integer by classical integer (out-of-place, with modulus)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Array of target qubit IDs.
 - `o`: Array of output qubit IDs.
@@ -586,7 +647,7 @@ If controls are all |1>, divide quantum integer by classical integer (out-of-pla
 
 If controls are all |1>, raise a classical base to a quantum power (out-of-place, with modulus)
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
 - `q`: Array of target qubit IDs.
 - `o`: Array of output qubit IDs.
@@ -612,7 +673,7 @@ Quantum neurons can use different activation functions, as defined in the QNeuro
 
 Initializes a quantum neuron with specified parameters.
 
-- `sid`: Simulator ID.
+- `sid`: Simulator instance ID.
 - `c`: List of control qubits for input.
 - `q`: Target qubit for output.
 - `f`: Activation function.

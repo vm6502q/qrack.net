@@ -55,7 +55,7 @@ class JobService extends ModelService {
       case 1:
         return parseInt(v.value)
       default:
-        throw new Error("Quid instruction parameter does not have quid outputTypeId.")
+        throw new Error('Quid instruction parameter does not have quid outputTypeId.')
     }
   }
 
@@ -659,7 +659,7 @@ class JobService extends ModelService {
     job.userId = userId
     // Job status 3: RUNNING
     job.jobStatusTypeId = 3
-    job.statusMessage = "RUNNING"
+    job.statusMessage = 'RUNNING'
 
     const result = await this.create(job)
     if (!result.success) {
@@ -738,7 +738,6 @@ class JobService extends ModelService {
           break
       }
     }
-
 
     return { success: true, body: { status, output } }
   }

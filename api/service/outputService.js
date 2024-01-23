@@ -35,7 +35,7 @@ class OutputService extends ModelService {
 
   async createOrUpdate (jobId, name, value, outputTypeId) {
     let output = await this.SequelizeServiceInstance.findOne({ jobId, name })
-    let isNew = !output
+    const isNew = !output
     if (isNew) {
       output = await this.SequelizeServiceInstance.new()
     }
