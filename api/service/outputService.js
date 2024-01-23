@@ -29,6 +29,14 @@ class OutputService extends ModelService {
     return { success: true, body: output }
   }
 
+  async getSidsByJobId (jobId) {
+    return await this.SequelizeServiceInstance.findAll({ jobId, outputTypeId: 1 })
+  }
+
+  async getNidsByJobId (jobId) {
+    return await this.SequelizeServiceInstance.findAll({ jobId, outputTypeId: 7 })
+  }
+
   async getByJobIdAndName (jobId, name) {
     return await this.SequelizeServiceInstance.findOne({ jobId, name })
   }
