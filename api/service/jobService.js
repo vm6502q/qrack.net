@@ -91,7 +91,12 @@ class JobService extends ModelService {
   async single_quid_output_op (job, fn, i, oType, core) {
     const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, ...i.parameters), oType)
+    try {
+      await outputService.createOrUpdate(job, i.output, fn(tmp, ...i.parameters), oType)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
   }
 
   async single_quid_mc_op (job, fn, i, core) {
@@ -114,7 +119,12 @@ class JobService extends ModelService {
       tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, ...i.parameters), oType)
+    try {
+      await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, ...i.parameters), oType)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
     tmpIntVec.delete()
   }
 
@@ -131,7 +141,12 @@ class JobService extends ModelService {
       tmpCharVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpCharVec, ...i.parameters), oType)
+    try {
+      await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpCharVec, ...i.parameters), oType)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
     tmpIntVec.delete()
     tmpCharVec.delete()
   }
@@ -185,7 +200,12 @@ class JobService extends ModelService {
       tmpIntVec2.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters), oType)
+    try {
+      await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters), oType)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
     tmpIntVec.delete()
     tmpIntVec2.delete()
   }
@@ -227,7 +247,12 @@ class JobService extends ModelService {
       tmpDoubleVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    await outputService.createOrUpdate(job.id, i.output, fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters), oType)
+    try {
+      await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters), oType)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
     tmpIntVec.delete()
     tmpDoubleVec.delete()
   }
@@ -238,13 +263,28 @@ class JobService extends ModelService {
       const i = p[lcv]
       switch (i.name) {
         case 'init_general':
-          await outputService.createOrUpdate(job.id, i.output, core.init_general(...i.parameters), 1)
+          try {
+            await outputService.createOrUpdate(job, i.output, core.init_general(...i.parameters), 1)
+          } catch (e) {
+            await this.free_after_job(job, core)
+            throw e
+          }
           break
         case 'init_stabilizer':
-          await outputService.createOrUpdate(job.id, i.output, core.init_stabilizer(...i.parameters), 1)
+          try {
+            await outputService.createOrUpdate(job, i.output, core.init_stabilizer(...i.parameters), 1)
+          } catch (e) {
+            await this.free_after_job(job, core)
+            throw e
+          }
           break
         case 'init_qbdd':
-          await outputService.createOrUpdate(job.id, i.output, core.init_qbdd(...i.parameters), 1)
+          try {
+            await outputService.createOrUpdate(job, i.output, core.init_qbdd(...i.parameters), 1)
+          } catch (e) {
+            await this.free_after_job(job, core)
+            throw e
+          }
           break
         case 'init_clone':
           await this.single_quid_output_op(job, core.init_clone, i, 1)
