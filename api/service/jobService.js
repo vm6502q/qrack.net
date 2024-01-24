@@ -85,7 +85,12 @@ class JobService extends ModelService {
   async single_quid_op (job, fn, i, core) {
     const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
-    fn(tmp, ...i.parameters)
+    try {
+      fn(tmp, ...i.parameters)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
   }
 
   async single_quid_output_op (job, fn, i, oType, core) {
@@ -107,7 +112,13 @@ class JobService extends ModelService {
       tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    fn(tmp, tmpIntVec, ...i.parameters)
+    try {
+      fn(tmp, tmpIntVec, ...i.parameters)
+    } catch (e) {
+      tmpIntVec.delete()
+      await this.free_after_job(job, core)
+      throw e
+    }
     tmpIntVec.delete()
   }
 
@@ -122,6 +133,7 @@ class JobService extends ModelService {
     try {
       await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, ...i.parameters), oType)
     } catch (e) {
+      tmpIntVec.delete()
       await this.free_after_job(job, core)
       throw e
     }
@@ -144,6 +156,8 @@ class JobService extends ModelService {
     try {
       await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpCharVec, ...i.parameters), oType)
     } catch (e) {
+      tmpIntVec.delete()
+      tmpCharVec.delete()
       await this.free_after_job(job, core)
       throw e
     }
@@ -164,7 +178,14 @@ class JobService extends ModelService {
       tmpDoubleVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters)
+    try {
+      fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters)
+    } catch (e) {
+      tmpIntVec.delete()
+      tmpDoubleVec.delete()
+      await this.free_after_job(job, core)
+      throw e
+    }
     tmpIntVec.delete()
     tmpDoubleVec.delete()
   }
@@ -182,7 +203,14 @@ class JobService extends ModelService {
       tmpIntVec2.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters)
+    try {
+      fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters)
+    } catch (e) {
+      tmpIntVec.delete()
+      tmpIntVec2.delete()
+      await this.free_after_job(job, core)
+      throw e
+    }
     tmpIntVec.delete()
     tmpIntVec2.delete()
   }
@@ -203,6 +231,8 @@ class JobService extends ModelService {
     try {
       await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpIntVec2, ...i.parameters), oType)
     } catch (e) {
+      tmpIntVec.delete()
+      tmpIntVec2.delete()
       await this.free_after_job(job, core)
       throw e
     }
@@ -228,7 +258,15 @@ class JobService extends ModelService {
       tmpIntVec3.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
-    fn(tmp, tmpIntVec, tmpIntVec2, tmpIntVec3, ...i.parameters)
+    try {
+      fn(tmp, tmpIntVec, tmpIntVec2, tmpIntVec3, ...i.parameters)
+    } catch (e) {
+      tmpIntVec.delete()
+      tmpIntVec2.delete()
+      tmpIntVec3.delete()
+      await this.free_after_job(job, core)
+      throw e
+    }
     tmpIntVec.delete()
     tmpIntVec2.delete()
     tmpIntVec3.delete()
@@ -250,6 +288,8 @@ class JobService extends ModelService {
     try {
       await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters), oType)
     } catch (e) {
+      tmpIntVec.delete()
+      tmpDoubleVec.delete()
       await this.free_after_job(job, core)
       throw e
     }
@@ -356,7 +396,12 @@ class JobService extends ModelService {
           i.parameters.shift()
           tmpIntVec = new core.VectorInt(i.parameters[0])
           i.parameters.shift()
-          core.compose(tmp, tmp2, tmpIntVec)
+          try {
+            core.compose(tmp, tmp2, tmpIntVec)
+          } catch (e) {
+            tmpIntVec.delete()
+            await this.free_after_job(job, core)
+          }
           tmpIntVec.delete()
           break
         case 'decompose':
@@ -415,7 +460,12 @@ class JobService extends ModelService {
           i.parameters.shift()
           tmpDoubleVec = new core.VectorDouble(i.parameters[0])
           i.parameters.shift()
-          core.mtrx(tmp, tmpDoubleVec, ...i.parameters)
+          try {
+            core.mtrx(tmp, tmpDoubleVec, ...i.parameters)
+          } catch (e) {
+            tmpDoubleVec.delete()
+            await this.free_after_job(job, core)
+          }
           tmpDoubleVec.delete()
           break
         case 'mcx':
@@ -512,7 +562,13 @@ class JobService extends ModelService {
             tmpCharVec.push_back(i.parameters[0][j])
           }
           i.parameters.shift()
-          core.exp(tmp, tmpIntVec, tmpCharVec, ...i.parameters)
+          try {
+            core.exp(tmp, tmpIntVec, tmpCharVec, ...i.parameters)
+          } catch (e) {
+            tmpIntVec.delete()
+            tmpCharVec.delete()
+            await this.free_after_job(job, core)
+          }
           tmpIntVec.delete()
           tmpCharVec.delete()
           break
@@ -534,7 +590,14 @@ class JobService extends ModelService {
             tmpCharVec.push_back(i.parameters[0][j])
           }
           i.parameters.shift()
-          core.mcexp(tmp, tmpIntVec, tmpIntVec2, tmpCharVec, ...i.parameters)
+          try {
+            core.mcexp(tmp, tmpIntVec, tmpIntVec2, tmpCharVec, ...i.parameters)
+          } catch (e) {
+            tmpIntVec.delete()
+            tmpIntVec2.delete()
+            tmpCharVec.delete()
+            await this.free_after_job(job, core)
+          }
           tmpIntVec.delete()
           tmpIntVec2.delete()
           tmpCharVec.delete()
@@ -557,22 +620,22 @@ class JobService extends ModelService {
         case 'macswap':
           await this.single_quid_mc_op(job, core.macswap, i, core)
           break
-        case'and':
+        case 'and':
           await this.single_quid_op(job, core.and, i, core)
           break
-        case'or':
+        case 'or':
           await this.single_quid_op(job, core.or, i, core)
           break
-        case'xor':
+        case 'xor':
           await this.single_quid_op(job, core.xor, i, core)
           break
-        case'nand':
+        case 'nand':
           await this.single_quid_op(job, core.nand, i, core)
           break
-        case'nor':
+        case 'nor':
           await this.single_quid_op(job, core.nor, i, core)
           break
-        case'xnor':
+        case 'xnor':
           await this.single_quid_op(job, core.xnor, i, core)
           break
         case 'cland':
@@ -664,7 +727,12 @@ class JobService extends ModelService {
             tmpDoubleVec.push_back(i.parameters[0][j])
           }
           i.parameters.shift()
-          core.set_qneuron_angles(tmp, tmpDoubleVec, ...i.parameters)
+          try {
+            core.set_qneuron_angles(tmp, tmpDoubleVec, ...i.parameters)
+          } catch (e) {
+            tmpDoubleVec.delete()
+            await this.free_after_job(job, core)
+          }
           tmpDoubleVec.delete()
           break
         case 'get_qneuron_angles':
