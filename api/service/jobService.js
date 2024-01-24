@@ -557,38 +557,38 @@ class JobService extends ModelService {
         case 'macswap':
           await this.single_quid_mc_op(job, core.macswap, i, core)
           break
-        case 'toffoli_and':
-          await this.single_quid_op(job, core.toffoli_and, i)
+        case 'and':
+          await this.single_quid_op(job, core.and, i, core)
           break
-        case 'toffoli_or':
-          await this.single_quid_op(job, core.toffoli_or, i)
+        case 'or':
+          await this.single_quid_op(job, core.or, i, core)
           break
-        case 'toffoli_xor':
-          await this.single_quid_op(job, core.toffoli_xor, i)
+        case 'xor':
+          await this.single_quid_op(job, core.xor, i, core)
           break
-        case 'toffoli_nand':
-          await this.single_quid_op(job, core.toffoli_nand, i)
+        case 'nand':
+          await this.single_quid_op(job, core.nand, i, core)
           break
-        case 'toffoli_nor':
-          await this.single_quid_op(job, core.toffoli_nor, i)
+        case 'nor':
+          await this.single_quid_op(job, core.nor, i, core)
           break
-        case 'toffoli_xnor':
-          await this.single_quid_op(job, core.toffoli_xnor, i)
+        case 'xnor':
+          await this.single_quid_op(job, core.xnor, i, core)
           break
         case 'cland':
-          await this.single_quid_op(job, core.cland, i)
+          await this.single_quid_op(job, core.cland, i, core)
           break
         case 'clor':
-          await this.single_quid_op(job, core.clor, i)
+          await this.single_quid_op(job, core.clor, i, core)
           break
         case 'clxor':
-          await this.single_quid_op(job, core.clxor, i)
+          await this.single_quid_op(job, core.clxor, i, core)
           break
         case 'clnand':
-          await this.single_quid_op(job, core.clnand, i)
+          await this.single_quid_op(job, core.clnand, i, core)
           break
         case 'clnor':
-          await this.single_quid_op(job, core.clnor, i)
+          await this.single_quid_op(job, core.clnor, i, core)
           break
         case 'clxnor':
           await this.single_quid_op(job, core.clxnor, i)
