@@ -277,22 +277,22 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     }));
 
     // Quantum boolean (Toffoli) operations
-    function("toffoli_and", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
+    function("and", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
         QrackWrapper::AND(sid, qi1, qi2, qo);
     }));
-    function("toffoli_or", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
+    function("or", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
         QrackWrapper::OR(sid, qi1, qi2, qo);
     }));
-    function("toffoli_xor", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
+    function("xor", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
         QrackWrapper::XOR(sid, qi1, qi2, qo);
     }));
-    function("toffoli_nand", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
+    function("nand", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
         QrackWrapper::NAND(sid, qi1, qi2, qo);
     }));
-    function("toffoli_nor", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
+    function("nor", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
         QrackWrapper::NOR(sid, qi1, qi2, qo);
     }));
-    function("toffoli_xnor", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
+    function("xnor", optional_override([](int sid, int qi1, int qi2, int qo) -> void {
         QrackWrapper::XNOR(sid, qi1, qi2, qo);
     }));
     function("cland", optional_override([](int sid, bool ci, int qi, int qo) -> void {
