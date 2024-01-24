@@ -557,22 +557,22 @@ class JobService extends ModelService {
         case 'macswap':
           await this.single_quid_mc_op(job, core.macswap, i, core)
           break
-        case 'and':
+        case'toffoli_and':
           await this.single_quid_op(job, core.and, i, core)
           break
-        case 'or':
+        case'toffoli_or':
           await this.single_quid_op(job, core.or, i, core)
           break
-        case 'xor':
+        case'toffoli_xor':
           await this.single_quid_op(job, core.xor, i, core)
           break
-        case 'nand':
+        case'toffoli_nand':
           await this.single_quid_op(job, core.nand, i, core)
           break
-        case 'nor':
+        case'toffoli_nor':
           await this.single_quid_op(job, core.nor, i, core)
           break
-        case 'xnor':
+        case'toffoli_xnor':
           await this.single_quid_op(job, core.xnor, i, core)
           break
         case 'cland':
