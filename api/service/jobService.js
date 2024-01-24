@@ -14,14 +14,6 @@ const OutputService = require('./outputService')
 // Qrack
 const Qrack = require('../Qrack')
 
-const qrack = Qrack({
-  locateFile: () => {
-    return path.resolve(__dirname, '../Qrack.wasm')
-  }
-}).catch((e) => {
-  console.log('Could not load Qrack: ' + e.toString())
-})
-
 const outputService = new OutputService()
 const Job = db.job
 
@@ -803,15 +795,20 @@ class JobService extends ModelService {
     job = result.body
     await job.save()
 
-    qrack.then(async (core) => {
+    Qrack({
+      locateFile: () => {
+        return path.resolve(__dirname, '../Qrack.wasm')
+      }
+    }).catch((e) => {
+      console.log('Could not load Qrack: ' + e.toString())
+    }).then(async (core) => {
       await this.runQrackProgram(core, reqBody.program, job)
+    }).catch(async (e) => {
+      // Job status 2: FAILURE
+      job.jobStatusTypeId = 2
+      job.statusMessage = e.toString()
+      await job.save()
     })
-      .catch(async (e) => {
-        // Job status 2: FAILURE
-        job.jobStatusTypeId = 2
-        job.statusMessage = e.toString()
-        await job.save()
-      })
 
     return { success: true, body: job }
   }
