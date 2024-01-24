@@ -726,7 +726,7 @@ Initializes a quantum neuron with specified parameters.
 
 Clones an existing quantum neuron.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 
 ### Destruction
 
@@ -734,7 +734,7 @@ Clones an existing quantum neuron.
 
 Destroys a quantum neuron.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 
 ### Configuration
 
@@ -742,7 +742,7 @@ Destroys a quantum neuron.
 
 Sets the RY-rotation angle parameters for the quantum neuron.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `angles`: Vector of angles for each input permutation.
 
 
@@ -750,7 +750,7 @@ Sets the RY-rotation angle parameters for the quantum neuron.
 
 Retrieves the RY-rotation angle parameters of the quantum neuron.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `Returns`: Vector of angles.
 
 
@@ -758,7 +758,7 @@ Retrieves the RY-rotation angle parameters of the quantum neuron.
 
 Sets the leakage parameter for leaky quantum neuron activation functions.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `alpha`: Leakage parameter value.
 
 
@@ -766,7 +766,7 @@ Sets the leakage parameter for leaky quantum neuron activation functions.
 
 Sets the activation function of a quantum neuron.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `f`: Activation function.
 
 ### Learning and Inference
@@ -775,7 +775,7 @@ Sets the activation function of a quantum neuron.
 
 **Returns** an inference result using the quantum neuron.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `e`: Expected boolean inference result.
 - `r`: Boolean to reset/leave the output qubit state before inference
 
@@ -784,7 +784,7 @@ Sets the activation function of a quantum neuron.
 
 **Returns** an inference result using the inverse operation of neuron inference.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `e`: Expected boolean inference result.
 
 
@@ -792,7 +792,7 @@ Sets the activation function of a quantum neuron.
 
 **Returns** an inference result using the quantum neuron, training for one epoch and uncomputing intermediate effects.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `e`: Expected boolean inference result.
 
 
@@ -800,7 +800,7 @@ Sets the activation function of a quantum neuron.
 
 Trains the quantum neuron for one epoch.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `eta`: Learning rate.
 - `e`: Expected boolean inference result.
 - `r`: Boolean to reset/keep the output qubit state before learning
@@ -810,7 +810,33 @@ Trains the quantum neuron for one epoch.
 
 Trains the quantum neuron for one epoch, assuming a Z-basis eigenstate input.
 
-- `nid`: Neuron ID.
+- `nid`: Neuron instance ID.
 - `eta`: Learning rate.
 - `e`: Expected boolean inference result.
 - `r`: Boolean to reset/keep the output qubit state before learning
+
+### Schmidt Decomposition Rounding Parameter and Near-Clifford Rounding (Approximation)
+
+Fidelity methods are strictly `double` precision, not explicitly `real1`.
+
+##### `set_sdrp(quid sid, double sdrp)`
+
+Set the "Schmidt decomposition rounding parameter" ("SDRP"). If "reactive separation" option is on (as by default) the parameter will be automatically applied in multi-qubit gate operations. (See [arXiv:2304.14969](https://arxiv.org/abs/2304.14969), by Strano and the Qrack and Unitary Fund teams, on comparative benchmarks relative to Qrack.)
+
+- `sid`: Simulator instance ID.
+- `sdrp`: Schmidt decomposition rounding parameter (0 to 1 range, defaults to real1 "epsilon")
+
+
+##### `get_unitary_fidelity(quid sid) -> double`
+
+Report a close theoretical estimate of fidelity, as potentially reduced by "SDRP" (Credit to Andrea Mari for research at Unitary Fund, in [arXiv:2304.14969](https://arxiv.org/abs/2304.14969))
+
+- `sid`: Simulator instance ID.
+- `sdrp`: Schmidt decomposition rounding parameter (0 to 1 range, defaults to real1 "epsilon")
+
+
+##### `reset_unitary_fidelity(quid sid)`
+
+Reset the "SDRP" fidelity tracker to 1.0 fidelity ("ideal"), before continuing fidelity calculation. (Some wholly-destructive measurement and state preparation operations and side effects might automatically reset the fidelity tracker to 1.0, as well, though the attempt in design is to do so unobstructively, to the utility of the fidelity tracking function in typical use.)
+
+- `sid`: Simulator instance ID.
