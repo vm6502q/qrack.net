@@ -840,3 +840,17 @@ Report a close theoretical estimate of fidelity, as potentially reduced by "SDRP
 Reset the "SDRP" fidelity tracker to 1.0 fidelity ("ideal"), before continuing fidelity calculation. (Some wholly-destructive measurement and state preparation operations and side effects might automatically reset the fidelity tracker to 1.0, as well, though the attempt in design is to do so unobstructively, to the utility of the fidelity tracking function in typical use.)
 
 - `sid`: Simulator instance ID.
+
+
+##### `set_reactive_separate(quid sid)`
+
+Turn "reactive separation" optimization on/off with true/false (default: on/true). (Some subjectively "high-entanglement" circuits will run more quickly with "reactive separation off.)
+
+- `sid`: Simulator instance ID.
+
+
+##### `set_t_injection(quid sid)`
+
+Turn "near-Clifford" simulation techniques (for not just "`t`" gate, but "`rz`" in general) on/off, with true/false (default: on/true). (Near-clifford techniques are memory-efficient but might take very much longer execution time than other simulation techniques like state vector.)
+
+- `sid`: Simulator instance ID.
