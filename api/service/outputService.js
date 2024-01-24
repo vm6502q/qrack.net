@@ -47,7 +47,7 @@ class OutputService extends ModelService {
     if (isNew) {
       output = await this.SequelizeServiceInstance.new()
     } else if ((output.outputTypeId === 1) || (output.outputTypeId === 7)) {
-      throw new Error("Cannot overwrite simulator or neuron quids in output space!")
+      throw new Error('Cannot overwrite simulator or neuron quids in output space!')
     }
     output.jobId = job.id
     output.outputTypeId = outputTypeId
