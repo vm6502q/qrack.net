@@ -140,9 +140,49 @@ Releases a qubit ID.
 ##### `perm_prob_rdm(quid sid, std::vector<bitLenInt> q, std::vector<Pauli> b, bool r)
 
 **Returns** a "best-guess" as to permutation probability expectation value (for near-Clifford simulation) based on the "reduced density matrix" (with less overhead to calculate).
+
 - `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
 - `b`: Array of Pauli axes (for each qubit ID in `q`).
+- `r`: "Rounding" option on/off, for `true`/`false`.
+
+
+##### `fact_exp(quid sid, std::vector<bitLenInt> q, std::vector<int> s)
+
+**Returns** an expectation value by summing respective integers "`s`" by expectation value "weight," associated to |0> and |1> respective Z-basis expectation values of each qubit in "`q`", with `s` strided in |0>/|1> pairs, as a flat array.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
+
+
+##### `fact_exp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<int> s, bool r)
+
+**Returns** a "best-guess" expectation value (for near-Clifford simulation) based on the "reduced density matrix," for an expectation value resulting from summing respective integers "`s`" by expectation value "weight," associated to |0> and |1> respective Z-basis expectation values of each qubit in "`q`", with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
+- `r`: "Rounding" option on/off, for `true`/`false`.
+
+
+##### `fact_exp_fp(quid sid, std::vector<bitLenInt> q, std::vector<double> s)
+
+**Returns** an expectation value by summing respective floating-point numbers "`s`" by expectation value "weight," associated to |0> and |1> respective Z-basis expectation values of each qubit in "`q`", with `s` strided in |0>/|1> pairs, as a flat array.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
+
+
+##### `fact_exp_fp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<double> s, bool r)
+
+**Returns** a "best-guess" expectation value (for near-Clifford simulation) based on the "reduced density matrix," for an expectation value resulting from summing respective floating-point numbers "`s`" by expectation value "weight," associated to |0> and |1> respective Z-basis expectation values of each qubit in "`q`", with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
+- `r`: "Rounding" option on/off, for `true`/`false`.
 
 
 ##### `measure(quid sid, bitLenInt q)`
