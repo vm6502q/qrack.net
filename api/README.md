@@ -183,7 +183,7 @@ Allocates a new qubit with a specific ID.
 - `r`: "Rounding" option on/off, for `true`/`false`.
 
 
-##### `fact_exp(quid sid, std::vector<bitLenInt> q, std::vector<int> s) -> real1`
+##### `fact_exp(quid sid, std::vector<bitLenInt> q, std::vector<long> s) -> real1`
 
 **Returns** an expectation value by summing respective integers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array.
 
@@ -192,7 +192,7 @@ Allocates a new qubit with a specific ID.
 - `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
 
 
-##### `fact_exp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<int> s, bool r) -> real1`
+##### `fact_exp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<long> s, bool r) -> real1`
 
 **Returns** a "best-guess" expectation value (for near-Clifford simulation) based on the "reduced density matrix," for an expectation value resulting from summing respective integers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
 

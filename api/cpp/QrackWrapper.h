@@ -3,159 +3,159 @@
 class QrackWrapper {
 public:
     // Utility
-    static int init_general(int length);
-    static int init_stabilizer(int length);
-    static int init_qbdd(int length);
-    static int init_clone(int sid);
-    static int num_qubits(int sid);
-    static void destroy(int sid);
-    static void seed(int sid, int s);
-    static void allocateQubit(int sid, int qid);
-    static bool release(int sid, int q);
-    static bool TrySeparate1Qb(int sid, int qi1);
-    static bool TrySeparate2Qb(int sid, int qi1, int qi2);
-    static bool TrySeparateTol(int sid, std::vector<int> q, double tol);
-    static double GetUnitaryFidelity(int sid);
-    static void ResetUnitaryFidelity(int sid);
-    static void SetSdrp(int sid, double sdrp);
-    static void SetReactiveSeparate(int sid, bool irs);
-    static void SetTInjection(int sid, bool iti);
+    static long init_general(long length);
+    static long init_stabilizer(long length);
+    static long init_qbdd(long length);
+    static long init_clone(long sid);
+    static long num_qubits(long sid);
+    static void destroy(long sid);
+    static void seed(long sid, long s);
+    static void allocateQubit(long sid, long qid);
+    static bool release(long sid, long q);
+    static bool TrySeparate1Qb(long sid, long qi1);
+    static bool TrySeparate2Qb(long sid, long qi1, long qi2);
+    static bool TrySeparateTol(long sid, std::vector<long> q, double tol);
+    static double GetUnitaryFidelity(long sid);
+    static void ResetUnitaryFidelity(long sid);
+    static void SetSdrp(long sid, double sdrp);
+    static void SetReactiveSeparate(long sid, bool irs);
+    static void SetTInjection(long sid, bool iti);
 
     // Expectation value output
-    static double Prob(int sid, int q);
-    static double ProbRdm(int sid, int q);
-    static double PermutationProb(int sid, std::vector<int> q, std::vector<char> s);
-    static double PermutationProbRdm(int sid, std::vector<int> q, std::vector<char> s, bool r);
-    static double FactorizedExpectation(int sid, std::vector<int> q, std::vector<int> s);
-    static double FactorizedExpectationRdm(int sid, std::vector<int> q, std::vector<int> s, bool r);
-    static double FactorizedExpectationFp(int sid, std::vector<int> q, std::vector<double> s);
-    static double FactorizedExpectationFpRdm(int sid, std::vector<int> q, std::vector<double> s, bool r);
+    static double Prob(long sid, long q);
+    static double ProbRdm(long sid, long q);
+    static double PermutationProb(long sid, std::vector<long> q, std::vector<char> s);
+    static double PermutationProbRdm(long sid, std::vector<long> q, std::vector<char> s, bool r);
+    static double FactorizedExpectation(long sid, std::vector<long> q, std::vector<long> s);
+    static double FactorizedExpectationRdm(long sid, std::vector<long> q, std::vector<long> s, bool r);
+    static double FactorizedExpectationFp(long sid, std::vector<long> q, std::vector<double> s);
+    static double FactorizedExpectationFpRdm(long sid, std::vector<long> q, std::vector<double> s, bool r);
 
     // Parity
-    static void PhaseParity(int sid, double lambda, std::vector<int> q);
-    static double JointEnsembleProbability(int sid, std::vector<int> q, std::vector<char> b);
+    static void PhaseParity(long sid, double lambda, std::vector<long> q);
+    static double JointEnsembleProbability(long sid, std::vector<long> q, std::vector<char> b);
 
     // Schmidt decomposition
-    static void Compose(int sid1, int sid2, std::vector<int> q);
-    static int Decompose(int sid, std::vector<int> q);
-    static void Dispose(int sid, std::vector<int> q);
+    static void Compose(long sid1, long sid2, std::vector<long> q);
+    static long Decompose(long sid, std::vector<long> q);
+    static void Dispose(long sid, std::vector<long> q);
 
     // SPAM and non-unitary
-    static bool M(int sid, int q);
-    static bool ForceM(int sid, int q, bool r);
-    static bool Measure(int sid, std::vector<int> q, std::vector<char> b);
-    static int MAll(int sid);
-    static std::vector<int> MeasureShots(int sid, std::vector<int> q, int s);
-    static void ResetAll(int sid);
+    static bool M(long sid, long q);
+    static bool ForceM(long sid, long q, bool r);
+    static bool Measure(long sid, std::vector<long> q, std::vector<char> b);
+    static long MAll(long sid);
+    static std::vector<long> MeasureShots(long sid, std::vector<long> q, long s);
+    static void ResetAll(long sid);
 
     // single-qubit gates
-    static void X(int sid, int q);
-    static void Y(int sid, int q);
-    static void Z(int sid, int q);
-    static void H(int sid, int q);
-    static void S(int sid, int q);
-    static void T(int sid, int q);
-    static void AdjS(int sid, int q);
-    static void AdjT(int sid, int q);
-    static void U(int sid, int q, double theta, double phi, double lambda);
-    static void Mtrx(int sid, std::vector<double> m, int q);
+    static void X(long sid, long q);
+    static void Y(long sid, long q);
+    static void Z(long sid, long q);
+    static void H(long sid, long q);
+    static void S(long sid, long q);
+    static void T(long sid, long q);
+    static void AdjS(long sid, long q);
+    static void AdjT(long sid, long q);
+    static void U(long sid, long q, double theta, double phi, double lambda);
+    static void Mtrx(long sid, std::vector<double> m, long q);
 
     // multi-controlled single-qubit gates
-    static void MCX(int sid, std::vector<int> c, int q);
-    static void MCY(int sid, std::vector<int> c, int q);
-    static void MCZ(int sid, std::vector<int> c, int q);
-    static void MCH(int sid, std::vector<int> c, int q);
-    static void MCS(int sid, std::vector<int> c, int q);
-    static void MCT(int sid, std::vector<int> c, int q);
-    static void MCAdjS(int sid, std::vector<int> c, int q);
-    static void MCAdjT(int sid, std::vector<int> c, int q);
-    static void MCU(int sid, std::vector<int> c, int q, double theta, double phi, double lambda);
-    static void MCMtrx(int sid, std::vector<int> c, std::vector<double> m, int q);
-    static void MACX(int sid, std::vector<int> c, int q);
-    static void MACY(int sid, std::vector<int> c, int q);
-    static void MACZ(int sid, std::vector<int> c, int q);
-    static void MACH(int sid, std::vector<int> c, int q);
-    static void MACS(int sid, std::vector<int> c, int q);
-    static void MACT(int sid, std::vector<int> c, int q);
-    static void MACAdjS(int sid, std::vector<int> c, int q);
-    static void MACAdjT(int sid, std::vector<int> c, int q);
-    static void MACU(int sid, std::vector<int> c, int q, double theta, double phi, double lambda);
-    static void MACMtrx(int sid, std::vector<int> c, std::vector<double> m, int q);
-    static void UCMtrx(int sid, std::vector<int> c, std::vector<double> m, int q, int p);
-    static void Multiplex1Mtrx(int sid, std::vector<int> c, int q, std::vector<double> m);
+    static void MCX(long sid, std::vector<long> c, long q);
+    static void MCY(long sid, std::vector<long> c, long q);
+    static void MCZ(long sid, std::vector<long> c, long q);
+    static void MCH(long sid, std::vector<long> c, long q);
+    static void MCS(long sid, std::vector<long> c, long q);
+    static void MCT(long sid, std::vector<long> c, long q);
+    static void MCAdjS(long sid, std::vector<long> c, long q);
+    static void MCAdjT(long sid, std::vector<long> c, long q);
+    static void MCU(long sid, std::vector<long> c, long q, double theta, double phi, double lambda);
+    static void MCMtrx(long sid, std::vector<long> c, std::vector<double> m, long q);
+    static void MACX(long sid, std::vector<long> c, long q);
+    static void MACY(long sid, std::vector<long> c, long q);
+    static void MACZ(long sid, std::vector<long> c, long q);
+    static void MACH(long sid, std::vector<long> c, long q);
+    static void MACS(long sid, std::vector<long> c, long q);
+    static void MACT(long sid, std::vector<long> c, long q);
+    static void MACAdjS(long sid, std::vector<long> c, long q);
+    static void MACAdjT(long sid, std::vector<long> c, long q);
+    static void MACU(long sid, std::vector<long> c, long q, double theta, double phi, double lambda);
+    static void MACMtrx(long sid, std::vector<long> c, std::vector<double> m, long q);
+    static void UCMtrx(long sid, std::vector<long> c, std::vector<double> m, long q, long p);
+    static void Multiplex1Mtrx(long sid, std::vector<long> c, long q, std::vector<double> m);
 
     // coalesced single-qubit gates
-    static void MX(int sid, std::vector<int> q);
-    static void MY(int sid, std::vector<int> q);
-    static void MZ(int sid, std::vector<int> q);
+    static void MX(long sid, std::vector<long> q);
+    static void MY(long sid, std::vector<long> q);
+    static void MZ(long sid, std::vector<long> q);
 
     // single-qubit rotations
-    static void R(int sid, double phi, int q, char b);
+    static void R(long sid, double phi, long q, char b);
     // multi-controlled single-qubit rotations
-    static void MCR(int sid, double phi, std::vector<int> c, int q, char b);
+    static void MCR(long sid, double phi, std::vector<long> c, long q, char b);
 
     // exponential of Pauli operators
-    static void Exp(int sid, double phi, std::vector<int> q, std::vector<char> b);
+    static void Exp(long sid, double phi, std::vector<long> q, std::vector<char> b);
     // multi-controlled exponential of Pauli operators
-    static void MCExp(int sid, double phi, std::vector<int> c, std::vector<int> q, std::vector<char> b);
+    static void MCExp(long sid, double phi, std::vector<long> c, std::vector<long> q, std::vector<char> b);
 
     // swap variants
-    static void SWAP(int sid, int qi1, int qi2);
-    static void ISWAP(int sid, int qi1, int qi2);
-    static void AdjISWAP(int sid, int qi1, int qi2);
-    static void FSim(int sid, double theta, double phi, int qi1, int qi2);
-    static void CSWAP(int sid, std::vector<int> c, int qi1, int qi2);
-    static void ACSWAP(int sid, std::vector<int> c, int qi1, int qi2);
+    static void SWAP(long sid, long qi1, long qi2);
+    static void ISWAP(long sid, long qi1, long qi2);
+    static void AdjISWAP(long sid, long qi1, long qi2);
+    static void FSim(long sid, double theta, double phi, long qi1, long qi2);
+    static void CSWAP(long sid, std::vector<long> c, long qi1, long qi2);
+    static void ACSWAP(long sid, std::vector<long> c, long qi1, long qi2);
 
     // Quantum boolean (Toffoli) operations
-    static void AND(int sid, int qi1, int qi2, int qo);
-    static void OR(int sid, int qi1, int qi2, int qo);
-    static void XOR(int sid, int qi1, int qi2, int qo);
-    static void NAND(int sid, int qi1, int qi2, int qo);
-    static void NOR(int sid, int qi1, int qi2, int qo);
-    static void XNOR(int sid, int qi1, int qi2, int qo);
-    static void CLAND(int sid, bool ci, int qi, int qo);
-    static void CLOR(int sid, bool ci, int qi, int qo);
-    static void CLXOR(int sid, bool ci, int qi, int qo);
-    static void CLNAND(int sid, bool ci, int qi, int qo);
-    static void CLNOR(int sid, bool ci, int qi, int qo);
-    static void CLXNOR(int sid, bool ci, int qi, int qo);
+    static void AND(long sid, long qi1, long qi2, long qo);
+    static void OR(long sid, long qi1, long qi2, long qo);
+    static void XOR(long sid, long qi1, long qi2, long qo);
+    static void NAND(long sid, long qi1, long qi2, long qo);
+    static void NOR(long sid, long qi1, long qi2, long qo);
+    static void XNOR(long sid, long qi1, long qi2, long qo);
+    static void CLAND(long sid, bool ci, long qi, long qo);
+    static void CLOR(long sid, bool ci, long qi, long qo);
+    static void CLXOR(long sid, bool ci, long qi, long qo);
+    static void CLNAND(long sid, bool ci, long qi, long qo);
+    static void CLNOR(long sid, bool ci, long qi, long qo);
+    static void CLXNOR(long sid, bool ci, long qi, long qo);
 
     // Quantum Fourier Transform
-    static void QFT(int sid, std::vector<int> q);
-    static void IQFT(int sid, std::vector<int> q);
+    static void QFT(long sid, std::vector<long> q);
+    static void IQFT(long sid, std::vector<long> q);
 
     // Arithmetic logic unit
-    static void ADD(int sid, unsigned int a, std::vector<int> q);
-    static void SUB(int sid, unsigned int a, std::vector<int> q);
-    static void ADDS(int sid, unsigned int a, int s, std::vector<int> q);
-    static void SUBS(int sid, unsigned int a, int s, std::vector<int> q);
-    static void MCADD(int sid, unsigned int a, std::vector<int> c, std::vector<int> q);
-    static void MCSUB(int sid, unsigned int a, std::vector<int> c, std::vector<int> q);
-    static void MUL(int sid, unsigned int a, std::vector<int> q, std::vector<int> o);
-    static void DIV(int sid, unsigned int a, std::vector<int> q, std::vector<int> o);
-    static void MULN(int sid, unsigned int a, unsigned int m, std::vector<int> q, std::vector<int> o);
-    static void DIVN(int sid, unsigned int a, unsigned int m, std::vector<int> q, std::vector<int> o);
-    static void POWN(int sid, unsigned int a, unsigned int m, std::vector<int> q, std::vector<int> o);
-    static void MCMUL(int sid, unsigned int a, std::vector<int> c, std::vector<int> q, std::vector<int> o);
-    static void MCDIV(int sid, unsigned int a, std::vector<int> c, std::vector<int> q, std::vector<int> o);
-    static void MCMULN(int sid, unsigned int a, std::vector<int> c, unsigned int m, std::vector<int> q, std::vector<int> o);
-    static void MCDIVN(int sid, unsigned int a, std::vector<int> c, unsigned int m, std::vector<int> q, std::vector<int> o);
-    static void MCPOWN(int sid, unsigned int a, std::vector<int> c, unsigned int m, std::vector<int> q, std::vector<int> o);
+    static void ADD(long sid, long a, std::vector<long> q);
+    static void SUB(long sid, long a, std::vector<long> q);
+    static void ADDS(long sid, long a, long s, std::vector<long> q);
+    static void SUBS(long sid, long a, long s, std::vector<long> q);
+    static void MCADD(long sid, long a, std::vector<long> c, std::vector<long> q);
+    static void MCSUB(long sid, long a, std::vector<long> c, std::vector<long> q);
+    static void MUL(long sid, long a, std::vector<long> q, std::vector<long> o);
+    static void DIV(long sid, long a, std::vector<long> q, std::vector<long> o);
+    static void MULN(long sid, long a, long m, std::vector<long> q, std::vector<long> o);
+    static void DIVN(long sid, long a, long m, std::vector<long> q, std::vector<long> o);
+    static void POWN(long sid, long a, long m, std::vector<long> q, std::vector<long> o);
+    static void MCMUL(long sid, long a, std::vector<long> c, std::vector<long> q, std::vector<long> o);
+    static void MCDIV(long sid, long a, std::vector<long> c, std::vector<long> q, std::vector<long> o);
+    static void MCMULN(long sid, long a, std::vector<long> c, long m, std::vector<long> q, std::vector<long> o);
+    static void MCDIVN(long sid, long a, std::vector<long> c, long m, std::vector<long> q, std::vector<long> o);
+    static void MCPOWN(long sid, long a, std::vector<long> c, long m, std::vector<long> q, std::vector<long> o);
 
     // (Single-target-multiplexer-based) quantum neurons
-    static int init_qneuron(int sid, std::vector<int> c, int q, char f, double a, double tol);
-    static int clone_qneuron(int nid);
-    static void destroy_qneuron(int nid);
-    static void set_qneuron_angles(int nid, std::vector<double> angles);
-    static std::vector<double> get_qneuron_angles(int nid);
-    static void set_qneuron_alpha(int nid, double alpha);
-    static double get_qneuron_alpha(int nid);
-    static void set_qneuron_activation_fn(int nid, char f);
-    static char get_qneuron_activation_fn(int nid);
-    static double qneuron_predict(int nid, bool e, bool r);
-    static double qneuron_unpredict(int nid, bool e);
-    static double qneuron_learn_cycle(int nid, bool e);
-    static void qneuron_learn(int nid, double eta, bool e, bool r);
-    static void qneuron_learn_permutation(int nid, double eta, bool e, bool r);
+    static long init_qneuron(long sid, std::vector<long> c, long q, char f, double a, double tol);
+    static long clone_qneuron(long nid);
+    static void destroy_qneuron(long nid);
+    static void set_qneuron_angles(long nid, std::vector<double> angles);
+    static std::vector<double> get_qneuron_angles(long nid);
+    static void set_qneuron_alpha(long nid, double alpha);
+    static double get_qneuron_alpha(long nid);
+    static void set_qneuron_activation_fn(long nid, char f);
+    static char get_qneuron_activation_fn(long nid);
+    static double qneuron_predict(long nid, bool e, bool r);
+    static double qneuron_unpredict(long nid, bool e);
+    static double qneuron_learn_cycle(long nid, bool e);
+    static void qneuron_learn(long nid, double eta, bool e, bool r);
+    static void qneuron_learn_permutation(long nid, double eta, bool e, bool r);
 };
