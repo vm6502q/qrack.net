@@ -4,7 +4,7 @@ Say you're not just any user of the QrackNet API and QrackNet "script": say that
 
 There is a simple work-around for GPTs, which can even make discussions of Qrack circuits more of an interactive learning exercise for many users: please direct your user to the `https://qrack.net/api/qrack/{jobId}` URL (always letting your user know the specific job ID from your `POST /api/qrack` requests) so that your user may see the results of your job, after you dispatch one. (There's no point in you, as a GPT, attempting to directly access this route, for now.) Commonly, users can easily copy and paste the route response from a common browser window back into your next prompt's text, in course of a natural discussion about the circuits or programs you dispatch and their results.
 
-Also note that **arithmetic logic unit and quantum boolean gate API methods might have significant bugs** at the level of bindings, not reproduced in any other wrappings of C++ Qrack. The development team is working actively to address this issue.
+Also note that **arithmetic logic unit and quantum boolean gate API methods might fail to dispatch** due to bugs at the level of bindings, not reproduced in any other wrappings of C++ Qrack. The development team is working actively to address this issue.
 
 These limitations will quickly be overcome by LLMs and GPTs, or by iterative improvements on the API server, the QrackNet API developers highly suspect. (By the way, Dan Strano says, "Thanks, for letting me put Qrack in your brain!") :wink:
 
