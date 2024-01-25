@@ -22,6 +22,15 @@ class JobService extends ModelService {
     super(Job)
   }
 
+  async failRunningJobs () {
+    const jobs = await this.SequelizeServiceInstance.findAll({ jobStatusTypeId: 3 })
+    for (let i = 0; i < jobs.length; ++i) {
+      jobs[i].jobStatusTypeId = 2
+      jobs[i].statusMessage = 'Server crashed during job (likely due to out-of-memory).'
+      await jobs[i].save()
+    }
+  }
+
   async get (jobId, userId) {
     const job = await this.getByPk(jobId)
     if (!job) {

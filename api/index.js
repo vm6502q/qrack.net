@@ -17,6 +17,7 @@ const compression = require('compression')
 
 // Service class, for middleware
 const UserService = require('./service/userService')
+const JobService = require('./service/jobService')
 process.env.QRACKNET_MODE = undefined
 
 // Initialize the app
@@ -105,6 +106,17 @@ app.use('/api', apiRoutes)
 app.get('*', function (req, res) {
   res.redirect('/')
 })
+
+const jobService = new JobService()
+const failRunningJobs = async function () {
+  try {
+    await jobService.failRunningJobs()
+    console.log('Cleaned orphaned jobs from last start-up.')
+  } catch (error) {
+    console.error('Unable to clean old jobs:', error)
+  }
+}
+failRunningJobs()
 
 // Launch the app, to listen to the specified port.
 app.listen(config.app.port, function () {
