@@ -187,7 +187,7 @@ bool QrackWrapper::Measure(long sid, std::vector<long> q, std::vector<char> b) {
     return Qrack::Measure((Qrack::quid)sid, _q);
 }
 long QrackWrapper::MAll(long sid) {
-    return (int)Qrack::MAll((Qrack::quid)sid);
+    return (int)((bitCapIntOcl)Qrack::MAll((Qrack::quid)sid));
 }
 std::vector<long> QrackWrapper::MeasureShots(long sid, std::vector<long> q, long s) {
     std::vector<long long unsigned int> o = Qrack::MeasureShots((Qrack::quid)sid, transform_qbids(q), (unsigned)s);
@@ -305,7 +305,7 @@ void QrackWrapper::MACMtrx(long sid, std::vector<long> c, std::vector<double> m,
     Qrack::MACMtrx((Qrack::quid)sid, transform_qbids(c), transform_matrix(m), (bitLenInt)q);
 }
 void QrackWrapper::UCMtrx(long sid, std::vector<long> c, std::vector<double> m, long q, long p) {
-    Qrack::UCMtrx((Qrack::quid)sid, transform_qbids(c), transform_matrix(m), (bitLenInt)q, (bitCapInt)p);
+    Qrack::UCMtrx((Qrack::quid)sid, transform_qbids(c), transform_matrix(m), (bitLenInt)q, (unsigned)p);
 }
 void QrackWrapper::Multiplex1Mtrx(long sid, std::vector<long> c, long q, std::vector<double> m) {
     Qrack::Multiplex1Mtrx((Qrack::quid)sid, transform_qbids(c), (bitLenInt)q, transform_matrix(m));
