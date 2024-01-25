@@ -3,19 +3,19 @@
 #include "qrack/wasm_api.hpp"
 
 long QrackWrapper::init_general(long length) {
-    return (int)Qrack::init_count((bitLenInt)length, false);
+    return (long)Qrack::init_count((bitLenInt)length, false);
 }
 long QrackWrapper::init_stabilizer(long length) {
-    return (int)Qrack::init_count_type((bitLenInt)length, false, false, true, true, false, false, false, false, false);
+    return (long)Qrack::init_count_type((bitLenInt)length, false, false, true, true, false, false, false, false, false);
 }
 long QrackWrapper::init_qbdd(long length) {
-    return (int)Qrack::init_qbdd_count((bitLenInt)length);
+    return (long)Qrack::init_qbdd_count((bitLenInt)length);
 }
 long QrackWrapper::init_clone(long sid) {
-    return (int)Qrack::init_clone((Qrack::quid)sid);
+    return (long)Qrack::init_clone((Qrack::quid)sid);
 }
 long QrackWrapper::num_qubits(long sid) {
-    return (int)Qrack::num_qubits((Qrack::quid)sid);
+    return (long)Qrack::num_qubits((Qrack::quid)sid);
 }
 void QrackWrapper::destroy(long sid) {
     Qrack::destroy((Qrack::quid)sid);
@@ -76,7 +76,7 @@ std::vector<Qrack::QubitIndexState> validatePermProb(const std::vector<long>& q,
     std::vector<Qrack::QubitIndexState> _q;
     _q.reserve(q.size());
     for (long i = 0; i < q.size(); ++i) {
-        _q.push_back(Qrack::QubitIndexState((int)q[i], (bool)s[i]));
+        _q.push_back(Qrack::QubitIndexState((long)q[i], (bool)s[i]));
     }
     return _q;
 }
@@ -97,7 +97,7 @@ std::vector<Qrack::QubitIntegerExpectation> validateFactProb(const std::vector<l
     std::vector<Qrack::QubitIntegerExpectation> _q;
     _q.reserve(q.size());
     for (long i = 0; i < q.size(); ++i) {
-        _q.push_back(Qrack::QubitIntegerExpectation((int)q[i], (int)s[i]));
+        _q.push_back(Qrack::QubitIntegerExpectation((long)q[i], (long)s[i]));
     }
     return _q;
 }
@@ -118,7 +118,7 @@ std::vector<Qrack::QubitRealExpectation> validateFactFpProb(const std::vector<lo
     std::vector<Qrack::QubitRealExpectation> _q;
     _q.reserve(q.size());
     for (long i = 0; i < q.size(); ++i) {
-        _q.push_back(Qrack::QubitRealExpectation((int)q[i], (Qrack::real1)s[i]));
+        _q.push_back(Qrack::QubitRealExpectation((long)q[i], (Qrack::real1)s[i]));
     }
     return _q;
 }
@@ -157,7 +157,7 @@ void QrackWrapper::Compose(long sid1, long sid2, std::vector<long> q) {
     Qrack::Compose((Qrack::quid)sid1, (Qrack::quid)sid2, transform_qbids(q));
 }
 long QrackWrapper::Decompose(long sid, std::vector<long> q) {
-    return (int)Qrack::Decompose((Qrack::quid)sid, transform_qbids(q));
+    return (long)Qrack::Decompose((Qrack::quid)sid, transform_qbids(q));
 }
 void QrackWrapper::Dispose(long sid, std::vector<long> q) {
     Qrack::Dispose((Qrack::quid)sid, transform_qbids(q));
@@ -187,14 +187,14 @@ bool QrackWrapper::Measure(long sid, std::vector<long> q, std::vector<char> b) {
     return Qrack::Measure((Qrack::quid)sid, _q);
 }
 long QrackWrapper::MAll(long sid) {
-    return (int)((bitCapIntOcl)Qrack::MAll((Qrack::quid)sid));
+    return (long)((bitCapIntOcl)Qrack::MAll((Qrack::quid)sid));
 }
 std::vector<long> QrackWrapper::MeasureShots(long sid, std::vector<long> q, long s) {
     std::vector<long long unsigned int> o = Qrack::MeasureShots((Qrack::quid)sid, transform_qbids(q), (unsigned)s);
     std::vector<long> toRet;
     toRet.reserve(o.size());
     for (size_t i = 0U; i < o.size(); ++i) {
-        toRet.push_back((int)o[i]);
+        toRet.push_back((long)o[i]);
     }
     return toRet;
 }
