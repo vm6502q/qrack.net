@@ -45,15 +45,51 @@ Users will see a response like the following, when they access `GET /api/qrack/{
     }
 }
 ```
-Alternatively, use `measure_shots` as appropriate for multiple non-collapsing measurements of a subset of simulator qubits, interpreting qubit index array parameter as low-to-high bit-string position. For example, this will measure two qubits, for 16 repeated "shots":
+Alternatively, use `measure_shots` as appropriate for multiple non-collapsing measurements of a subset of simulator qubits, interpreting qubit index array parameter as low-to-high bit-string position. For example, this will measure 16 repeated "shots" across the full width of a 3-qubit simulator, after GHZ state preparation:
 ```json
 {
-    "program": [
-        { "name": "init_general", "parameters": [2], "output": "qsim" },
+    "program" : [
+        { "name": "init_general", "parameters": [3], "output": "qsim" },
         { "name": "h", "parameters": ["qsim", 0] },
         { "name": "mcx", "parameters": ["qsim", [0], 1] },
-        { "name": "measure_shots", "parameters": ["qsim", [0, 1], 16], "output": "result" }
+        { "name": "mcx", "parameters": ["qsim", [0], 2] },
+        { "name": "measure_shots", "parameters": ["qsim", [0, 1, 2], 16], "output": "result" }
     ]
+}
+```
+
+Users will receive a response like the following, at `GET /api/qrack/{jobId}` (with different quasi-random "shot" results, according to the Born probability rules, and as the `measure_shots` qubit ID array argument corresponds to integer power of 2):
+```json
+{
+    "message": "Retrieved job status and output by ID.",
+    "data": {
+        "status": {
+            "id": 1,
+            "name": "SUCCESS",
+            "message": "Job completed fully and normally."
+        },
+        "output": {
+            "qsim": 0,
+            "result": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                7,
+                7,
+                7,
+                7,
+                7,
+                7,
+                7,
+                7
+            ]
+        }
+    }
 }
 ```
 
