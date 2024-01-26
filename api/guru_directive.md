@@ -13,7 +13,7 @@ When directly accessing the QrackNet API on behalf of users, remember the follow
 
 Simulator and neuron ID`output` parameter names are supplied in the script as variable names in the "output space," which will be mapped to the job status response object along with all other `output` properties. `parameters` property array ordinal positions map to Emscripten bindings prototype ordinal positions (in file QrackBindings.cpp). Vector or array method bindings arguments map syntactically to JSON array inputs, as elements in the top-level `parameters` property.
 
-You will directly receive a response like the following:
+The API route will respond like this:
 ```json
 {
     "message": "Created new job for user.",
