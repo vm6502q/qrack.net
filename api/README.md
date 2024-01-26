@@ -543,6 +543,17 @@ These are the gates:
 - `clnor(quid sid, bool ci, bitLenInt qi, bitLenInt qo)`
 - `clxnor(quid sid, bool ci, bitLenInt qi, bitLenInt qo)`
 
+**Boolean parameters in the methods above can be specified as either values or output space variable names.**
+
+There is a special method for saving `true` or `false` to an ouput method variable:
+
+##### `write_bool(bool b) -> bool`
+
+Write a boolean value to the output space, with a variable name
+
+- `b`: Bool to write to `output` variable name.
+
+
 ### Quantum Fourier transform
 
 ##### `qft(quid sid, std::vector<bitLenInt> q)`

@@ -83,6 +83,25 @@ class JobService extends ModelService {
     }
   }
 
+  async validate_bool (name, job, core) {
+    const v = await outputService.getByJobIdAndName(job.id, name)
+    if (!v) {
+      await this.free_after_job(job, core)
+      throw new Error(
+        'All boolean variable names should match existing names in the output space of the job. ' +
+        '(Methods that produce output, at all, always save it to the "output space" of the job, to the ' +
+        'variable named by the "output" parameter of the job program line that produces output.)'
+      )
+    }
+    switch (v.outputTypeId) {
+      case 2:
+        return !!(v.value)
+      default:
+        await this.free_after_job(job, core)
+        throw new Error('Boolean instruction parameter does not have boolean outputTypeId.')
+    }
+  }
+
   async single_quid_op (job, fn, i, core) {
     const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
@@ -99,6 +118,22 @@ class JobService extends ModelService {
     i.parameters.shift()
     try {
       await outputService.createOrUpdate(job, i.output, fn(tmp, ...i.parameters), oType)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
+  }
+
+  async single_quid_bool_op (job, fn, i, core) {
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    i.parameters.shift()
+    let tmpBool = i.parameters[0]
+    if (typeof tmpBool !== "boolean") {
+        tmpBool = await this.validate_bool(tmpBool, job, core)
+    }
+    i.parameters.shift()
+    try {
+      fn(tmp, tmpBool, ...i.parameters)
     } catch (e) {
       await this.free_after_job(job, core)
       throw e
@@ -303,6 +338,14 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < p.length; ++lcv) {
       const i = p[lcv]
       switch (i.name) {
+        case 'write_bool':
+          try {
+            await outputService.createOrUpdate(job, i.output, !!(i.parameters[0]), 2)
+          } catch (e) {
+            await this.free_after_job(job, core)
+            throw e
+          }
+          break
         case 'init_general':
           try {
             await outputService.createOrUpdate(job, i.output, core.init_general(...i.parameters), 1)
@@ -640,22 +683,22 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.xnor, i, core)
           break
         case 'cland':
-          await this.single_quid_op(job, core.cland, i, core)
+          await this.single_quid_bool_op(job, core.cland, i, core)
           break
         case 'clor':
-          await this.single_quid_op(job, core.clor, i, core)
+          await this.single_quid_bool_op(job, core.clor, i, core)
           break
         case 'clxor':
-          await this.single_quid_op(job, core.clxor, i, core)
+          await this.single_quid_bool_op(job, core.clxor, i, core)
           break
         case 'clnand':
-          await this.single_quid_op(job, core.clnand, i, core)
+          await this.single_quid_bool_op(job, core.clnand, i, core)
           break
         case 'clnor':
-          await this.single_quid_op(job, core.clnor, i, core)
+          await this.single_quid_bool_op(job, core.clnor, i, core)
           break
         case 'clxnor':
-          await this.single_quid_op(job, core.clxnor, i, core)
+          await this.single_quid_bool_op(job, core.clxnor, i, core)
           break
         case 'qft':
           await this.single_quid_mc_op(job, core.qft, i, core)
