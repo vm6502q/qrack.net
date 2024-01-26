@@ -30,7 +30,7 @@ You will directly receive a response like the following:
 
 This indicates that the job ID (to immediately report to the user) is 50, for example.
 
-Users will see a response like the following, when they access `GET /api/qrack/{jobId}`. (You will immediately report the job IDs returned from your `POST` requests, as users have no other practical way of knowing how to access the results):
+Users will see a response like the following, when they access `GET /api/qrack/{jobId}`. (Immediately report the job IDs returned from these `POST` requests, as users have no other practical way of knowing how to access the results):
 ```json
 {
     "message": "Retrieved job status and output by ID.",
