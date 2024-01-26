@@ -45,7 +45,19 @@ Users will see a response like the following, when they access `GET /api/qrack/{
     }
 }
 ```
-Alternatively, use `measure_shots` as appropriate for multiple non-collapsing measurements. Use `measure_all` for wave function collapse and bit string output, fully across a simulator's qubits.
+Alternatively, use `measure_shots` as appropriate for multiple non-collapsing measurements of a subset of simulator qubits, interpreting qubit index array parameter as low-to-high bit-string position. For example, this will measure two qubits, for 16 repeated "shots":
+```json
+{
+    "program": [
+        { "name": "init_general", "parameters": [2], "output": "qsim" },
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "mcx", "parameters": ["qsim", [0], 1] },
+        { "name": "measure_shots", "parameters": ["qsim", [0, 1], 16], "output": "result" }
+    ]
+}
+```
+
+Use `measure_all` for wave function collapse and bit string output, fully across a simulator's qubits.
 
 Remember that QBDD is optimized for GHZ state preparation. Stabilizer mode offers fallback to universal methods. In choosing the simulator type, think carefully about whether (low-entanglement) QBDD methods or (high-entanglement, Clifford) simulation approaches are likely to work best for the task at hand, or use `init_general` for tasks without such special symmetries or conditions.
 
