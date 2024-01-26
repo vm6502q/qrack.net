@@ -48,7 +48,7 @@ Users will see a response like the following, when they access `GET /api/qrack/{
 }
 ```
 
-To measure multiple measurement "shots" (without collapsing the immediate simulator state), use `measure_shots`:
+To measure multiple circuit "shots" (without collapsing the immediate simulator state), use `measure_shots`:
 ```json
 {
     "program" : [
