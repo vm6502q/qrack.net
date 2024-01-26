@@ -229,9 +229,9 @@ Allocates a new qubit with a specific ID.
 - `q`: Qubit ID.
 
 
-##### `force_measure(quid sid, bitLenInt q, bool r) -> bool`
+##### `force_measure(quid sid, bitLenInt q, bool r)`
 
-(**Returns** `r`.) Forces the measurement result of a single qubit and returns the result. This is a pseudo-quantum operation.
+Forces the measurement result of a single qubit and returns the result (and so does not save it to the output space, from input). This is a pseudo-quantum operation.
 
 - `sid`: Simulator instance ID.
 - `q`: Qubit ID.

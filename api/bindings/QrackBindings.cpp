@@ -9,6 +9,8 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     emscripten::register_vector<double>("VectorDouble");
     emscripten::register_vector<char>("VectorChar");
 
+    // **NOTE** - 'write_bool(bool) -> bool' is in the method set.
+
     // Utility
     function("init_general", optional_override([](long length) -> long {
         return QrackWrapper::init_general(length);
@@ -114,8 +116,8 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("measure", optional_override([](long sid, long q) -> bool {
         return QrackWrapper::M(sid, q);
     }));
-    function("force_measure", optional_override([](long sid, long q, bool v) -> bool {
-        return QrackWrapper::ForceM(sid, q, v);
+    function("force_measure", optional_override([](long sid, long q, bool v) -> void {
+        QrackWrapper::ForceM(sid, q, v);
     }));
     function("measure_basis", optional_override([](long sid, std::vector<long> q, std::vector<char> b) -> bool {
         return QrackWrapper::Measure(sid, q, b);
