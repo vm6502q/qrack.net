@@ -532,7 +532,7 @@ These are the gates:
 **Each gate below takes the same four parameters:**
 
 - `sid`: Simulator instance ID.
-- `ci`: Input classical bit value.
+- `ci`: Input classical bit value (literal value or boolean output space variable name).
 - `qi`: Input qubit ID.
 - `qo`: Output qubit ID.
 
