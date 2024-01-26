@@ -42,7 +42,7 @@ public:
 
     // SPAM and non-unitary
     static bool M(long sid, long q);
-    static bool ForceM(long sid, long q, bool r);
+    static void ForceM(long sid, long q, bool r);
     static bool Measure(long sid, std::vector<long> q, std::vector<char> b);
     static long MAll(long sid);
     static std::vector<long> MeasureShots(long sid, std::vector<long> q, long s);

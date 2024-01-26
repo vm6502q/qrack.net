@@ -166,8 +166,9 @@ void QrackWrapper::Dispose(long sid, std::vector<long> q) {
 bool QrackWrapper::M(long sid, long q) {
     return Qrack::M((Qrack::quid)sid, (bitLenInt)q);
 }
-bool QrackWrapper::ForceM(long sid, long q, bool r) {
-    return Qrack::ForceM((Qrack::quid)sid, (bitLenInt)q, r);
+void QrackWrapper::ForceM(long sid, long q, bool r) {
+    // This returns "r," but there's no need to save the input argument.
+    Qrack::ForceM((Qrack::quid)sid, (bitLenInt)q, r);
 }
 std::vector<Qrack::QubitPauliBasis> transform_qubit_paulis(const std::vector<long>& q, const std::vector<char>& b, std::string m) {
     if (q.size() != b.size()) {
