@@ -461,7 +461,7 @@ class JobService extends ModelService {
           await this.single_quid_output_op(job, core.measure, i, 2, core)
           break
         case 'force_measure':
-          await this.single_quid_output_op(job, core.force_measure, i, 2, core)
+          await this.single_quid_op(job, core.force_measure, i, core)
           break
         case 'measure_basis':
           await this.single_quid_mc_pauli_output_op(job, core.measure_basis, i, 3, core)
