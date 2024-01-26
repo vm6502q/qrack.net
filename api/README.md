@@ -17,11 +17,13 @@ Returns the status and "**output space**" of the job. All methods that return an
 
 ## Glossary
 
-- `bitLenInt`: Bit-length integer - unsigned integer ID of qubit position in register. **(JSON input precision: 32-bits.)**
-- `bitCapInt`: Bit-capacity integer - unsigned integer permutation basis eigenstate value of a qubit register (typically "big integer," limited in input by JavaScript `Number` type). **(JSON input precision: 53-bits.)**
+**All glossary type precision is less than or equal to 53-bit, from JavaScript `Number` type.**
+
+- `bitLenInt`: Bit-length integer - unsigned integer ID of qubit position in register.
+- `bitCapInt`: Bit-capacity integer - unsigned integer permutation basis eigenstate value of a qubit register (typically "big integer," limited in input by JavaScript `Number` type).
 - `real1`: Real number (1-dimensional) - floating-point real-valued number. **(JSON input precision: 32-bit IEEE floating-point.)**
 - `Pauli`: Enum for Pauli bases - X is 1, Z is 2, Y is 3, and "identity" is 0.
-- `quid`: Quantum (simulator) unique identifier - unsigned integer that indexes and IDs running simulators and neurons. **(JSON input precision: 53-bits.)**
+- `quid`: Quantum (simulator) unique identifier - unsigned integer that indexes and IDs running simulators and neurons.
 
 ## Methods
 
