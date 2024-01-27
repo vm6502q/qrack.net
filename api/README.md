@@ -1,10 +1,10 @@
 # QrackNet Script API Reference
 
-QrackNet API is open-source software to serve [unitaryfund/qrack](https://github.com/unitaryfund/qrack) gate-based quantum computer simulation "jobs" via a [PyQrack](https://github.com/unitaryfund/pyqrack)-like (lower-level) scripting language, as a Node.js-based RESTful API on the web. (Also see the [usage examples](https://github.com/vm6502q/qrack.net/blob/main/api/EXAMPLES.md), to help understand end-to-end workflows.)
+QrackNet API is open-source software to serve [unitaryfund/qrack](https://github.com/unitaryfund/qrack) gate-based quantum computer simulation "jobs" via a [PyQrack](https://github.com/unitaryfund/pyqrack)-like (lower-level) scripting language, as a Node.js-based web API. (Also see the [usage examples](https://github.com/vm6502q/qrack.net/blob/main/api/EXAMPLES.md), to help understand end-to-end workflows.
 
 ## Account API Routes
 
-`POST /api/register`
+##### `POST /api/register`
 
 If the request is valid and the username is not already in use, create an account and set an authentication cookie
 
@@ -16,7 +16,7 @@ If the request is valid and the username is not already in use, create an accoun
 - `passwordConfirm`: Must match `password`
 
 
-`PUT /api/login`
+##### `PUT /api/login`
 
 If the username and password are correct, set an authentication cookie
 
@@ -24,12 +24,12 @@ If the username and password are correct, set an authentication cookie
 - `password`: Account password.
 
 
-`GET /api/logout`
+##### `GET /api/logout`
 
 If an authentication cookie is set, clear it.
 
 
-`POST /api/user/password`
+##### `POST /api/user/password`
 
 If the old password is correct, and the validation passes, change the user account password.
 
@@ -42,7 +42,7 @@ If the old password is correct, and the validation passes, change the user accou
 
 ##### `POST /api/qrack`
 
-Accepts a script definition for the RESTful API server to run, and returns a "Job ID."
+Accepts a script definition for the web API server to run, and returns a "Job ID."
 
 - `program`: Array of method "instructions," executed in order from the first
 
