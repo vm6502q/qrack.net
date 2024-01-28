@@ -262,7 +262,7 @@ We can think of the state preparation as an `h` gate followed by a loop over `mc
     ]
 }
 ```
-If we exceed Clifford gate set in any single line of the script, we are likely (but not guaranteed) to fall back to state vector with `init_stabilizer`, which in a case like with 50 qubits will lead to a (self-recovering, handled) "server crash." On the other hand, `init_qbdd` can also efficiently handle this state preparation without the requirement to constrain one's gate set "vocabulary" to pure Clifford gates. (This might make QBDD the more powerful option in many cases where GHZ-state preparation is only one "subroutine" in a larger quantum algorithm with a universal gate set.)
+If we exceed Clifford gate set "vocabulary" in any single line of the script, we are likely (but not guaranteed) to fall back to state vector with `init_stabilizer`, which in a case like with 50 qubits will lead to a (self-recovering, handled) "server crash." On the other hand, `init_qbdd` can also efficiently handle this state preparation without the requirement to constrain one's gate set vocabulary to pure Clifford gates. (This might make QBDD the more powerful option in many cases where GHZ-state preparation is only one "subroutine" in a larger quantum algorithm with a universal gate set.)
 
 This an example result, for the above job:
 ```json
