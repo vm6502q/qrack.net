@@ -424,6 +424,63 @@ The "quantum Fourier transform" ("QFT") is exposed as a complete subroutine via 
 `iqft` instruction is similarly the "inverse QFT", with the same syntax. The method does **not** apply terminal `swap` gates to recover the canonical element order of the "discrete Fourier transform" ("DFT"), as many applications of the subroutine do not require this step (which is commonly included in descriptions of the algorithm). To recover DFT amplitude ordering, further reverse the order of qubit in the result, after the `qft`, with `swap` gates. (`swap` gates are commonly implemented via qubit label swap, hence they are virtually computationally "free," with no loss of generality in the case of a "fully-connected" qubit topologies, like in all QrackNet simulators.)
 
 
+## Shor's algorithm (quantum period finding subroutine)
+
+The quantum period finding subroutine of Shor's algorithm is practically "trivial" to express and simulate with QrackNet script:
+```json
+{
+    "program" : [
+        { "name": "init_qbdd", "parameters": [8], "output": "qsim" },
+
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "h", "parameters": ["qsim", 1] },
+        { "name": "h", "parameters": ["qsim", 2] },
+        { "name": "h", "parameters": ["qsim", 3] },
+
+        { "name": "pown", "parameters": ["qsim", [0, 1, 2, 3], [4, 5, 6, 7], 6, 15] },
+        { "name": "iqft", "parameters": ["qsim", [0, 1, 2, 3]] },
+
+        { "name": "measure_shots", "parameters": ["qsim", [0, 1, 2, 3], 16], "output": "result" }
+    ]
+}
+```
+We start the subroutine by preparing a maximal superposition of the input register. The (out-of-place operation) quantum "power modulo 'n'" base is chosen at random so it does not have a greater common divisor higher than 1 with the number to factor (`15`, in this example, and if a randomly chosen base _does_ have a greatest common divisor higher than 1 with the number to factor, then this condition effectively solves the factoring problem without need for the quantum subroutine at all). Then, the entire algorithm (to find the "period" of the "discrete logarithm") is "power modulo 'n'" out-of-place, from input register to intermediate calculation register, followed by just the "inverse quantum Fourier transform" on the input register (**without** terminal `swap` gates to reverse the order of qubits to match the classical "discrete Fourier transform), followed by measurement, until success. The output from this subroutine becomes a function input to another purely classical subroutine that uses this output to identify the input's factors with continued fraction representation, but see the [Wikipedia article on Shor's algorithm](https://en.wikipedia.org/wiki/Shor%27s_algorithm), for example, for a more detailed explanation.
+
+These are output results we could receive from our quantum period finding subroutine job, immediately above:
+```json
+{
+    "message": "Retrieved job status and output by ID.",
+    "data": {
+        "status": {
+            "id": 1,
+            "name": "SUCCESS",
+            "message": "Job completed fully and normally."
+        },
+        "output": {
+            "qsim": 0,
+            "result": [
+                0,
+                0,
+                5,
+                0,
+                0,
+                0,
+                0,
+                6,
+                0,
+                0,
+                2,
+                14,
+                10,
+                0,
+                9,
+                0
+            ]
+        }
+    }
+}
+```
+
 ## Schmidt decomposition rounding parameter (SDRP)
 
 `set_sdrp` will reduce simulation fidelity (from "default ideal") to also reduce memory footprint and execution time. The "SDRP" setting becomes active in the program for the specific simulator at the point of calling `set_sdrp`. The value can be updated, through later `set_sdrp` calls in the circuit. It takes a value from `0.0` (no "rounding") to `1.0` ("round" away all entanglement):
