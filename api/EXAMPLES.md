@@ -117,6 +117,57 @@ Sometime later, we check on the job status and output:
 
 Our job was successful, again (though `"result"` field values will differ, experiment to experiment). Our output "`result`" field (called so because we specified that name as "`output`" parameter to `measure_shots`) contains 8 "shots" of the circuit, as a terminal measurement result. Notice that `0` and `3` appear in the binary (integer) representation of our two qubits, but `1` and `2` do not. This is because, according to how we prepared our state, both qubits must be in the same state upon measurement, either both |0> or both |1>. (We have completed another successful example!)
 
+## Quantum teleportation
+
+It is particularly instructive to see a script that can simulate the "quantum teleportation" algorithm, in QrackNet syntax:
+```json
+{
+    "program" : [
+        { "name": "init_qbdd", "parameters": [3], "output": "qsim" },
+        { "name": "h", "parameters": ["qsim", 1] },
+        { "name": "mcx", "parameters": ["qsim", [1], 2] },
+        { "name": "u", "parameters": ["qsim", 0, 0.3, 2.2, 1.4] },
+        { "name": "prob", "parameters": ["qsim", 0], "output": "aliceZ" },
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "prob", "parameters": ["qsim", 0], "output": "aliceX" },
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "mcx", "parameters": ["qsim", [0], 1] },
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "measure", "parameters": ["qsim", 0], "output": "aliceM0" },
+        { "name": "measure", "parameters": ["qsim", 1], "output": "aliceM1" },
+        { "name": "mcz", "parameters": ["qsim", [0], 2] },
+        { "name": "mcx", "parameters": ["qsim", [1], 2] },
+        { "name": "prob", "parameters": ["qsim", 2], "output": "bobZ" },
+        { "name": "h", "parameters": ["qsim", 2] },
+        { "name": "prob", "parameters": ["qsim", 2], "output": "bobX" }
+    ]
+}
+```
+Refer to any good textbook or [encyclopedia](https://en.wikipedia.org/wiki/Quantum_teleportation) to "unpack" and explain the program operations used above, though we provide it as an authoritative reference implementation in QrackNet script specifically, of the common thought experiment where "Alice" transmits a message to "Bob" with a Bell pair.
+
+`"aliceZ"` and `"aliceX"` are the state of the original "message" qubit to teleport, and they should match the `"bobZ"` and `"bobX"` message received by the end of the algorithm and program in the job results:
+```json
+{
+    "message": "Retrieved job status and output by ID.",
+    "data": {
+        "status": {
+            "id": 1,
+            "name": "SUCCESS",
+            "message": "Job completed fully and normally."
+        },
+        "output": {
+            "qsim": 0,
+            "aliceZ": 0.022331755608320236,
+            "aliceX": 0.5869569778442383,
+            "aliceM0": true,
+            "aliceM1": true,
+            "bobZ": 0.022331759333610535,
+            "bobX": 0.5869571566581726
+        }
+    }
+}
+```
+
 ## 30-qubit GHZ state
 
 The QrackNet server is likely to successfully run even 50-qubit or larger GHZ state preparation circuits (with measurement), though reporting precision for results might currently be limited to about 32 bits. This definitely won't work with `init_general` (which will ultimately attempt to allocate 30+ qubits of state vector representation) but it's likely to work with `init_stabilizer` and `init_qbdd`, as both are optimized (differently) for this GHZ-state case.
