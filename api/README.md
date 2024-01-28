@@ -58,7 +58,7 @@ Returns the status and "**output space**" of the job. All methods that return an
 - `bitLenInt`: Bit-length integer - unsigned integer ID of qubit position in register.
 - `bitCapInt`: Bit-capacity integer - unsigned integer permutation basis eigenstate value of a qubit register (typically "big integer," limited in input by JavaScript `Number` type).
 - `real1`: Real number (1-dimensional) - floating-point real-valued number. **(JSON input precision: 32-bit IEEE floating-point.)**
-- `Pauli`: Enum for Pauli bases - X is 1, Z is 2, Y is 3, and "identity" is 0.
+- `Pauli`: Enum for Pauli bases - X is `1`, Z is `2`, Y is `3`, and "identity" is `0`.
 - `quid`: Quantum (simulator) unique identifier - unsigned integer that indexes and IDs running simulators and neurons.
 
 ## Methods
@@ -106,7 +106,7 @@ Destroys or releases a simulator instance.
 - `sid`: Simulator instance ID.
 
 
-### Random Number Generation and Concurrency
+### Random Number Generation
 
 ##### `seed(quid sid, unsigned s)`
 
@@ -115,13 +115,6 @@ Seeds the random number generator.
 - `sid`: Simulator instance ID.
 - `s`: Seed value.
 
-
-##### `set_concurrency(quid sid, unsigned p)`
-
-Sets CPU concurrency.
-
-- `sid`: Simulator instance ID.
-- `p`: Number of parallel threads.
 
 ### Qubit Management
 
@@ -152,7 +145,7 @@ Allocates a new qubit with a specific ID.
 
 ##### `prob(quid sid, bitLenInt q) -> real1`
 
-**Returns** The probability (from 0.0 to 1.0) of the qubit being in the |1> state.
+**Returns** The probability (from `0.0` to `1.0`) of the qubit being in the |1> state.
 
 - `sid`: Simulator instance ID.
 - `q`: Qubit ID.
@@ -160,7 +153,7 @@ Allocates a new qubit with a specific ID.
 
 ##### `prob_rdm(quid sid, bitLenInt q) -> real1`
 
-**Returns** a "best-guess" as to Z-basis expectation value of a qubit (for near-Clifford simulation) based on the "reduced density matrix" (with less overhead to calculate).
+**Returns** a "best-guess" (for near-Clifford simulation) for probability of the qubit being in the |1> state, based on the "reduced density matrix" (with less overhead to calculate, for being "RDM").
 
 - `sid`: Simulator instance ID.
 - `q`: Qubit ID.
@@ -168,7 +161,7 @@ Allocates a new qubit with a specific ID.
 
 ##### `perm_prob(quid sid, std::vector<bitLenInt> q, std::vector<Pauli> b) -> real1`
 
-**Returns** the probability (upon measurement) of collapsing into a specified permutation of a group of qubits.
+**Returns** the probability (upon measurement, in the corresponding joint Pauli basis) of collapsing into a specified permutation of a group of qubits.
 
 - `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
@@ -177,7 +170,7 @@ Allocates a new qubit with a specific ID.
 
 ##### `perm_prob_rdm(quid sid, std::vector<bitLenInt> q, std::vector<Pauli> b, bool r) -> real1`
 
-**Returns** a "best-guess" as to permutation probability expectation value (for near-Clifford simulation) based on the "reduced density matrix" (with less overhead to calculate).
+**Returns** a "best-guess" (for near-Clifford simulation) as to the probability (upon measurement, in the corresponding joint Pauli basis) of collapsing into a specified permutation of a group of qubits, based on the "reduced density matrix" (with less overhead to calculate, for being "RDM").
 
 - `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
@@ -196,7 +189,7 @@ Allocates a new qubit with a specific ID.
 
 ##### `fact_exp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<long> s, bool r) -> real1`
 
-**Returns** a "best-guess" expectation value (for near-Clifford simulation) based on the "reduced density matrix," for an expectation value resulting from summing respective integers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
+**Returns** a "best-guess" (for near-Clifford simulation) expectation value based on the "reduced density matrix," for an expectation value resulting from summing respective integers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
 
 - `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
@@ -215,7 +208,7 @@ Allocates a new qubit with a specific ID.
 
 ##### `fact_exp_fp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<double> s, bool r) -> real1`
 
-**Returns** a "best-guess" expectation value (for near-Clifford simulation) based on the "reduced density matrix," for an expectation value resulting from summing respective floating-point numbers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
+**Returns** a "best-guess" (for near-Clifford simulation) expectation value based on the "reduced density matrix," for an expectation value resulting from summing respective floating-point numbers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
 
 - `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
@@ -233,7 +226,7 @@ Allocates a new qubit with a specific ID.
 
 ##### `force_measure(quid sid, bitLenInt q, bool r)`
 
-Forces the measurement result of a single qubit (and so does not save it to the output space, from input). This is a pseudo-quantum operation.
+Forces the measurement result of a single qubit (and so does not save it to the output space, from input). This is a pseudo-quantum operation. (However, quantum computers could similarly apply "post-selective" measurements, at exponential disadvantage compared to classical simulators.)
 
 - `sid`: Simulator instance ID.
 - `q`: Qubit ID.
@@ -258,7 +251,7 @@ Forces the measurement result of a single qubit (and so does not save it to the 
 
 ##### `measure_shots(quid sid, std::vector<bitLenInt> q, unsigned s) -> std::vector<bitCapInt>`
 
-**Returns** an array of bit strings resulted from repeatedly measuring a set of qubits for a specified number of shots in the Z-basis, without collapsing the simulator state.
+**Returns** an array of bit strings resulting from repeatedly measuring a set of qubits for a specified number of shots in the Z-basis, without collapsing the simulator state.
 
 - `sid`: Simulator instance ID.
 - `q`: Vector of qubit identifiers.
@@ -306,7 +299,7 @@ General 3-parameter unitary single-qubit gate (covers all possible single-qubit 
 
 ##### `mtrx(quid sid, std::vector<double> m, bitLenInt q)`
 
-General 3-parameter unitary single-qubit gate (covers all possible single-qubit gates)
+General 2x2 unitary matrix operator single-qubit gate (covers all possible single-qubit gates)
 
 - `sid`: Simulator instance ID.
 - `m`: 8 floating-point numbers in a "flat" array representating alternating real/imaginary components of a (row-major) 2x2 complex unitary matrix.
@@ -361,7 +354,7 @@ These are the gates:
 ##### `mcu(quid sid, std::vector<bitLenInt> c, bitLenInt q, real1 theta, real1 phi, real1 lambda)`
 ##### `macu(quid sid, std::vector<bitLenInt> c, bitLenInt q, real1 theta, real1 phi, real1 lambda)`
 
-General 3-parameter unitary single-qubit gate (covers all possible single-qubit gates)
+General 3-parameter unitary single-qubit target with arbitrary number of control qubits (covers all possible single-qubit target "payloads")
 
 - `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
@@ -374,7 +367,7 @@ General 3-parameter unitary single-qubit gate (covers all possible single-qubit 
 ##### `mcmtrx(quid sid, std::vector<bitLenInt> c, std::vector<double> m, bitLenInt q)`
 ##### `macmtrx(quid sid, std::vector<bitLenInt> c, std::vector<double> m, bitLenInt q)`
 
-General 3-parameter unitary single-qubit gate (covers all possible single-qubit gates)
+General 2x2 unitary matrix operator single-qubit target with arbitrary number of control qubits (covers all possible single-qubit target "payloads")
 
 - `sid`: Simulator instance ID.
 - `c`: Array of control qubit IDs.
@@ -417,7 +410,7 @@ Multi-controlled, single-target multiplexer gate
 
 ### Coalesced single-qubit gates
 
-**These optimized gates apply the same Pauli operator to all specified qubits and take the same two arguments.**
+**These optimized gates apply the same Pauli operator to all specified qubits and take the same two arguments. This is optimized, compared to separate Pauli gates.**
 
 - `sid`: Simulator instance ID.
 - `q`: Array of qubit IDs.
@@ -886,7 +879,7 @@ Report a close theoretical estimate of fidelity, as potentially reduced by "SDRP
 
 ##### `reset_unitary_fidelity(quid sid)`
 
-Reset the "SDRP" fidelity tracker to 1.0 fidelity ("ideal"), before continuing fidelity calculation. (Some wholly-destructive measurement and state preparation operations and side effects might automatically reset the fidelity tracker to 1.0, as well, though the attempt in design is to do so unobstructively, to the utility of the fidelity tracking function in typical use.)
+Reset the "SDRP" fidelity tracker to 1.0 fidelity ("ideal"), before continuing fidelity calculation. (Some wholly-destructive measurement and state preparation operations and side effects might automatically reset the fidelity tracker to 1.0, as well, though the attempt in design is to do so unobstructively to the utility of the fidelity tracking function in typical use.)
 
 - `sid`: Simulator instance ID.
 
