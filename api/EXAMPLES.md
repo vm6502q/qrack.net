@@ -168,6 +168,83 @@ It is particularly instructive to see a script that can simulate the "quantum te
 }
 ```
 
+## Grover's search algorithm (AKA "amplitude amplification")
+
+Encoding "oracles" to "solve" with Grover's search algorithm (or "amplitude amplification") is relatively easy with use of the QrackNet script's "arithmetic logic unit" ("ALU") methods. We initialize a simulator, then we prepare it in initial maximal superposition, then the third code section below is the "oracle" we are trying to "invert" (or "search") using the advantaged quantum algorithm. The oracle tags only the bit string "`3`" as a "match." Then, according to the general amplitude amplification, we "uncompute" and reverse phase on the original input state, re-prepare with `h` gates, and iterate for `floor(sqrt(pow(2, n)) * PI / 4)` total repetitions to search an oracle of `n` qubits width with a single accepted "match" to the oracle:
+
+```json
+{
+    "program" : [
+        { "name": "init_qbdd", "parameters": [3], "output": "qsim" },
+
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "h", "parameters": ["qsim", 1] },
+        { "name": "h", "parameters": ["qsim", 2] },
+
+        { "name": "sub", "parameters": ["qsim", [0, 1, 2], 3] },
+        { "name": "x", "parameters": ["qsim", 2] },
+        { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
+        { "name": "x", "parameters": ["qsim", 2] },
+        { "name": "add", "parameters": ["qsim", [0, 1, 2], 3] },
+
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "h", "parameters": ["qsim", 1] },
+        { "name": "h", "parameters": ["qsim", 2] },
+        { "name": "x", "parameters": ["qsim", 2] },
+        { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
+        { "name": "x", "parameters": ["qsim", 2] },
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "h", "parameters": ["qsim", 1] },
+        { "name": "h", "parameters": ["qsim", 2] },
+
+        { "name": "sub", "parameters": ["qsim", [0, 1, 2], 3] },
+        { "name": "x", "parameters": ["qsim", 2] },
+        { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
+        { "name": "x", "parameters": ["qsim", 2] },
+        { "name": "add", "parameters": ["qsim", [0, 1, 2], 3] },
+
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "h", "parameters": ["qsim", 1] },
+        { "name": "h", "parameters": ["qsim", 2] },
+        { "name": "x", "parameters": ["qsim", 2] },
+        { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
+        { "name": "x", "parameters": ["qsim", 2] },
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "h", "parameters": ["qsim", 1] },
+        { "name": "h", "parameters": ["qsim", 2] },
+
+        { "name": "measure_shots", "parameters": ["qsim", [0, 1, 2], 8], "output": "result" }
+    ]
+}
+```
+
+Surely enough, our job response will look like this (with a typically very small probabilistic element to the measurement "shot" output distribution):
+```json
+{
+    "message": "Retrieved job status and output by ID.",
+    "data": {
+        "status": {
+            "id": 1,
+            "name": "SUCCESS",
+            "message": "Job completed fully and normally."
+        },
+        "output": {
+            "qsim": 0,
+            "result": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ]
+        }
+    }
+}
+```
+
 ## 30-qubit GHZ state
 
 The QrackNet server is likely to successfully run even 50-qubit or larger GHZ state preparation circuits (with measurement), though reporting precision for results might currently be limited to about 32 bits. This definitely won't work with `init_general` (which will ultimately attempt to allocate 30+ qubits of state vector representation) but it's likely to work with `init_stabilizer` and `init_qbdd`, as both are optimized (differently) for this GHZ-state case.
