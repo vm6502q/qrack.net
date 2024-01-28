@@ -311,7 +311,7 @@ The "quantum Fourier transform" ("QFT") is exposed as a complete subroutine via 
     ]
 }
 ```
-`iqft` instruction is similarly the "inverse QFT", with the same syntax. The method does **not** apply terminal `swap` gates to recover the canonical element order of the "discrete Fourier transform" ("DFT"), as many applications of the subroutine do not require this step (which is commonly included in descriptions of the algorithm). To recover DFT amplitude ordering, further reverse the order of qubit in the result, after the `qft`, with `swap` gates. (`swap` gates are commonly implemented via qubit label swap, hence they are virtually computationally "free," with no loss of generality in the case of a "fully-connected" qubit topologies, like in all QrackNet simulators.)
+`iqft` instruction is similarly the "inverse QFT", with the same syntax. These method do **not** apply terminal or leading `swap` gates to recover the canonical element order of the "discrete Fourier transform" ("DFT"), as many applications of the subroutine do not require this step (which is commonly included in other descriptions or definitions of the algorithm). To recover DFT amplitude ordering, further reverse the order of qubits in the result, before or else after the `qft`, with `swap` gates. (`swap` gates are commonly implemented via qubit label swap, hence they are virtually computationally "free," with no loss of generality in the case of a "fully-connected" qubit topologies, like in all QrackNet simulators.)
 
 
 ## Shor's algorithm (quantum period finding subroutine)
@@ -414,3 +414,44 @@ This is an example of the job result:
 }
 ```
 Note that, in this case, a relatively severe SDRP floating-point setting had no negative effect on the fidelity at all. The rounding effect would become apparent for a more complicated circuit, like a "quantum volume" or "random circuit sampling" case, for example.
+
+## Random circuit sampling
+
+"BQP-complete" complexity class is isomorphic to (maximally) random circuit sampling. It might be belaborious to randomize the the coupler connections via (CNOT) `mcx` and to randomize the `u` double-precision angle parameters, but here is an example that is (unfortunately) not at all random in these choices, for 4 layers of a 4-qubit-wide unitary circuit of a "quantum volume" protocol (where `double` parameters should be uniformly random on [0,2π) or a gauge-symmetric interval, up to overall non-observable phase factor of degeneracy on [0,4π) which becames "physical" for controlled `mcu` operations):
+```json
+{
+    "program" : [
+        { "name": "init_qbdd", "parameters": [4], "output": "qsim" },
+        { "name": "u", "parameters": ["qsim", 0, 0.1, 0.2, 0.3] },
+        { "name": "u", "parameters": ["qsim", 1, 0.0, 3.14159265359, 6.28318531] },
+        { "name": "u", "parameters": ["qsim", 2, 0.7, 4.2, 1.8] },
+        { "name": "u", "parameters": ["qsim", 3, 1.0, 2.0, 3.0] },
+        { "name": "mcx", "parameters": ["qsim", [0], 1] },
+        { "name": "mcx", "parameters": ["qsim", [2], 3] },
+
+        { "name": "u", "parameters": ["qsim", 0, 0.1, 0.2, 0.3] },
+        { "name": "u", "parameters": ["qsim", 1, 0.0, 3.14159265359, 6.28318531] },
+        { "name": "u", "parameters": ["qsim", 2, 0.7, 4.2, 1] },
+        { "name": "u", "parameters": ["qsim", 3, 1.0, 2.0, 3.0] },
+        { "name": "mcx", "parameters": ["qsim", [1], 2] },
+        { "name": "mcx", "parameters": ["qsim", [0], 3] },
+
+        { "name": "u", "parameters": ["qsim", 0, 0.1, 0.2, 0.3] },
+        { "name": "u", "parameters": ["qsim", 1, 0.0, 3.14159265359, 6.28318531] },
+        { "name": "u", "parameters": ["qsim", 2, 0.7, 4.2, 1] },
+        { "name": "u", "parameters": ["qsim", 3, 1.0, 2.0, 3.0] },
+        { "name": "mcx", "parameters": ["qsim", [0], 1] },
+        { "name": "mcx", "parameters": ["qsim", [2], 3] },
+
+        { "name": "u", "parameters": ["qsim", 0, 0.1, 0.2, 0.3] },
+        { "name": "u", "parameters": ["qsim", 1, 0.0, 3.14159265359, 6.28318531] },
+        { "name": "u", "parameters": ["qsim", 2, 0.7, 4.2, 1] },
+        { "name": "u", "parameters": ["qsim", 3, 1.0, 2.0, 3.0] },
+        { "name": "mcx", "parameters": ["qsim", [1], 2] },
+        { "name": "mcx", "parameters": ["qsim", [0], 3] },
+
+        { "name": "measure_shots", "parameters": ["qsim", [0, 1, 2, 3], 16], "output": "result" }
+    ]
+}
+```
+Conceptually, `init_general` would definitely be the right simulator optimization to use. For now, it is bugged even on this case. (As noted elsewhere, strongly prefer `init_qbdd` for general case.)
