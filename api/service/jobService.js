@@ -389,7 +389,7 @@ class JobService extends ModelService {
           await this.single_quid_mc_output_op(job, core.try_separate_tol, i, 2, core)
           break
         case 'get_unitary_fidelity':
-          await this.single_quid_output_op(job, core.get_unitary_fidelity, i, 2, core)
+          await this.single_quid_output_op(job, core.get_unitary_fidelity, i, 3, core)
           break
         case 'reset_unitary_fidelity':
           await this.single_quid_op(job, core.reset_unitary_fidelity, i, core)
