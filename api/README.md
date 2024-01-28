@@ -75,6 +75,8 @@ Each method, as a line of the `program` array argument of the `POST /api/qrack` 
 
 **Returns** a `quid` representing a newly-initialized simulator optimized for "BQP-complete" (general) problems.
 
+**As of the current pre-release version, prefer `init_qbdd` for general problems.** (`init_general` will ultimately serve this role, but its status is effectively experimental.)
+
 - `length`: Number of qubits.
 
 
