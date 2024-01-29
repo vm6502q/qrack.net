@@ -456,9 +456,9 @@ Note that, in this case, a relatively severe SDRP floating-point setting had no 
 ```
 Conceptually, `init_general` would definitely be the right simulator optimization to use. For now, it is bugged even on this case. (As noted elsewhere, strongly prefer `init_qbdd` for general case.)
 
-## Quantum neurons
+## (Optional advanced usage:) quantum neurons
 
-("Putting it all together...") This is an arbitrary training for a "quantum neuron":
+This is an arbitrary training for a "quantum neuron":
 ```json
 {
     "program" : [
@@ -514,5 +514,6 @@ This is a real example of the output:
     }
 }
 ```
+The `neuronParams` count of array elements would scale like 2 to the power in input "`c`" ("control") argument qubits, while each neuron has a single target target qubit, in the requested qubit simulator (as synapses).
 
 **Powered by Qrack! You rock!**
