@@ -397,7 +397,7 @@ This is an arbitrary training for a "quantum neuron":
     ]
 }
 ```
-Qubits involved in neuron learning and prediction act like "synapses." Booleans for quantum neuron subset API can be specified as literals or as `output` space variable names (as immediately above). In `qneuron_learn` and `qneuron_predict` method signatures, the first occurring boolean argument controls whether the intended (single) "target" qubit state is considered `true` or `false`. The second occurring boolean argument controls whether "side-effects" (or any and all effect) on all the involved qubits are "uncomputed" after the operation (so this is typically `true` for "learning" and `false` for prediction).
+Qubits involved in neuron learning and prediction act like "synapses." Booleans for quantum neuron subset API can be specified as literals or as `output` space variable names (as immediately above). In `qneuron_learn` and `qneuron_predict` method signatures, the first occurring boolean argument controls whether the intended (single) "target" qubit state is considered `true` or `false`. The second occurring boolean argument controls whether the output qubit is set to |+> state in X-basis (`h` gate on |0>, from Z-basis) before carrying out learning or prediction.
 
 This is a real example of the output:
 ```json
