@@ -397,7 +397,7 @@ This is an arbitrary training for a "quantum neuron":
     ]
 }
 ```
-Booleans for quantum neuron subset API can be specified as literals or as `output` space variable names (as immediately above).
+Qubits involved in neuron learning and prediction act like "synapses." Booleans for quantum neuron subset API can be specified as literals or as `output` space variable names (as immediately above). In `qneuron_learn` and `qneuron_predict` method signatures, the first occurring boolean argument controls whether the intended (single) "target" qubit state is considered `true` or `false`. The second occurring boolean argument controls whether "side-effects" (or any and all effect) on all the involved qubits are "uncomputed" after the operation (so this is typically `true` for "learning" and `false` for prediction).
 
 This is a real example of the output:
 ```json
@@ -432,6 +432,6 @@ This is a real example of the output:
     }
 }
 ```
-The `neuronParams` count of array elements would scale like 2 to the power in input "`c`" ("control") argument qubits, while each neuron has a single target target qubit, in the requested qubit simulator (as synapses).
+The `neuronParams` count of array elements would scale like 2 to the power in input "`c`" ("control") argument qubits, while each neuron has a single target target qubit, in the requested qubit simulator.
 
 **Powered by Qrack! You rock!**
