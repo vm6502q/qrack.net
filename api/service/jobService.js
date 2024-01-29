@@ -140,6 +140,40 @@ class JobService extends ModelService {
     }
   }
 
+  async single_quid_end_bool_op (job, fn, i, core) {
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    i.parameters.shift()
+    let tmpBool = i.parameters.pop
+    if (typeof tmpBool !== "boolean") {
+        tmpBool = await this.validate_bool(tmpBool, job, core)
+    }
+    try {
+      fn(tmp, ...i.parameters, tmpBool)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
+  }
+
+  async single_quid_end_bool2_op (job, fn, i, core) {
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    i.parameters.shift()
+    let tmpBool = i.parameters.pop()
+    if (typeof tmpBool !== "boolean") {
+        tmpBool = await this.validate_bool(tmpBool, job, core)
+    }
+    let tmpBool2 = i.parameters.pop()
+    if (typeof tmpBool2 !== "boolean") {
+        tmpBool2 = await this.validate_bool(tmpBool2, job, core)
+    }
+    try {
+      fn(tmp, ...i.parameters, tmpBool2, tmpBool)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
+  }
+
   async single_quid_mc_op (job, fn, i, core) {
     const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
@@ -789,19 +823,19 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.set_qneuron_activation_fn, i, core)
           break
         case 'qneuron_predict':
-          await this.single_quid_op(job, core.qneuron_predict, i, core)
+          await this.single_quid_end_bool2_op(job, core.qneuron_predict, i, core)
           break
         case 'qneuron_unpredict':
-          await this.single_quid_op(job, core.qneuron_unpredict, i, core)
+          await this.single_quid_end_bool_op(job, core.qneuron_unpredict, i, core)
           break
         case 'qneuron_learn_cycle':
-          await this.single_quid_op(job, core.qneuron_learn_cycle, i, core)
+          await this.single_quid_end_bool_op(job, core.qneuron_learn_cycle, i, core)
           break
         case 'qneuron_learn':
-          await this.single_quid_op(job, core.qneuron_learn, i, core)
+          await this.single_quid_end_bool2_op(job, core.qneuron_learn, i, core)
           break
         case 'qneuron_learn_permutation':
-          await this.single_quid_op(job, core.qneuron_learn_permutation, i, core)
+          await this.single_quid_end_bool2_op(job, core.qneuron_learn_permutation, i, core)
           break
         default:
           await this.free_after_job(job, core)
