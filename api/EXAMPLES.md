@@ -414,13 +414,14 @@ This is a real example of the output:
             "qneuron": "0",
             "fLit": false,
             "tLit": true,
+            "n0": 0.9267767071723938,
             "result": [
                 2,
                 2,
                 2,
                 2,
-                3,
-                3,
+                2,
+                2,
                 3,
                 3
             ],
