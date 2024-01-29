@@ -455,3 +455,63 @@ Note that, in this case, a relatively severe SDRP floating-point setting had no 
 }
 ```
 Conceptually, `init_general` would definitely be the right simulator optimization to use. For now, it is bugged even on this case. (As noted elsewhere, strongly prefer `init_qbdd` for general case.)
+
+## Quantum neurons
+
+("Putting it all together...") This is an arbitrary training for a "quantum neuron":
+```json
+{
+    "program" : [
+        { "name": "init_qbdd", "parameters": [2], "output": "qsim" },
+        { "name": "init_qneuron", "parameters": ["qsim", [0], 1, 0, 0, 1e-6], "output": "qneuron" },
+        { "name": "write_bool", "parameters": [false], "output": "fLit" },
+        { "name": "write_bool", "parameters": [true], "output": "tLit" },
+        { "name": "qneuron_learn", "parameters": ["qneuron", 0.25, "fLit", true] },
+        { "name": "x", "parameters": ["qsim", 0] },
+        { "name": "qneuron_learn", "parameters": ["qneuron", 0.5, "tLit", true] },
+        { "name": "x", "parameters": ["qsim", 0] },
+
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "qneuron_predict", "parameters": ["qneuron", "tLit", false], "output": "n0" },
+
+        { "name": "measure_shots", "parameters": ["qsim", [0, 1], 8], "output": "result" },
+        { "name": "get_qneuron_angles", "parameters": ["qneuron"], "output": "neuronParams" }
+    ]
+}
+```
+
+This is a real example of the output:
+```json
+{
+    "message": "Retrieved job status and output by ID.",
+    "data": {
+        "status": {
+            "id": 1,
+            "name": "SUCCESS",
+            "message": "Job completed fully and normally."
+        },
+        "output": {
+            "qsim": 0,
+            "qneuron": "0",
+            "fLit": false,
+            "tLit": true,
+            "result": [
+                2,
+                2,
+                2,
+                2,
+                3,
+                3,
+                3,
+                3
+            ],
+            "neuronParams": [
+                0.7853981852531433,
+                1.5707963705062866
+            ]
+        }
+    }
+}
+```
+
+**Powered by Qrack! You rock!**
