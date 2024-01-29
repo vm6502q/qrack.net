@@ -479,7 +479,7 @@ This is an arbitrary training for a "quantum neuron":
     ]
 }
 ```
-Booleans for quantum neuron subset API can be specified as literals or as `output` space variable names (as immediately above). The first boolean parameter, in api subset method signatures with two boolean arguments, sets "target qubit (synapse)" truth value for purposes of "learning" and "prediction." The second boolean parameter controls whether "side-effects" of learning and prediction _upon the input and target **qubits**_ should be "uncomputed." Hence, it usually makes sense for this argument to be `true` for learning, and `false` for prediction. (Its value can be specified from the output space, also.)
+Booleans for quantum neuron subset API can be specified as literals or as `output` space variable names (as immediately above).
 
 This is a real example of the output:
 ```json
