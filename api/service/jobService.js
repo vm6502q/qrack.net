@@ -174,6 +174,21 @@ class JobService extends ModelService {
     }
   }
 
+  async single_quid_end_bool_output_op (job, fn, i, oType, core) {
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    i.parameters.shift()
+    let tmpBool = i.parameters.pop()
+    if (typeof tmpBool !== "boolean") {
+        tmpBool = await this.validate_bool(tmpBool, job, core)
+    }
+    try {
+      await outputService.createOrUpdate(job, i.output, fn(tmp, ...i.parameters, tmpBool), oType)
+    } catch (e) {
+      await this.free_after_job(job, core)
+      throw e
+    }
+  }
+
   async single_quid_end_bool2_output_op (job, fn, i, oType, core) {
     const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
@@ -842,13 +857,13 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.set_qneuron_activation_fn, i, core)
           break
         case 'qneuron_predict':
-          await this.single_quid_end_bool2_output_op(job, core.qneuron_predict, i, core)
+          await this.single_quid_end_bool2_output_op(job, core.qneuron_predict, i, 3, core)
           break
         case 'qneuron_unpredict':
-          await this.single_quid_end_bool_output_op(job, core.qneuron_unpredict, i, core)
+          await this.single_quid_end_bool_output_op(job, core.qneuron_unpredict, i, 3, core)
           break
         case 'qneuron_learn_cycle':
-          await this.single_quid_end_bool_output_op(job, core.qneuron_learn_cycle, i, core)
+          await this.single_quid_end_bool_output_op(job, core.qneuron_learn_cycle, i, 3, core)
           break
         case 'qneuron_learn':
           await this.single_quid_end_bool2_op(job, core.qneuron_learn, i, core)
