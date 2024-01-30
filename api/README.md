@@ -839,6 +839,14 @@ Set the "Schmidt decomposition rounding parameter" ("SDRP"). If "reactive separa
 - `sdrp`: Schmidt decomposition rounding parameter (0 to 1 range, defaults to real1 "epsilon")
 
 
+##### `set_ncrp(quid sid, double ncrp)`
+
+Set the "near-Clifford rounding parameter" ("NCRP"). When near-Clifford gate set is being used (such as general Clifford gates plus general single-qubit phase gates), this value controls how "severe" any non-Clifford effect needs to be, to be taken into consideration, or else (internally managed and applied) non-Clifford gates might be ignored.
+
+- `sid`: Simulator instance ID.
+- `ncrp`: Near-Clifford rounding parameter (0 to 1 range, defaults to real1 "epsilon")
+
+
 ##### `get_unitary_fidelity(quid sid) -> double`
 
 Report a close theoretical estimate of fidelity, as potentially reduced by "SDRP" (Credit to Andrea Mari for research at Unitary Fund, in [arXiv:2304.14969](https://arxiv.org/abs/2304.14969))
