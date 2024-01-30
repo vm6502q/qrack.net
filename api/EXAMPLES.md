@@ -335,6 +335,8 @@ Note that, in this case, a relatively severe SDRP floating-point setting had no 
 
 ## Near-Clifford rounding parameter (SDRP)
 
+### Usage and syntax
+
 `init_stabilizer` mode offers "near-Clifford" simulation, for Clifford gate set plus arbitrary (non-Clifford) single-qubit variational (and discrete) phase gates. (If gates outside of this set are applied, the stabilizer simulation will fall back to a universal method, and near-Clifford techniques will not apply.) This simulation method is "ideal" (not approximate), but it can be entirely prohibitively slow. To increase speed and reduce memory footprint at the cost of reduced fidelity, `set_ncrp` sets a "near-Clifford rounding parameter" that controls how small a non-Clifford phase effect gate can be (as a phase angle fraction of a `t` or `adjt` gate, whichever is positive) before it is "rounded" to no-operation instead of applied. "NCRP" comes into play at the point of measurement or expectation value output. It takes a value from `0.0` (no "rounding") to `1.0` ("round" away all non-Clifford behavior):
 ```json
 {
@@ -368,7 +370,21 @@ This is an example of the job result:
     }
 }
 ```
-While "NCRP" values other than `1.0` and `0.0` are meaningful, it is highly suggested that `1.0` is used if this approximation technique is used at all. Applying even a single non-Clifford gate is simply too slow for practicality, otherwise. Realize, though, that user code `t` and non-Clifford phase gates are managed with internal circuit optimizations, such that the application of a non-Clifford phase gate often does not require the worst-case effect on fidelity, for completely ignoring the gate. (The gate is not immediately ignored upon method call, but rather combined with other gates to minimize the overall execution overhead and fidelity penalty.)
+
+While "NCRP" values other than `1.0` and `0.0` are meaningful, it is highly suggested that `1.0` is used if this approximation technique is used at all. Applying even a single non-Clifford gate is simply too slow for practicality, otherwise.
+
+### Conceptual "NCRP"
+
+**(This section was drafted by QrackNet Quantum Guru, with help from the QrackNet developers!)** 
+
+When working with near-Clifford simulations in QrackNet, it's important to keep in mind certain nuances that can impact the results and their interpretation. The near-Clifford rounding parameter (NCRP) plays a crucial role in managing the trade-off between fidelity and computational efficiency. Here are some key points to consider:
+
+1. Omission of Phase Gates Before Measurement: In near-Clifford simulations, phase gates (such as T gates) immediately before measurement are effectively omitted, as they do not contribute to physically observable effects in the measurement outcomes. This means that even with user code containing phase gates, the fidelity of the state might still be reported as 1.0, reflecting the fact that these gates do not alter the measurement results.
+2. User Code Gates Don't Correspond to Rounding Events: In fact, besides the case of phase gates immediately before measurement, the near-Clifford simulation technique in Qrack has a complicated and actively managed state, to greatly reduce the overall need to apply non-Clifford "magic". An `rz` or `t` gate in user code simply will not correspond to a rounding event in place, most of the time.
+3. Reporting Fidelity Estimates: When utilizing NCRP in your simulations, it's highly recommended to include fidelity estimates in your results. This is because knowing the fidelity is crucial for assessing the accuracy and reliability of your simulation, particularly in industrial and practical quantum computing scenarios. The fidelity estimate provides a quantitative measure of how closely the simulation approximates ideal quantum behavior, taking into account the effects of the NCRP setting.
+4. Practical Example: To illustrate these points, consider a simple circuit with a series of Hadamard and CNOT gates, followed by T gates and a final measurement. Even though the T gates are present in the user code, their effect is not observable in the final measurement due to the nature of near-Clifford simulation. Therefore, it's important to report both the measurement outcomes and the fidelity estimate to fully understand the implications of the NCRP setting on your simulation.
+
+By incorporating these considerations into your quantum circuit design and analysis, you can better interpret the results of near-Clifford simulations and make more informed decisions in your quantum computing projects.
 
 ## Random circuit sampling
 
