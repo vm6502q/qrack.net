@@ -219,28 +219,16 @@ void QrackWrapper::S(long sid, long q) {
     Qrack::S((Qrack::quid)sid, (bitLenInt)q);
 }
 void QrackWrapper::SX(long sid, long q) {
-    constexpr Qrack::complex ONE_PLUS_I_DIV_2 = Qrack::complex((Qrack::real1)(ONE_R1 / 2), (Qrack::real1)(ONE_R1 / 2));
-    constexpr Qrack::complex ONE_MINUS_I_DIV_2 = Qrack::complex((Qrack::real1)(ONE_R1 / 2), (Qrack::real1)(-ONE_R1 / 2));
-    std::vector<Qrack::complex> m{ ONE_PLUS_I_DIV_2, ONE_MINUS_I_DIV_2, ONE_MINUS_I_DIV_2, ONE_PLUS_I_DIV_2 };
-    Qrack::Mtrx(sid, m, q);
+    Qrack::SX((Qrack::quid)sid, (bitLenInt)q);
 }
 void QrackWrapper::ISX(long sid, long q) {
-    constexpr Qrack::complex ONE_PLUS_I_DIV_2 = Qrack::complex((Qrack::real1)(ONE_R1 / 2), (Qrack::real1)(ONE_R1 / 2));
-    constexpr Qrack::complex ONE_MINUS_I_DIV_2 = Qrack::complex((Qrack::real1)(ONE_R1 / 2), (Qrack::real1)(-ONE_R1 / 2));
-    std::vector<Qrack::complex> m{ ONE_MINUS_I_DIV_2, ONE_PLUS_I_DIV_2, ONE_PLUS_I_DIV_2, ONE_MINUS_I_DIV_2 };
-    Qrack::Mtrx(sid, m, q);
+    Qrack::AdjSX((Qrack::quid)sid, (bitLenInt)q);
 }
 void QrackWrapper::SY(long sid, long q) {
-    constexpr Qrack::complex ONE_PLUS_I_DIV_2 = Qrack::complex((Qrack::real1)(ONE_R1 / 2), (Qrack::real1)(ONE_R1 / 2));
-    constexpr Qrack::complex ONE_PLUS_I_DIV_2_NEG = Qrack::complex((Qrack::real1)(-ONE_R1 / 2), (Qrack::real1)(-ONE_R1 / 2));
-    std::vector<Qrack::complex> m{ ONE_PLUS_I_DIV_2, ONE_PLUS_I_DIV_2_NEG, ONE_PLUS_I_DIV_2, ONE_PLUS_I_DIV_2 };
-    Qrack::Mtrx(sid, m, q);
+    Qrack::SY((Qrack::quid)sid, (bitLenInt)q);
 }
 void QrackWrapper::ISY(long sid, long q) {
-    constexpr Qrack::complex ONE_MINUS_I_DIV_2 = Qrack::complex((Qrack::real1)(ONE_R1 / 2), (Qrack::real1)(-ONE_R1 / 2));
-    constexpr Qrack::complex ONE_MINUS_I_DIV_2_NEG = Qrack::complex((Qrack::real1)(-ONE_R1 / 2), (Qrack::real1)(ONE_R1 / 2));
-    std::vector<Qrack::complex> m{ ONE_MINUS_I_DIV_2, ONE_MINUS_I_DIV_2, ONE_MINUS_I_DIV_2_NEG, ONE_MINUS_I_DIV_2 };
-    Qrack::Mtrx(sid, m, q);
+    Qrack::AdjSY((Qrack::quid)sid, (bitLenInt)q);
 }
 void QrackWrapper::T(long sid, long q) {
     Qrack::T((Qrack::quid)sid, (bitLenInt)q);
