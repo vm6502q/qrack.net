@@ -333,6 +333,43 @@ This is an example of the job result:
 ```
 Note that, in this case, a relatively severe SDRP floating-point setting had no negative effect on the fidelity at all. The rounding effect would become apparent for a more complicated circuit, like a "quantum volume" or "random circuit sampling" case, for example.
 
+## Near-Clifford rounding parameter (SDRP)
+
+`init_stabilizer` mode offers "near-Clifford" simulation, for Clifford gate set plus arbitrary (non-Clifford) single-qubit variational (and discrete) phase gates. (If gates outside of this set are applied, the stabilizer simulation will fall back to a universal method, and near-Clifford techniques will not apply.) This simulation method is "ideal" (not approximate), but it can be entirely prohibitively slow. To increase speed and reduce memory footprint at the cost of reduced fidelity, `set_ncrp` sets a "near-Clifford rounding parameter" that controls how small a non-Clifford phase effect gate can be (as a phase angle fraction of a `t` or `adjt` gate, whichever is positive) before it is "rounded" to no-operation instead of applied. "NCRP" comes into play at the point of measurement or expectation value output. It takes a value from `0.0` (no "rounding") to `1.0` ("round" away all non-Clifford behavior):
+```json
+{
+    "program" : [
+        { "name": "init_stabilizer", "parameters": [2], "output": "qsim" },
+        { "name": "set_ncrp", "parameters": ["qsim", 1.0] },
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "t", "parameters": ["qsim", 0] },
+        { "name": "mcx", "parameters": ["qsim", [0], 1] },
+        { "name": "h", "parameters": ["qsim", 0] },
+        { "name": "measure_all", "parameters": ["qsim"], "output": "result" },
+        { "name": "get_unitary_fidelity", "parameters": ["qsim"], "output": "fidelity" }
+    ]
+}
+```
+This is an example of the job result:
+```json
+{
+    "message": "Retrieved job status and output by ID.",
+    "data": {
+        "status": {
+            "id": 1,
+            "name": "SUCCESS",
+            "message": "Job completed fully and normally."
+        },
+        "output": {
+            "qsim": 0,
+            "result": 1,
+            "fidelity": 1
+        }
+    }
+}
+```
+Note that, in this case, internal circuit optimization by the simulator avoided the need round to "round away" the `t` gate in the script, which will be a common occurrence. While "NCRP" values other than `1.0` and `0.0` are meaningful, it is highly suggested that `1.0` is used if this approximation technique is used at all. (Applying even a single non-Clifford gate is simply too slow for practicality, otherwise, though realize, as in our example, that user code `t` and non-Clifford phase gates will not necessarily all need to be "rounded away," anyway.)
+
 ## Random circuit sampling
 
 "BQP-complete" complexity class is isomorphic to (maximally) random circuit sampling. It might be laborious to randomize the the coupler connections via (CNOT) `mcx` and to randomize the `u` double-precision angle parameters, but here is an example that is (unfortunately) not at all random in these choices, for 4 layers of a 4-qubit-wide unitary circuit of a "quantum volume" protocol (where `double` parameters should be uniformly random on [0,2π) or a gauge-symmetric interval, up to overall non-observable phase factor of degeneracy on [0,4π) which becames "physical" for controlled `mcu` operations):
