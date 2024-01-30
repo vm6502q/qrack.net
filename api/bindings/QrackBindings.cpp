@@ -161,11 +161,11 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     }));
     /// inverse square root of x gate
     function("adjsx", optional_override([](long sid, long q) -> void {
-        QrackWrapper::ISX(sid, q);
+        QrackWrapper::AdjSX(sid, q);
     }));
     /// inverse square root of y gate
     function("adjsy", optional_override([](long sid, long q) -> void {
-        QrackWrapper::ISY(sid, q);
+        QrackWrapper::AdjSY(sid, q);
     }));
     function("adjt", optional_override([](long sid, long q) -> void {
         QrackWrapper::AdjT(sid, q);

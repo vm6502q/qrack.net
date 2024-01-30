@@ -221,13 +221,13 @@ void QrackWrapper::S(long sid, long q) {
 void QrackWrapper::SX(long sid, long q) {
     Qrack::SX((Qrack::quid)sid, (bitLenInt)q);
 }
-void QrackWrapper::ISX(long sid, long q) {
+void QrackWrapper::AdjSX(long sid, long q) {
     Qrack::AdjSX((Qrack::quid)sid, (bitLenInt)q);
 }
 void QrackWrapper::SY(long sid, long q) {
     Qrack::SY((Qrack::quid)sid, (bitLenInt)q);
 }
-void QrackWrapper::ISY(long sid, long q) {
+void QrackWrapper::AdjSY(long sid, long q) {
     Qrack::AdjSY((Qrack::quid)sid, (bitLenInt)q);
 }
 void QrackWrapper::T(long sid, long q) {
