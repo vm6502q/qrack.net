@@ -439,7 +439,7 @@ class JobService extends ModelService {
           }
           break
         case 'init_clone':
-          await this.single_quid_output_op(job, core.init_clone, i, 1)
+          await this.single_quid_output_op(job, core.init_clone, i, 1, core)
           break
         case 'destroy':
           await this.single_quid_op(job, core.destroy, i, core)
@@ -826,7 +826,7 @@ class JobService extends ModelService {
           await this.single_quid_mc_output_op(job, core.init_qneuron, i, 7, core)
           break
         case 'clone_qneuron':
-          await this.single_quid_output_op(job, core.clone_qneuron, i, 7)
+          await this.single_quid_output_op(job, core.clone_qneuron, i, 7, core)
           break
         case 'destroy_qneuron':
           await this.single_quid_op(job, core.destroy_qneuron, i, core)
