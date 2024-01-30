@@ -362,13 +362,13 @@ This is an example of the job result:
         },
         "output": {
             "qsim": 0,
-            "result": 1,
-            "fidelity": 1
+            "result": 2,
+            "fidelity": 0.6218592686818538
         }
     }
 }
 ```
-Note that, in this case, internal circuit optimization by the simulator avoided the need round to "round away" the `t` gate in the script, which will be a common occurrence. While "NCRP" values other than `1.0` and `0.0` are meaningful, it is highly suggested that `1.0` is used if this approximation technique is used at all. (Applying even a single non-Clifford gate is simply too slow for practicality, otherwise, though realize, as in our example, that user code `t` and non-Clifford phase gates will not necessarily all need to be "rounded away," anyway.)
+While "NCRP" values other than `1.0` and `0.0` are meaningful, it is highly suggested that `1.0` is used if this approximation technique is used at all. Applying even a single non-Clifford gate is simply too slow for practicality, otherwise. Realize, though, that user code `t` and non-Clifford phase gates are managed with internal circuit optimizations, such that the application of a non-Clifford phase gate often does not require the worst-case effect on fidelity, for completely ignoring the gate. (The gate is not immediately ignored upon method call, but rather combined with other gates to minimize the overall execution overhead and fidelity penalty.)
 
 ## Random circuit sampling
 
