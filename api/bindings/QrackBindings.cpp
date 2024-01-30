@@ -145,6 +145,22 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("s", optional_override([](long sid, long q) -> void {
         QrackWrapper::S(sid, q);
     }));
+    /// square root of x gate
+    function("sx", optional_override([](long sid, long q) -> void {
+        QrackWrapper::SX(sid, q);
+    }));
+    /// inverse square root of x gate
+    function("adjsx", optional_override([](long sid, long q) -> void {
+        QrackWrapper::ISX(sid, q);
+    }));
+    /// square root of y gate
+    function("sy", optional_override([](long sid, long q) -> void {
+        QrackWrapper::SY(sid, q);
+    }));
+    /// inverse square root of y gate
+    function("adjsy", optional_override([](long sid, long q) -> void {
+        QrackWrapper::ISY(sid, q);
+    }));
     function("t", optional_override([](long sid, long q) -> void {
         QrackWrapper::T(sid, q);
     }));
