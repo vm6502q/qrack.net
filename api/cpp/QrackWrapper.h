@@ -55,11 +55,11 @@ public:
     static void H(long sid, long q);
     static void S(long sid, long q);
     static void SX(long sid, long q);
-    static void ISX(long sid, long q);
     static void SY(long sid, long q);
-    static void ISY(long sid, long q);
     static void T(long sid, long q);
     static void AdjS(long sid, long q);
+    static void AdjSX(long sid, long q);
+    static void AdjSY(long sid, long q);
     static void AdjT(long sid, long q);
     static void U(long sid, long q, double theta, double phi, double lambda);
     static void Mtrx(long sid, std::vector<double> m, long q);
