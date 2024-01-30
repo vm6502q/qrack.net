@@ -18,6 +18,7 @@ public:
     static double GetUnitaryFidelity(long sid);
     static void ResetUnitaryFidelity(long sid);
     static void SetSdrp(long sid, double sdrp);
+    static void SetNcrp(long sid, double ncrp);
     static void SetReactiveSeparate(long sid, bool irs);
     static void SetTInjection(long sid, bool iti);
 

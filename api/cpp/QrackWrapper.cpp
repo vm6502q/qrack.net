@@ -56,6 +56,9 @@ void QrackWrapper::ResetUnitaryFidelity(long sid) {
 void QrackWrapper::SetSdrp(long sid, double sdrp) {
     Qrack::SetSdrp((Qrack::quid)sid, (Qrack::real1_f)sdrp);
 }
+void QrackWrapper::SetNcrp(long sid, double sdrp) {
+    Qrack::SetNcrp((Qrack::quid)sid, (Qrack::real1_f)sdrp);
+}
 void QrackWrapper::SetReactiveSeparate(long sid, bool irs) {
     Qrack::SetReactiveSeparate((Qrack::quid)sid, irs);
 }
