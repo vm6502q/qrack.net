@@ -57,6 +57,9 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("set_sdrp", optional_override([](long sid, double sdrp) -> void {
         QrackWrapper::SetSdrp(sid, sdrp);
     }));
+    function("set_ncrp", optional_override([](long sid, double ncrp) -> void {
+        QrackWrapper::SetNcrp(sid, ncrp);
+    }));
     function("set_reactive_separate", optional_override([](long sid, bool irs) -> void {
         QrackWrapper::SetReactiveSeparate(sid, irs);
     }));
