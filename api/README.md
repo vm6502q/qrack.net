@@ -282,8 +282,12 @@ These are the gates:
 - `z(quid sid, bitLenInt q)`
 - `h(quid sid, bitLenInt q)`
 - `s(quid sid, bitLenInt q)`
+- `sx(quid sid, bitLenInt q)`
+- `sy(quid sid, bitLenInt q)`
 - `t(quid sid, bitLenInt q)`
 - `adjs(quid sid, bitLenInt q)`
+- `adjsx(quid sid, bitLenInt q)`
+- `adjsy(quid sid, bitLenInt q)`
 - `adjt(quid sid, bitLenInt q)`
 
 #### Parameterized single-qubit gates
