@@ -465,6 +465,9 @@ class JobService extends ModelService {
         case 'set_sdrp':
           await this.single_quid_op(job, core.set_sdrp, i, core)
           break
+        case 'set_ncrp':
+          await this.single_quid_op(job, core.set_ncrp, i, core)
+          break
         case 'set_reactive_separate':
           await this.single_quid_op(job, core.set_reactive_separate, i, core)
           break
