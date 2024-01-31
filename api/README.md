@@ -871,6 +871,6 @@ Turn "reactive separation" optimization on/off with true/false (default: on/true
 
 ##### `set_t_injection(quid sid)`
 
-Turn "near-Clifford" simulation techniques (for not just "`t`" gate, but "`rz`" in general) on/off, with true/false (default: on/true). (Near-clifford techniques are memory-efficient but might take very much longer execution time, without any "rounding" approximations applied, than other simulation techniques like state vector.)
+Turn "near-Clifford" simulation techniques (for not just "`t`" gate, but "`r`" around Pauli Z axis in general) on/off, with true/false (default: on/true). (Near-clifford techniques are memory-efficient but might take very much longer execution time, without any "rounding" approximations applied, than other simulation techniques like state vector.)
 
 - `sid`: Simulator instance ID.
