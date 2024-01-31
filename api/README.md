@@ -900,7 +900,7 @@ Reset the "SDRP" fidelity tracker to 1.0 fidelity ("ideal"), before continuing f
 
 ##### `set_reactive_separate(quid sid)`
 
-Turn "reactive separation" optimization on/off with true/false (default: on/true). (Some subjectively "high-entanglement" circuits will run more quickly with "reactive separation off.)
+Turn "reactive separation" optimization on/off with true/false (default: on/true). (Some subjectively "high-entanglement" circuits will run more quickly with "reactive separation" off.)
 
 - `sid`: Simulator instance ID.
 
