@@ -255,6 +255,30 @@ class JobService extends ModelService {
     tmpIntVec.delete()
   }
 
+  async single_quid_mac_r_op (job, fn, i, core, b) {
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    i.parameters.shift()
+    const tmpIntVec = new core.VectorInt()
+    const cs = i.parameters[0]
+    for (let j = 0; j < cs.length; ++j) {
+      const c = cs[j]
+      tmpIntVec.push_back(c)
+      core.x(tmp, c)
+    }
+    i.parameters.shift()
+    try {
+      fn(tmp, tmpIntVec, ...i.parameters, b)
+    } catch (e) {
+      tmpIntVec.delete()
+      await this.free_after_job(job, core)
+      throw e
+    }
+    tmpIntVec.delete()
+    for (let j = 0; j < cs.length; ++j) {
+      core.x(tmp, cs[j])
+    }
+  }
+
   async single_quid_c_r_op (job, fn, i, core, b) {
     const tmp = await this.validate_sid(i.parameters[0], job, core)
     i.parameters.shift()
@@ -269,6 +293,25 @@ class JobService extends ModelService {
       throw e
     }
     tmpIntVec.delete()
+  }
+
+  async single_quid_ac_r_op (job, fn, i, core, b) {
+    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    i.parameters.shift()
+    const tmpIntVec = new core.VectorInt()
+    const c = i.parameters[0]
+    tmpIntVec.push_back(c)
+    core.x(tmp, c)
+    i.parameters.shift()
+    try {
+      fn(tmp, tmpIntVec, ...i.parameters, b)
+    } catch (e) {
+      tmpIntVec.delete()
+      await this.free_after_job(job, core)
+      throw e
+    }
+    tmpIntVec.delete()
+    core.x(tmp, c)
   }
 
   async single_quid_c_op (job, fn, i, core) {
@@ -834,6 +877,24 @@ class JobService extends ModelService {
           break
         case 'crz':
           await this.single_quid_c_r_op(job, core.mcr, i, core, 2)
+          break
+        case 'macrx':
+          await this.single_quid_mac_r_op(job, core.mcr, i, core, 1)
+          break
+        case 'macry':
+          await this.single_quid_mac_r_op(job, core.mcr, i, core, 3)
+          break
+        case 'macrz':
+          await this.single_quid_mac_r_op(job, core.mcr, i, core, 2)
+          break
+        case 'acrx':
+          await this.single_quid_ac_r_op(job, core.mcr, i, core, 1)
+          break
+        case 'acry':
+          await this.single_quid_ac_r_op(job, core.mcr, i, core, 3)
+          break
+        case 'acrz':
+          await this.single_quid_ac_r_op(job, core.mcr, i, core, 2)
           break
         case 'exp':
           tmp = await this.validate_sid(i.parameters[0], job, core)
