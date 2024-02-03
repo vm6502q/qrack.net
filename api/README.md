@@ -888,6 +888,6 @@ Applies an in-place "not" operation to a boolean variable named by `b` in the ou
 
 ##### `cif(bool b)`
 
-**Dispatches** the additional `program` property of the script "line" object as a subroutine if the boolean variable in the output space named by `b` is `true`.
+**Dispatches** the additional `program` property of the method object as a subroutine if the boolean variable in the output space named by `b` is `true`.
 
 - `b`: Boolean variable name.
