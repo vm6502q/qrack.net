@@ -17,6 +17,10 @@ class SequelizeService {
     return this.Collection.findByPk(key)
   }
 
+  async findOrCreate (keyValuePair, defaults) {
+    return this.Collection.findOrCreate({ where: keyValuePair, defaults: defaults })
+  }
+
   async findOne (keyValuePair) {
     const result = await this.Collection.findOne({ where: keyValuePair })
     if (result) {

@@ -32,6 +32,7 @@ Each method, as a line of the `program` array argument of the `POST /api/qrack` 
 - `name`: String with the method name of the script instruction (as listed below, exact match, without markdown)
 - `parameters`: Array of method parameters **in same order as defined in this reference document**. (In other words, supply "parameters" as **according to position in list**, not by "property" name, according this reference document, below.) `quid` arguments are always specified as variable names from the job's live "output space" of global variables, not number "literals." For "semi-classical" boolean methods, like `cland` below, boolean parameters can be supplied as variable names from the output space.
 - `output`: **This is only used and required if a method returns a value.** Gives a name to the output of this method in the job's "output space." (If the variable name already exists, it will be overwritten.)
+- `program`: **This is only used and required if a method is a classical boolean control structure.** When an classical boolean variable control condition evaluates to `true`, this nested `program` property is immediately dispatched like a general top-level QrackNet script, as a conditional subroutine.
 
 ### Simulator Initialization
 
@@ -874,3 +875,19 @@ Turn "reactive separation" optimization on/off with true/false (default: on/true
 Turn "near-Clifford" simulation techniques (for not just "`t`" gate, but "`r`" around Pauli Z axis in general) on/off, with true/false (default: on/true). (Near-clifford techniques are memory-efficient but might take very much longer execution time, without any "rounding" approximations applied, than other simulation techniques like state vector.)
 
 - `sid`: Simulator instance ID.
+
+### Classical control
+
+These methods modify or base control upon boolean variables in the output space.
+
+##### `not(string b)`
+
+Applies a "not" operation to a boolean parameter in the output space (so `true` becomes `false`, and `false` becomes `true`).
+
+- `b`: Boolean variable name.
+
+##### `cif(string b)`
+
+**Dispatches** the `parameter` property as a subroutine if `b` is `true`.
+
+- `b`: Boolean variable name.
