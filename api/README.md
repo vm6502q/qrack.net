@@ -918,12 +918,12 @@ These methods modify or base control upon boolean variables in the output space.
 
 ##### `not(bool b)`
 
-Applies a "not" operation to a boolean parameter in the output space (so `true` becomes `false`, and `false` becomes `true`).
+Applies an in-place "not" operation to a boolean variable named by `b` in the output space (so `true` becomes `false`, and `false` becomes `true`).
 
 - `b`: Boolean variable name.
 
 ##### `cif(bool b)`
 
-**Dispatches** the additional `program` property of the script "line" object as a subroutine if `b` is `true`.
+**Dispatches** the additional `program` property of the script "line" object as a subroutine if the boolean variable in the output space named by `b` is `true`.
 
 - `b`: Boolean variable name.
