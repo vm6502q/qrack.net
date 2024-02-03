@@ -95,7 +95,7 @@ class JobService extends ModelService {
     }
     switch (v.outputTypeId) {
       case 2:
-        return !!(v.value)
+        return v.value === 'true'
       default:
         await this.free_after_job(job, core)
         throw new Error('Boolean instruction parameter does not have boolean outputTypeId.')
@@ -536,6 +536,20 @@ class JobService extends ModelService {
         i.parameters = [i.parameters]
       }
       switch (i.name) {
+        case 'not':
+          tmp = i.parameters.pop()
+          tmp2 = await this.validate_bool(tmp, job, core)
+          await outputService.createOrUpdate(job, tmp, !tmp2, 2)
+          break
+        case 'cif':
+          tmp = await this.validate_bool(i.parameters.pop(), job, core)
+          if (tmp) {
+            if (!(Symbol.iterator in Object(i.program))) {
+              i.program = [i.program]
+            }
+            await this.runQrackProgram(core, i.program, job)
+          }
+          break
         case 'write_bool':
           try {
             await outputService.createOrUpdate(job, i.output, !!(i.parameters[0]), 2)

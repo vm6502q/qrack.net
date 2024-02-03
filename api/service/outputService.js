@@ -42,19 +42,9 @@ class OutputService extends ModelService {
   }
 
   async createOrUpdate (job, name, value, outputTypeId) {
-    let output = await this.SequelizeServiceInstance.findOne({ jobId: job.id, name })
-    const isNew = !output
-    if (isNew) {
-      output = await this.SequelizeServiceInstance.new()
-    } else if ((output.outputTypeId === 1) || (output.outputTypeId === 7)) {
-      throw new Error('Cannot overwrite simulator or neuron quids in output space!')
-    }
-    output.jobId = job.id
-    output.outputTypeId = outputTypeId
-    output.name = name
     if ((outputTypeId === 5) || (outputTypeId === 6)) {
       if (value.size() === 0) {
-        output.value = ''
+        value = ''
       } else {
         const maxLcv = value.size() - 1
         let o = ''
@@ -62,19 +52,16 @@ class OutputService extends ModelService {
           o = o + (value.get(i)).toString() + ','
         }
         o = o + (value.get(maxLcv)).toString()
-        output.value = o
+        value = o
       }
     } else {
-      output.value = value.toString()
+      value = value.toString()
     }
-
-    if (isNew) {
-      const result = await this.create(output)
-      if (!result.success) {
-        return result
-      }
-      output = result.body
+    let [output, isNew] = await this.SequelizeServiceInstance.findOrCreate({ jobId: job.id, name }, { jobId: job.id, outputTypeId, name, value })
+    if (!isNew && (output.outputTypeId === 1) || (output.outputTypeId === 7)) {
+      throw new Error('Cannot overwrite simulator or neuron quids in output space!')
     }
+    output.value = value
     await output.save()
 
     return { success: true, body: output }
