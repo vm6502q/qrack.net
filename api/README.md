@@ -924,6 +924,6 @@ Applies a "not" operation to a boolean parameter in the output space (so `true` 
 
 ##### `cif(string b)`
 
-**Dispatches** the `parameter` property as a subroutine if `b` is `true`.
+**Dispatches** the `program` property as a subroutine if `b` is `true`.
 
 - `b`: Boolean variable name.
