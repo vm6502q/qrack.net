@@ -532,6 +532,9 @@ class JobService extends ModelService {
     let tmp, tmp2, tmpIntVec, tmpIntVec2, tmpCharVec, tmpDoubleVec
     for (let lcv = 0; lcv < p.length; ++lcv) {
       const i = p[lcv]
+      if (!(Symbol.iterator in Object(i.parameters))) {
+        i.parameters = [i.parameters]
+      }
       switch (i.name) {
         case 'write_bool':
           try {
