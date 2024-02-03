@@ -916,14 +916,14 @@ Turn "near-Clifford" simulation techniques (for not just "`t`" gate, but "`r`" a
 
 These methods modify or base control upon boolean variables in the output space.
 
-##### `not(string b)`
+##### `not(bool b)`
 
 Applies a "not" operation to a boolean parameter in the output space (so `true` becomes `false`, and `false` becomes `true`).
 
 - `b`: Boolean variable name.
 
-##### `cif(string b)`
+##### `cif(bool b)`
 
-**Dispatches** the `program` property as a subroutine if `b` is `true`.
+**Dispatches** the additional `program` property of the script "line" object as a subroutine if `b` is `true`.
 
 - `b`: Boolean variable name.
