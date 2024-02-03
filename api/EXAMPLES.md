@@ -53,8 +53,8 @@ It is particularly instructive to see a script that can simulate the "quantum te
         { "name": "h", "parameters": ["qsim", 0] },
         { "name": "measure", "parameters": ["qsim", 0], "output": "aliceM0" },
         { "name": "measure", "parameters": ["qsim", 1], "output": "aliceM1" },
-        { "name": "mcz", "parameters": ["qsim", [0], 2] },
-        { "name": "mcx", "parameters": ["qsim", [1], 2] },
+        { "name": "cif", "parameters": ["aliceM0"], "program": { "name": "z", "parameters": ["qsim", 2] }},
+        { "name": "cif", "parameters": ["aliceM1"], "program": { "name": "x", "parameters": ["qsim", 2] }},
         { "name": "prob", "parameters": ["qsim", 2], "output": "bobZ" },
         { "name": "h", "parameters": ["qsim", 2] },
         { "name": "prob", "parameters": ["qsim", 2], "output": "bobX" }
