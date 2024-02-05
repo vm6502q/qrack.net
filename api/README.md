@@ -6,7 +6,7 @@ QrackNet API is open-source software to serve [unitaryfund/qrack](https://github
 
 ##### `POST /api/qrack`
 
-Accepts a script definition for the web API server to run, and returns a "Job ID."
+Accepts a script definition for the web API server to run, and returns a "Job ID." While certain method descriptions below highlight specific use cases for variable names, it is safe to assume that any numeric or boolean parameter (or parameter array entry) can be specified as a variable name from the output space.
 
 - `program`: Array of method "instructions," executed in order from the first
 
@@ -71,6 +71,14 @@ Each method, as a line of the `program` array argument of the `POST /api/qrack` 
 Destroys or releases a simulator instance.
 
 - `sid`: Simulator instance ID.
+
+
+##### `set_permutation(quid sid, bitCapInt p)`
+
+Sets a simulator instance to the specified bit string permutation eigenstate (in measurement basis)
+
+- `sid`: Simulator instance ID.
+- `p`: Bit string permutation.
 
 
 ### Random Number Generation
@@ -878,7 +886,7 @@ Turn "near-Clifford" simulation techniques (for not just "`t`" gate, but "`r`" a
 
 ### Classical control
 
-These methods modify or base control upon boolean variables in the output space.
+These methods modify or base control upon boolean variables in the output space. Note that if you need arithmetic operations on integer variables in the output space (like for loop control), **use an auxiliary (non-stabilizer) simulator instance with quantum ALU operations and measurement output,** since quantum ALU operations are handled in an entirely efficient manner when the input state is an eigenstate equivalent to a classical bit state.
 
 ##### `not(bool b)`
 
@@ -891,3 +899,10 @@ Applies an in-place "not" operation to a boolean variable named by `b` in the ou
 **Dispatches** the additional `program` property of the method object as a subroutine if the boolean variable in the output space named by `b` is `true`.
 
 - `b`: Boolean variable name.
+
+##### `for(bitCapInt i) -> bitCapInt`
+
+**Iterates and returns** a loop control variable, starting at 0, completing `i` total count of loop iterations.
+**Dispatches** the loop body once for each iteration.
+
+- `i`: Integer literal or variable name.

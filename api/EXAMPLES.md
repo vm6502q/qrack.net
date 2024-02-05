@@ -95,42 +95,22 @@ Encoding "oracles" to "solve" with Grover's search algorithm (or "amplitude ampl
     "program" : [
         { "name": "init_qbdd", "parameters": [3], "output": "qsim" },
 
-        { "name": "h", "parameters": ["qsim", 0] },
-        { "name": "h", "parameters": ["qsim", 1] },
-        { "name": "h", "parameters": ["qsim", 2] },
+        { "name": "for", "parameters": [3], "output": "i", "program": [{ "name": "h", "parameters": ["qsim", "i"] }]},
 
-        { "name": "sub", "parameters": ["qsim", [0, 1, 2], 3] },
-        { "name": "x", "parameters": ["qsim", 2] },
-        { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
-        { "name": "x", "parameters": ["qsim", 2] },
-        { "name": "add", "parameters": ["qsim", [0, 1, 2], 3] },
+        { "name": "for", "parameters": [2], "program": [
+            { "name": "sub", "parameters": ["qsim", [0, 1, 2], 3] },
+            { "name": "x", "parameters": ["qsim", 2] },
+            { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
+            { "name": "x", "parameters": ["qsim", 2] },
+            { "name": "add", "parameters": ["qsim", [0, 1, 2], 3] },
 
-        { "name": "h", "parameters": ["qsim", 0] },
-        { "name": "h", "parameters": ["qsim", 1] },
-        { "name": "h", "parameters": ["qsim", 2] },
-        { "name": "x", "parameters": ["qsim", 2] },
-        { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
-        { "name": "x", "parameters": ["qsim", 2] },
-        { "name": "h", "parameters": ["qsim", 0] },
-        { "name": "h", "parameters": ["qsim", 1] },
-        { "name": "h", "parameters": ["qsim", 2] },
-
-        { "name": "sub", "parameters": ["qsim", [0, 1, 2], 3] },
-        { "name": "x", "parameters": ["qsim", 2] },
-        { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
-        { "name": "x", "parameters": ["qsim", 2] },
-        { "name": "add", "parameters": ["qsim", [0, 1, 2], 3] },
-
-        { "name": "h", "parameters": ["qsim", 0] },
-        { "name": "h", "parameters": ["qsim", 1] },
-        { "name": "h", "parameters": ["qsim", 2] },
-        { "name": "x", "parameters": ["qsim", 2] },
-        { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
-        { "name": "x", "parameters": ["qsim", 2] },
-        { "name": "h", "parameters": ["qsim", 0] },
-        { "name": "h", "parameters": ["qsim", 1] },
-        { "name": "h", "parameters": ["qsim", 2] },
-
+            { "name": "for", "parameters": [3], "output": "i", "program": [{ "name": "h", "parameters": ["qsim", "i"] }]},
+            { "name": "x", "parameters": ["qsim", 2] },
+            { "name": "macz", "parameters": ["qsim", [0, 1], 2] },
+            { "name": "x", "parameters": ["qsim", 2] },
+            { "name": "for", "parameters": [3], "output": "i", "program": [{ "name": "h", "parameters": ["qsim", "i"] }]}
+        ] },
+ 
         { "name": "measure_shots", "parameters": ["qsim", [0, 1, 2], 8], "output": "result" }
     ]
 }
@@ -147,9 +127,10 @@ Surely enough, our job response will look like this (with a typically very small
             "message": "Job completed fully and normally."
         },
         "output": {
+            "i": 3,
             "qsim": 0,
             "result": [
-                3,
+                0,
                 3,
                 3,
                 3,
