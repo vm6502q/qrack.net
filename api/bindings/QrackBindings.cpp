@@ -36,6 +36,9 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("destroy", optional_override([](long sid) -> void {
         QrackWrapper::destroy(sid);
     }));
+    function("set_permutation", optional_override([](long sid, long p) -> void {
+        QrackWrapper::SetPermutation(sid, p);
+    }));
     function("seed", optional_override([](long sid, long s) -> void {
         QrackWrapper::seed(sid, s);
     }));

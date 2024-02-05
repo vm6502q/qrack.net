@@ -20,14 +20,17 @@ long QrackWrapper::num_qubits(long sid) {
 void QrackWrapper::destroy(long sid) {
     Qrack::destroy((Qrack::quid)sid);
 }
-void QrackWrapper::seed(long sid, long s) {
-    Qrack::seed((Qrack::quid)sid, (unsigned)s);
-}
 void QrackWrapper::allocateQubit(long sid, long qid) {
     Qrack::allocateQubit((Qrack::quid)sid, (Qrack::quid)qid);
 }
 bool QrackWrapper::release(long sid, long qid) {
     return Qrack::release((Qrack::quid)sid, (Qrack::quid)qid);
+}
+void QrackWrapper::SetPermutation(long sid, long p) {
+    Qrack::SetPermutation((Qrack::quid)sid, p);
+}
+void QrackWrapper::seed(long sid, long s) {
+    Qrack::seed((Qrack::quid)sid, (unsigned)s);
 }
 bool QrackWrapper::TrySeparate1Qb(long sid, long qi1) {
     return Qrack::TrySeparate1Qb((Qrack::quid)sid, (bitLenInt)qi1);

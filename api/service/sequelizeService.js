@@ -18,7 +18,7 @@ class SequelizeService {
   }
 
   async findOrCreate (keyValuePair, defaults) {
-    return this.Collection.findOrCreate({ where: keyValuePair, defaults: defaults })
+    return this.Collection.findOrCreate({ where: keyValuePair, defaults })
   }
 
   async findOne (keyValuePair) {
