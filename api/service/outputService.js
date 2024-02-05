@@ -57,7 +57,7 @@ class OutputService extends ModelService {
     } else {
       value = value.toString()
     }
-    const [output, isNew] = await this.SequelizeServiceInstance.findOrCreate({ jobId: job.id, name }, { jobId: job.id, outputTypeId, name, value })
+    let [output, isNew] = await this.SequelizeServiceInstance.findOrCreate({ jobId: job.id, name }, { jobId: job.id, outputTypeId, name, value })
     if (!isNew && (output.outputTypeId === 1) || (output.outputTypeId === 7)) {
       throw new Error('Cannot overwrite simulator or neuron quids in output space!')
     }
