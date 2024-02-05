@@ -43,30 +43,9 @@ class JobService extends ModelService {
     return { success: true, body: job }
   }
 
-  async free_after_job (job, core) {
-    const s = await outputService.getSidsByJobId(job.id)
-    for (let i = 0; i < s.length; ++i) {
-      try {
-        await this.single_quid_op(job, core.destroy, { parameters: [s.value] }, core)
-      } catch {
-        // Intentionally left blank
-      }
-    }
-
-    const n = await outputService.getNidsByJobId(job.id)
-    for (let i = 0; i < n.length; ++i) {
-      try {
-        await this.single_quid_op(job, core.destroy_qneuron, { parameters: [n.value] }, core)
-      } catch {
-        // Intentionally left blank
-      }
-    }
-  }
-
-  async validate_sid (name, job, core) {
+  async validate_sid (name, job) {
     const v = await outputService.getByJobIdAndName(job.id, name)
     if (!v) {
-      await this.free_after_job(job, core)
       throw new Error(
         'All simulator IDs and quantum neuron IDs should be specified as names in the output space of the job. ' +
         '(Methods that produce output, at all, always save it to the "output space" of the job, to the ' +
@@ -78,16 +57,15 @@ class JobService extends ModelService {
       case 7:
         return parseInt(v.value)
       default:
-        await this.free_after_job(job, core)
         throw new Error('Quid instruction parameter does not have quid outputTypeId.')
     }
   }
 
-  async validate_var (name, job, core) {
-    if (Symbol.iterator in Object(name)) {
+  async validate_var (name, job, core, top) {
+    if (top && (Symbol.iterator in Object(name))) {
       let n = []
       for (let lcv = 0; lcv < name.length; ++lcv) {
-        n.push(await this.validate_var(name[lcv], job, core))
+        n.push(await this.validate_var(name[lcv], job, core, false))
       }
       return n
     }
@@ -96,12 +74,7 @@ class JobService extends ModelService {
     }
     const v = await outputService.getByJobIdAndName(job.id, name)
     if (!v) {
-      await this.free_after_job(job, core)
-      throw new Error(
-        'All simulator IDs and quantum neuron IDs should be specified as names in the output space of the job. ' +
-        '(Methods that produce output, at all, always save it to the "output space" of the job, to the ' +
-        'variable named by the "output" parameter of the job program line that produces output.)'
-      )
+      throw new Error('Variable name not found in job output space.')
     }
     let o, valStrings
     switch (v.outputTypeId) {
@@ -127,61 +100,47 @@ class JobService extends ModelService {
         return o
       case 1:
       case 7:
-        await this.free_after_job(job, core)
         throw new Error('Variable name parameter cannot have quid outputTypeId.')
       default:
-        await this.free_after_job(job, core)
         throw new Error('Unrecognized outputTypeId.')
     }
   }
 
   async single_quid_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
-    try {
-      fn(tmp, ...i.parameters)
-    } catch (e) {
-      await this.free_after_job(job, core)
-      throw e
-    }
+    fn(tmp, ...i.parameters)
   }
 
   async single_quid_r_op (job, fn, i, core, b) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
-    try {
-      fn(tmp, ...i.parameters, b)
-    } catch (e) {
-      await this.free_after_job(job, core)
-      throw e
-    }
+    fn(tmp, ...i.parameters, b)
   }
 
   async single_quid_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    if (!i.output) {
+      return await this.single_quid_op(job, fn, i, core)
+    }
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
-    try {
-      await outputService.createOrUpdate(job, i.output, fn(tmp, ...i.parameters), oType)
-    } catch (e) {
-      await this.free_after_job(job, core)
-      throw e
-    }
+    await outputService.createOrUpdate(job, i.output, fn(tmp, ...i.parameters), oType)
   }
 
   async single_quid_mc_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -192,17 +151,16 @@ class JobService extends ModelService {
       fn(tmp, tmpIntVec, ...i.parameters)
     } catch (e) {
       tmpIntVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
   }
 
   async single_quid_mc_r_op (job, fn, i, core, b) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -213,17 +171,16 @@ class JobService extends ModelService {
       fn(tmp, tmpIntVec, ...i.parameters, b)
     } catch (e) {
       tmpIntVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
   }
 
   async single_quid_mac_r_op (job, fn, i, core, b) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     const cs = i.parameters[0]
@@ -237,7 +194,6 @@ class JobService extends ModelService {
       fn(tmp, tmpIntVec, ...i.parameters, b)
     } catch (e) {
       tmpIntVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -247,10 +203,10 @@ class JobService extends ModelService {
   }
 
   async single_quid_c_r_op (job, fn, i, core, b) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     tmpIntVec.push_back(i.parameters[0])
@@ -259,17 +215,16 @@ class JobService extends ModelService {
       fn(tmp, tmpIntVec, ...i.parameters, b)
     } catch (e) {
       tmpIntVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
   }
 
   async single_quid_ac_r_op (job, fn, i, core, b) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     const c = i.parameters[0]
@@ -280,7 +235,6 @@ class JobService extends ModelService {
       fn(tmp, tmpIntVec, ...i.parameters, b)
     } catch (e) {
       tmpIntVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -288,10 +242,10 @@ class JobService extends ModelService {
   }
 
   async single_quid_c_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     tmpIntVec.push_back(i.parameters[0])
@@ -300,17 +254,19 @@ class JobService extends ModelService {
       fn(tmp, tmpIntVec, ...i.parameters)
     } catch (e) {
       tmpIntVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
   }
 
   async single_quid_mc_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    if (!i.output) {
+      return await this.single_quid_mc_op(job, fn, i, core)
+    }
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -321,17 +277,16 @@ class JobService extends ModelService {
       await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, ...i.parameters), oType)
     } catch (e) {
       tmpIntVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
   }
 
   async single_quid_mc_pauli_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -344,11 +299,14 @@ class JobService extends ModelService {
     }
     i.parameters.shift()
     try {
-      await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpCharVec, ...i.parameters), oType)
+      if (i.output) {
+        await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpCharVec, ...i.parameters), oType)
+      } else {
+        fn(tmp, tmpIntVec, tmpCharVec, ...i.parameters)
+      }
     } catch (e) {
       tmpIntVec.delete()
       tmpCharVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -356,10 +314,10 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_mtrx_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -376,7 +334,6 @@ class JobService extends ModelService {
     } catch (e) {
       tmpIntVec.delete()
       tmpDoubleVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -384,10 +341,10 @@ class JobService extends ModelService {
   }
 
   async single_quid_c_mtrx_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     tmpIntVec.push_back(i.parameters[0])
@@ -402,7 +359,6 @@ class JobService extends ModelService {
     } catch (e) {
       tmpIntVec.delete()
       tmpDoubleVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -410,10 +366,10 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc2_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -430,7 +386,6 @@ class JobService extends ModelService {
     } catch (e) {
       tmpIntVec.delete()
       tmpIntVec2.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -438,10 +393,13 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc2_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    if (!i.output) {
+      return await this.single_quid_mc2_op(job, fn, i, core)
+    }
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -458,7 +416,6 @@ class JobService extends ModelService {
     } catch (e) {
       tmpIntVec.delete()
       tmpIntVec2.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -466,10 +423,10 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc3_op (job, fn, i, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -492,7 +449,6 @@ class JobService extends ModelService {
       tmpIntVec.delete()
       tmpIntVec2.delete()
       tmpIntVec3.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -501,10 +457,10 @@ class JobService extends ModelService {
   }
 
   async single_quid_mc_double_output_op (job, fn, i, oType, core) {
-    const tmp = await this.validate_sid(i.parameters[0], job, core)
+    const tmp = await this.validate_sid(i.parameters[0], job)
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
-      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core)
+      i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -517,11 +473,14 @@ class JobService extends ModelService {
     }
     i.parameters.shift()
     try {
-      await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters), oType)
+      if (i.output) {
+        await outputService.createOrUpdate(job, i.output, fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters), oType)
+      } else {
+        fn(tmp, tmpIntVec, tmpDoubleVec, ...i.parameters)
+      }
     } catch (e) {
       tmpIntVec.delete()
       tmpDoubleVec.delete()
-      await this.free_after_job(job, core)
       throw e
     }
     tmpIntVec.delete()
@@ -531,18 +490,18 @@ class JobService extends ModelService {
   async runQrackProgram (core, p, job, isSub) {
     let tmp, tmp2, tmpIntVec, tmpIntVec2, tmpCharVec, tmpDoubleVec
     for (let lcv = 0; lcv < p.length; ++lcv) {
-      const i = structuredClone(p[lcv])
+      const i = p[lcv]
       if (!(Symbol.iterator in Object(i.parameters))) {
         i.parameters = [i.parameters]
       }
       switch (i.name) {
         case 'not':
           tmp = i.parameters.pop()
-          tmp2 = await this.validate_var(tmp, job, core)
+          tmp2 = await this.validate_var(tmp, job, core, true)
           await outputService.createOrUpdate(job, tmp, !tmp2, 2)
           break
         case 'cif':
-          tmp = await this.validate_var(i.parameters.pop(), job, core)
+          tmp = await this.validate_var(i.parameters.pop(), job, core, true)
           if (tmp) {
             if (!(Symbol.iterator in Object(i.program))) {
               i.program = [i.program]
@@ -553,52 +512,38 @@ class JobService extends ModelService {
         case 'for':
           tmp = parseInt(i.parameters[0])
           if (isNaN(tmp)) {
-            tmp = await this.validate_var(tmp, job, core)
+            tmp = await this.validate_var(tmp, job, core, true)
           }
           if (!(Symbol.iterator in Object(i.program))) {
             i.program = [i.program]
           }
           for (let _lcv = 0; _lcv < tmp; ++_lcv) {
             const p = structuredClone(i.program)
+            if (i.output) {
+                await outputService.createOrUpdate(job, i.output, _lcv, 4)
+            }
             await this.runQrackProgram(core, p, job, true)
+          }
+          if (i.output) {
+              await outputService.createOrUpdate(job, i.output, tmp, 4)
           }
           break
         case 'set_permutation':
-          tmp = await this.validate_sid(i.parameters[0], job, core)
-          tmp2 = isNaN(i.parameters[1]) ? await this.validate_var(i.parameters[1], job, core) : i.parameters[1]
+          tmp = await this.validate_sid(i.parameters[0], job)
+          tmp2 = isNaN(i.parameters[1]) ? await this.validate_var(i.parameters[1], job, core, true) : i.parameters[1]
           core.set_permutation(tmp, tmp2)
           break
         case 'write_bool':
-          try {
-            await outputService.createOrUpdate(job, i.output, !!(i.parameters[0]), 2)
-          } catch (e) {
-            await this.free_after_job(job, core)
-            throw e
-          }
+          await outputService.createOrUpdate(job, i.output, !!(i.parameters[0]), 2)
           break
         case 'init_general':
-          try {
-            await outputService.createOrUpdate(job, i.output, core.init_general(...i.parameters), 1)
-          } catch (e) {
-            await this.free_after_job(job, core)
-            throw e
-          }
+          await outputService.createOrUpdate(job, i.output, core.init_general(...i.parameters), 1)
           break
         case 'init_stabilizer':
-          try {
-            await outputService.createOrUpdate(job, i.output, core.init_stabilizer(...i.parameters), 1)
-          } catch (e) {
-            await this.free_after_job(job, core)
-            throw e
-          }
+          await outputService.createOrUpdate(job, i.output, core.init_stabilizer(...i.parameters), 1)
           break
         case 'init_qbdd':
-          try {
-            await outputService.createOrUpdate(job, i.output, core.init_qbdd(...i.parameters), 1)
-          } catch (e) {
-            await this.free_after_job(job, core)
-            throw e
-          }
+          await outputService.createOrUpdate(job, i.output, core.init_qbdd(...i.parameters), 1)
           break
         case 'init_clone':
           await this.single_quid_output_op(job, core.init_clone, i, 1, core)
@@ -667,12 +612,12 @@ class JobService extends ModelService {
           await this.single_quid_mc_pauli_output_op(job, core.joint_ensemble_prob, i, 3, core)
           break
         case 'compose':
-          tmp = await this.validate_sid(i.parameters[0], job, core)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
-          tmp2 = await this.validate_sid(i.parameters[0], job, core)
+          tmp2 = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
-            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core)
+            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
           }
           tmpIntVec = new core.VectorInt(i.parameters[0])
           i.parameters.shift()
@@ -680,7 +625,7 @@ class JobService extends ModelService {
             core.compose(tmp, tmp2, tmpIntVec)
           } catch (e) {
             tmpIntVec.delete()
-            await this.free_after_job(job, core)
+            throw e
           }
           tmpIntVec.delete()
           break
@@ -736,10 +681,10 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.u, i, core)
           break
         case 'mtrx':
-          tmp = await this.validate_sid(i.parameters[0], job, core)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
-            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core)
+            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
           }
           tmpDoubleVec = new core.VectorDouble(i.parameters[0])
           i.parameters.shift()
@@ -747,7 +692,7 @@ class JobService extends ModelService {
             core.mtrx(tmp, tmpDoubleVec, ...i.parameters)
           } catch (e) {
             tmpDoubleVec.delete()
-            await this.free_after_job(job, core)
+            throw e
           }
           tmpDoubleVec.delete()
           break
@@ -938,10 +883,10 @@ class JobService extends ModelService {
           await this.single_quid_ac_r_op(job, core.mcr, i, core, 2)
           break
         case 'exp':
-          tmp = await this.validate_sid(i.parameters[0], job, core)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
-            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core)
+            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
           }
           tmpIntVec = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -958,16 +903,16 @@ class JobService extends ModelService {
           } catch (e) {
             tmpIntVec.delete()
             tmpCharVec.delete()
-            await this.free_after_job(job, core)
+            throw e
           }
           tmpIntVec.delete()
           tmpCharVec.delete()
           break
         case 'mcexp':
-          tmp = await this.validate_sid(i.parameters[0], job, core)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
-            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core)
+            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
           }
           tmpIntVec = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -990,7 +935,7 @@ class JobService extends ModelService {
             tmpIntVec.delete()
             tmpIntVec2.delete()
             tmpCharVec.delete()
-            await this.free_after_job(job, core)
+            throw e
           }
           tmpIntVec.delete()
           tmpIntVec2.delete()
@@ -1114,10 +1059,10 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.destroy_qneuron, i, core)
           break
         case 'set_qneuron_angles':
-          tmp = await this.validate_sid(i.parameters[0], job, core)
+          tmp = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
-            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core)
+            i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
           }
           tmpDoubleVec = new core.VectorDouble()
           for (let j = 0; j < i.parameters[0].length; ++j) {
@@ -1128,7 +1073,7 @@ class JobService extends ModelService {
             core.set_qneuron_angles(tmp, tmpDoubleVec, ...i.parameters)
           } catch (e) {
             tmpDoubleVec.delete()
-            await this.free_after_job(job, core)
+            throw e
           }
           tmpDoubleVec.delete()
           break
@@ -1157,14 +1102,11 @@ class JobService extends ModelService {
           await this.single_quid_op(job, core.qneuron_learn_permutation, i, core)
           break
         default:
-          await this.free_after_job(job, core)
           throw new Error('One or more of your job program operation line names do not match a defined operation name.')
       }
     }
 
     if (!isSub) {
-      await this.free_after_job(job, core)
-
       // Job status 1: SUCCESS
       job.jobStatusTypeId = 1
       job.statusMessage = 'Job completed fully and normally.'
