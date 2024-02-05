@@ -920,6 +920,7 @@ Turn "near-Clifford" simulation techniques (for not just "`t`" gate, but "`r`" a
 
 - `sid`: Simulator instance ID.
 
+
 ### Classical control
 
 These methods modify or base control upon boolean variables in the output space. Note that if you need arithmetic operations on integer variables in the output space (like for loop control), **use an auxiliary (non-stabilizer) simulator instance with quantum ALU operations and measurement output,** since quantum ALU operations are handled in an entirely efficient manner when the input state is an eigenstate equivalent to a classical bit state.
@@ -930,11 +931,13 @@ Applies an in-place "not" operation to a boolean variable named by `b` in the ou
 
 - `b`: Boolean variable name.
 
+
 ##### `cif(bool b)`
 
 **Dispatches** the additional `program` property of the method object as a subroutine if the boolean variable in the output space named by `b` is `true`.
 
 - `b`: Boolean variable name.
+
 
 ##### `for(bitCapInt i) -> bitCapInt`
 
