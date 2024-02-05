@@ -84,7 +84,14 @@ class JobService extends ModelService {
   }
 
   async validate_var (name, job, core) {
-    if ((Symbol.iterator in Object(name)) || (typeof name === 'boolean') || !isNaN(name)) {
+    if (Symbol.iterator in Object(name)) {
+      let n = []
+      for (let lcv = 0; lcv < name.length; ++lcv) {
+        n.push(await this.validate_var(name[lcv], job, core))
+      }
+      return n
+    }
+    if ((typeof name === 'boolean') || !isNaN(name)) {
       return name
     }
     const v = await outputService.getByJobIdAndName(job.id, name)
