@@ -9,9 +9,10 @@ public:
     static long init_clone(long sid);
     static long num_qubits(long sid);
     static void destroy(long sid);
-    static void seed(long sid, long s);
     static void allocateQubit(long sid, long qid);
     static bool release(long sid, long q);
+    static void SetPermutation(long sid, long p)
+    static void seed(long sid, long s);
     static bool TrySeparate1Qb(long sid, long qi1);
     static bool TrySeparate2Qb(long sid, long qi1, long qi2);
     static bool TrySeparateTol(long sid, std::vector<long> q, double tol);
