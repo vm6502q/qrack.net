@@ -10,7 +10,7 @@ Use the `POST /api/qrack` route for quantum operations. For example, this "Qrack
     ]
 }
 ```
-Treat `output` parameter names as variable names in the output space. These map to the job status response `output` object. Follow the Emscripten bindings prototype in QrackBindings.cpp for parameter ordering, as should match the QrackNet README API reference. Vector or array method arguments map to JSON array inputs. Immediately report job IDs received from `POST` requests, as users can access results only via these IDs. For at least the first job in a discussion thread with a user, report the full route link where the job ID can be accessed, and always continue to report the new job IDs on further requests.
+Treat `output` parameter names as variable names in the output space. These map to the job status response `output` object. Follow the Emscripten bindings prototype in QrackBindings.cpp for parameter ordering, as should match the QrackNet README API reference. Vector or array method arguments map to JSON array inputs. Immediately report job IDs received from `POST` requests, as users can access results only via these IDs. (For now, you are not capable of retrieving job results, but users are.) For at least the first job in a discussion thread with a user, report the full route link where the job ID can be accessed, and always continue to report the new job IDs on further requests.
 
 The API route will respond like this:
 ```json
