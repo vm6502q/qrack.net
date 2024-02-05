@@ -84,14 +84,7 @@ class JobService extends ModelService {
   }
 
   async validate_var (name, job, core) {
-    /*if (Symbol.iterator in Object(name)) {
-      let n = []
-      for (let lcv = 0; lcv < name.length; ++lcv) {
-        n.push(await this.validate_var(name[lcv], job, core))
-      }
-      return n
-    }*/
-    if ((Symbol.iterator in Object(name)) || (typeof name === "boolean") || !isNaN(name)) {
+    if ((Symbol.iterator in Object(name)) || (typeof name === 'boolean') || !isNaN(name)) {
       return name
     }
     const v = await outputService.getByJobIdAndName(job.id, name)
@@ -553,7 +546,7 @@ class JobService extends ModelService {
         case 'for':
           tmp = parseInt(i.parameters[0])
           if (isNaN(tmp)) {
-              tmp = await this.validate_var(tmp, job, core)
+            tmp = await this.validate_var(tmp, job, core)
           }
           if (!(Symbol.iterator in Object(i.program))) {
             i.program = [i.program]
@@ -1163,12 +1156,12 @@ class JobService extends ModelService {
     }
 
     if (!isSub) {
-        await this.free_after_job(job, core)
+      await this.free_after_job(job, core)
 
-        // Job status 1: SUCCESS
-        job.jobStatusTypeId = 1
-        job.statusMessage = 'Job completed fully and normally.'
-        await job.save()
+      // Job status 1: SUCCESS
+      job.jobStatusTypeId = 1
+      job.statusMessage = 'Job completed fully and normally.'
+      await job.save()
     }
   }
 
