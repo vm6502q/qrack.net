@@ -682,6 +682,9 @@ class JobService extends ModelService {
           i.parameters.shift()
           tmp2 = await this.validate_sid(i.parameters[0], job)
           i.parameters.shift()
+          if (!(Symbol.iterator in Object(i.parameters))) {
+            i.parameters = [i.parameters]
+          }
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
             i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
           }
@@ -751,6 +754,9 @@ class JobService extends ModelService {
           i.parameters.shift()
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
             i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
+          }
+          if (!(Symbol.iterator in Object(i.parameters[0]))) {
+            i.parameters[0] = [i.parameters[0]]
           }
           tmpDoubleVec = new core.VectorDouble(i.parameters[0])
           i.parameters.shift()
@@ -954,11 +960,17 @@ class JobService extends ModelService {
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
             i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
           }
+          if (!(Symbol.iterator in Object(i.parameters[0]))) {
+            i.parameters[0] = [i.parameters[0]]
+          }
           tmpIntVec = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
             tmpIntVec.push_back(i.parameters[0][j])
           }
           i.parameters.shift()
+          if (!(Symbol.iterator in Object(i.parameters[0]))) {
+            i.parameters[0] = [i.parameters[0]]
+          }
           tmpCharVec = new core.VectorChar()
           for (let j = 0; j < i.parameters[0].length; ++j) {
             tmpCharVec.push_back(i.parameters[0][j])
@@ -980,16 +992,25 @@ class JobService extends ModelService {
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
             i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
           }
+          if (!(Symbol.iterator in Object(i.parameters[0]))) {
+            i.parameters[0] = [i.parameters[0]]
+          }
           tmpIntVec = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
             tmpIntVec.push_back(i.parameters[0][j])
           }
           i.parameters.shift()
+          if (!(Symbol.iterator in Object(i.parameters[0]))) {
+            i.parameters[0] = [i.parameters[0]]
+          }
           tmpIntVec2 = new core.VectorInt()
           for (let j = 0; j < i.parameters[0].length; ++j) {
             tmpIntVec2.push_back(i.parameters[0][j])
           }
           i.parameters.shift()
+          if (!(Symbol.iterator in Object(i.parameters[0]))) {
+            i.parameters[0] = [i.parameters[0]]
+          }
           tmpCharVec = new core.VectorChar()
           for (let j = 0; j < i.parameters[0].length; ++j) {
             tmpCharVec.push_back(i.parameters[0][j])
@@ -1129,6 +1150,9 @@ class JobService extends ModelService {
           i.parameters.shift()
           for (let _lcv = 0; _lcv < i.parameters.length; ++_lcv) {
             i.parameters[_lcv] = await this.validate_var(i.parameters[_lcv], job, core, true)
+          }
+          if (!(Symbol.iterator in Object(i.parameters[0]))) {
+            i.parameters[0] = [i.parameters[0]]
           }
           tmpDoubleVec = new core.VectorDouble()
           for (let j = 0; j < i.parameters[0].length; ++j) {
