@@ -142,6 +142,9 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
@@ -162,6 +165,9 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
@@ -181,6 +187,9 @@ class JobService extends ModelService {
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
+    }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
     }
     const tmpIntVec = new core.VectorInt()
     const cs = i.parameters[0]
@@ -208,6 +217,9 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     tmpIntVec.push_back(i.parameters[0])
     i.parameters.shift()
@@ -225,6 +237,9 @@ class JobService extends ModelService {
     i.parameters.shift()
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
+    }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
     }
     const tmpIntVec = new core.VectorInt()
     const c = i.parameters[0]
@@ -247,6 +262,9 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     tmpIntVec.push_back(i.parameters[0])
     i.parameters.shift()
@@ -268,6 +286,9 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
@@ -288,11 +309,17 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpCharVec = new core.VectorChar()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpCharVec.push_back(i.parameters[0][j])
@@ -319,9 +346,15 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
+    }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
     }
     i.parameters.shift()
     const tmpDoubleVec = new core.VectorInt()
@@ -346,9 +379,15 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     tmpIntVec.push_back(i.parameters[0])
     i.parameters.shift()
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpDoubleVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpDoubleVec.push_back(i.parameters[0][j])
@@ -371,11 +410,17 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec2 = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec2.push_back(i.parameters[0][j])
@@ -401,11 +446,17 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec2 = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec2.push_back(i.parameters[0][j])
@@ -428,16 +479,25 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec2 = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec2.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec3 = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec3.push_back(i.parameters[0][j])
@@ -462,11 +522,17 @@ class JobService extends ModelService {
     for (let lcv = 0; lcv < i.parameters.length; ++lcv) {
       i.parameters[lcv] = await this.validate_var(i.parameters[lcv], job, core, true)
     }
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpIntVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpIntVec.push_back(i.parameters[0][j])
     }
     i.parameters.shift()
+    if (!(Symbol.iterator in Object(i.parameters[0]))) {
+      i.parameters[0] = [i.parameters[0]]
+    }
     const tmpDoubleVec = new core.VectorInt()
     for (let j = 0; j < i.parameters[0].length; ++j) {
       tmpDoubleVec.push_back(i.parameters[0][j])
