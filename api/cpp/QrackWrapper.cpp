@@ -6,7 +6,7 @@ long QrackWrapper::init_general(long length) {
     return (long)Qrack::init_count((bitLenInt)length, false);
 }
 long QrackWrapper::init_stabilizer(long length) {
-    return (long)Qrack::init_count_type((bitLenInt)length, false, false, false, true, false, false, false, false, false);
+    return (long)Qrack::init_count_type((bitLenInt)length, false, false, false, true, false, false, false, false, false, false);
 }
 long QrackWrapper::init_qbdd(long length) {
     return (long)Qrack::init_qbdd_count((bitLenInt)length);
