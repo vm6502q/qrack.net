@@ -32,6 +32,22 @@ public:
     static double FactorizedExpectationRdm(long sid, std::vector<long> q, std::vector<long> s, bool r);
     static double FactorizedExpectationFp(long sid, std::vector<long> q, std::vector<double> s);
     static double FactorizedExpectationFpRdm(long sid, std::vector<long> q, std::vector<double> s, bool r);
+    static double UnitaryExpectation(long sid, std::vector<long> q, std::vector<double> b);
+    static double MatrixExpectation(long sid, std::vector<long> q, std::vector<double> b);
+    static double UnitaryExpectationEigenVal(long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e);
+    static double MatrixExpectationEigenVal(long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e);
+    static double PauliExpectation(long sid, std::vector<long> q, std::vector<char> b);
+    static double Variance(long sid, std::vector<long> q);
+    static double VarianceRdm(long sid, std::vector<long> q, bool r);
+    static double FactorizedVariance(long sid, std::vector<long> q, std::vector<long> c);
+    static double FactorizedVarianceRdm(long sid, std::vector<long> q, std::vector<long> c, bool r);
+    static double FactorizedVarianceFp(long sid, std::vector<long> q, std::vector<double> c);
+    static double FactorizedVarianceFpRdm(long sid, std::vector<long> q, std::vector<double> c, bool r);
+    static double UnitaryVariance(long sid, std::vector<long> q, std::vector<double> b);
+    static double MatrixVariance(long sid, std::vector<long> q, std::vector<double> b);
+    static double UnitaryVarianceEigenVal(long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e);
+    static double MatrixVarianceEigenVal(long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e);
+    static double PauliVariance(long sid, std::vector<long> q, std::vector<char> b);
 
     // Parity
     static void PhaseParity(long sid, double lambda, std::vector<long> q);

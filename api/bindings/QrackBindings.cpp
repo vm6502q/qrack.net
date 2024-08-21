@@ -95,6 +95,54 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("fact_exp_fp_rdm", optional_override([](long sid, std::vector<long> q, std::vector<double> s, bool r) -> double {
         return QrackWrapper::FactorizedExpectationFpRdm(sid, q, s, r);
     }));
+    function("unitary_exp", optional_override([](long sid, std::vector<long> q, std::vector<double> b) -> double {
+        return QrackWrapper::UnitaryExpectation(sid, q, b);
+    }));
+    function("matrix_exp", optional_override([](long sid, std::vector<long> q, std::vector<double> b) -> double {
+        return QrackWrapper::MatrixExpectation(sid, q, b);
+    }));
+    function("unitary_exp_ev", optional_override([](long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e) -> double {
+        return QrackWrapper::UnitaryExpectationEigenVal(sid, q, b, e);
+    }));
+    function("matrix_exp_ev", optional_override([](long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e) -> double {
+        return QrackWrapper::MatrixExpectationEigenVal(sid, q, b, e);
+    }));
+    function("pauli_exp", optional_override([](long sid, std::vector<long> q, std::vector<char> b) -> double {
+        return QrackWrapper::PauliExpectation(sid, q, b);
+    }));
+    function("var", optional_override([](long sid, std::vector<long> q) -> double {
+        return QrackWrapper::Variance(sid, q);
+    }));
+    function("var_rdm", optional_override([](long sid, std::vector<long> q, bool r) -> double {
+        return QrackWrapper::VarianceRdm(sid, q, r);
+    }));
+    function("fact_var", optional_override([](long sid, std::vector<long> q, std::vector<long> c) -> double {
+        return QrackWrapper::FactorizedVariance(sid, q, c);
+    }));
+    function("fact_var_rdm", optional_override([](long sid, std::vector<long> q, std::vector<long> c, bool r) -> double {
+        return QrackWrapper::FactorizedVarianceRdm(sid, q, c, r);
+    }));
+    function("fact_var_fp", optional_override([](long sid, std::vector<long> q, std::vector<double> c) -> double {
+        return QrackWrapper::FactorizedVarianceFp(sid, q, c);
+    }));
+    function("fact_var_fp_rdm", optional_override([](long sid, std::vector<long> q, std::vector<double> c, bool r) -> double {
+        return QrackWrapper::FactorizedVarianceFpRdm(sid, q, c, r);
+    }));
+    function("unitary_var", optional_override([](long sid, std::vector<long> q, std::vector<double> b) -> double {
+        return QrackWrapper::UnitaryVariance(sid, q, b);
+    }));
+    function("matrix_var", optional_override([](long sid, std::vector<long> q, std::vector<double> b) -> double {
+        return QrackWrapper::MatrixVariance(sid, q, b);
+    }));
+    function("unitary_var_ev", optional_override([](long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e) -> double {
+        return QrackWrapper::UnitaryVarianceEigenVal(sid, q, b, e);
+    }));
+    function("matrix_var_ev", optional_override([](long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e) -> double {
+        return QrackWrapper::MatrixVarianceEigenVal(sid, q, b, e);
+    }));
+    function("pauli_var", optional_override([](long sid, std::vector<long> q, std::vector<char> b) -> double {
+        return QrackWrapper::PauliVariance(sid, q, b);
+    }));
 
     // Parity
     function("phase_parity", optional_override([](long sid, std::vector<long> q, double lambda) -> void {

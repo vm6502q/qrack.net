@@ -208,7 +208,7 @@ Allocates a new qubit with a specific ID.
 - `r`: "Rounding" option on/off, for `true`/`false`.
 
 
-##### `fact_exp_fp(quid sid, std::vector<bitLenInt> q, std::vector<double> s) -> real1`
+##### `fact_exp_fp(quid sid, std::vector<bitLenInt> q, std::vector<real1> s) -> real1`
 
 **Returns** an expectation value by summing respective floating-point numbers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array.
 
@@ -217,7 +217,7 @@ Allocates a new qubit with a specific ID.
 - `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
 
 
-##### `fact_exp_fp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<double> s, bool r) -> real1`
+##### `fact_exp_fp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<real1> s, bool r) -> real1`
 
 **Returns** a "best-guess" (for near-Clifford simulation) expectation value based on the "reduced density matrix," for an expectation value resulting from summing respective floating-point numbers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
 
@@ -225,6 +225,154 @@ Allocates a new qubit with a specific ID.
 - `q`: Array of qubit IDs.
 - `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
 - `r`: "Rounding" option on/off, for `true`/`false`.
+
+
+#### `unitary_exp(quid sid, std::vector<bitLenInt> q, std::vector<real1> b) -> real1`
+
+**Returns** the single-qubit (3-parameter) operator expectation value for the array of qubits and (3-parameter unitary) bases.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of floating-point parameters representing `u` operations _from_ the desired basis _to_ the current basis (associated with each qubit ID in `q`, with three times as many elements as `q`).
+
+
+#### `matrix_exp(quid sid, std::vector<bitLenInt> q, std::vector<real1> b) -> real1`
+
+**Returns** the single-qubit (2x2) operator expectation value for the array of qubits and (2x2 unitary matrix) bases.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: (Flat) array of floating-point values representing `mtrx` operations _from_ the desired basis _to_ the current basis (associated with each qubit ID in `q`, with eight times as many elements as `q`).
+
+
+#### `unitary_exp_ev(quid sid, std::vector<bitLenInt> q, std::vector<real1> b, std::vector<real1> e) -> real1`
+
+**Returns** the single-qubit (3-parameter) operator expectation value for the array of qubits, (3-parameter unitary) bases, and (pairs of) expectation values.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of floating-point parameters representing `u` operations _from_ the desired basis _to_ the current basis (associated with each qubit ID in `q`, with three times as many elements as `q`).
+- `e`: Array of floating-point eigenvalues (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`)
+
+
+#### `matrix_exp_ev(quid sid, std::vector<bitLenInt> q, std::vector<real1> b, std::vector<real1> e) -> real1`
+
+**Returns** the single-qubit (2x2) operator expectation value for the array of qubits and (2x2 unitary matrix) bases.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: (Flat) array of floating-point values representing `mtrx` operations _from_ the desired basis _to_ the current basis (associated with each qubit ID in `q`, with eight times as many elements as `q`).
+- `e`: Array of floating-point eigenvalues (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`)
+
+
+#### `pauli_exp(quid sid, std::vector<bitLenInt> q, std::vector<Pauli> b) -> real1`
+
+**Returns** Pauli operator expectation value for the array of qubits and bases.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of Pauli axes (for each qubit ID in `q`).
+
+
+##### `var(quid sid, std::vector<bitLenInt> q) -> real1`
+
+**Returns** the variance associated to |0> and |1> as 1 and -1 expectation values of each qubit in "`q`."
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+
+
+##### `var_rdm(quid sid, std::vector<bitLenInt> q) -> real1`
+
+**Returns** a "best-guess" (for near-Clifford simulation) of the variance associated to |0> and |1> as 1 and -1 expectation values of each qubit in "`q`."
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `r`: "Rounding" option on/off, for `true`/`false`.
+
+
+##### `fact_var(quid sid, std::vector<bitLenInt> q, std::vector<long> s) -> real1`
+
+**Returns** the variance of the expectation value found by summing respective integers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
+
+
+##### `fact_var_rdm(quid sid, std::vector<bitLenInt> q, std::vector<long> s, bool r) -> real1`
+
+**Returns** a "best-guess" (for near-Clifford simulation) variance based on the "reduced density matrix," for an expectation value resulting from summing respective integers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
+- `r`: "Rounding" option on/off, for `true`/`false`.
+
+
+##### `fact_var_fp(quid sid, std::vector<bitLenInt> q, std::vector<real1> s) -> real1`
+
+**Returns** the variance of an expectation value found by summing respective floating-point numbers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
+
+
+##### `fact_var_fp_rdm(quid sid, std::vector<bitLenInt> q, std::vector<real1> s, bool r) -> real1`
+
+**Returns** a "best-guess" (for near-Clifford simulation) variance based on the "reduced density matrix," for an expectation value resulting from summing respective floating-point numbers "`s`", associated to |0> and |1> respective states of each qubit in "`q`", across qubit basis ray permutations by probability "weight," with `s` strided in |0>/|1> pairs, as a flat array (with less overhead to calculate, for being "RDM").
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `s`: Array of integers (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`).
+- `r`: "Rounding" option on/off, for `true`/`false`.
+
+#### `unitary_var(quid sid, std::vector<bitLenInt> q, std::vector<real1> b) -> real1`
+
+**Returns** the single-qubit (3-parameter) operator variance for the array of qubits and (3-parameter unitary) bases.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of floating-point parameters representing `u` operations _from_ the desired basis _to_ the current basis (associated with each qubit ID in `q`, with three times as many elements as `q`).
+
+
+#### `matrix_var(quid sid, std::vector<bitLenInt> q, std::vector<real1> b) -> real1`
+
+**Returns** the single-qubit (2x2) variance for the array of qubits and (2x2 unitary matrix) bases.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: (Flat) array of floating-point values representing `mtrx` operations _from_ the desired basis _to_ the current basis (associated with each qubit ID in `q`, with eight times as many elements as `q`).
+
+
+#### `unitary_var_ev(quid sid, std::vector<bitLenInt> q, std::vector<real1> b, std::vector<real1> e) -> real1`
+
+**Returns** the single-qubit (3-parameter) operator variance for the array of qubits, (3-parameter unitary) bases, and (pairs of) expectation values.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of floating-point parameters representing `u` operations _from_ the desired basis _to_ the current basis (associated with each qubit ID in `q`, with three times as many elements as `q`).
+- `e`: Array of floating-point eigenvalues (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`)
+
+
+#### `matrix_var_ev(quid sid, std::vector<bitLenInt> q, std::vector<real1> b, std::vector<real1> e) -> real1`
+
+**Returns** the single-qubit (2x2) operator variance for the array of qubits and (2x2 unitary matrix) bases.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: (Flat) array of floating-point values representing `mtrx` operations _from_ the desired basis _to_ the current basis (associated with each qubit ID in `q`, with eight times as many elements as `q`).
+- `e`: Array of floating-point eigenvalues (associated to respective |0> and |1> states of each qubit ID in `q`, with twice as many elements as `q`)
+
+
+#### `pauli_var(quid sid, std::vector<bitLenInt> q, std::vector<Pauli> b) -> real1`
+
+**Returns** Pauli operator variance for the array of qubits and bases.
+
+- `sid`: Simulator instance ID.
+- `q`: Array of qubit IDs.
+- `b`: Array of Pauli axes (for each qubit ID in `q`).
 
 
 ##### `measure(quid sid, bitLenInt q) -> bool`
@@ -312,7 +460,7 @@ General 3-parameter unitary single-qubit gate (covers all possible single-qubit 
 - `lambda`: angle (radians)
 
 
-##### `mtrx(quid sid, std::vector<double> m, bitLenInt q)`
+##### `mtrx(quid sid, std::vector<real1> m, bitLenInt q)`
 
 General 2x2 unitary matrix operator single-qubit gate (covers all possible single-qubit gates)
 
@@ -379,8 +527,8 @@ General 3-parameter unitary single-qubit target with arbitrary number of control
 - `lambda`: angle
 
 
-##### `mcmtrx(quid sid, std::vector<bitLenInt> c, std::vector<double> m, bitLenInt q)`
-##### `macmtrx(quid sid, std::vector<bitLenInt> c, std::vector<double> m, bitLenInt q)`
+##### `mcmtrx(quid sid, std::vector<bitLenInt> c, std::vector<real1> m, bitLenInt q)`
+##### `macmtrx(quid sid, std::vector<bitLenInt> c, std::vector<real1> m, bitLenInt q)`
 
 General 2x2 unitary matrix operator single-qubit target with arbitrary number of control qubits (covers all possible single-qubit target "payloads")
 
