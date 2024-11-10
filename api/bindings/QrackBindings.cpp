@@ -51,6 +51,9 @@ EMSCRIPTEN_BINDINGS(QrackWrapper) {
     function("try_separate_tol", optional_override([](long sid, std::vector<long> q, double tol) -> bool {
         return QrackWrapper::TrySeparateTol(sid, q, tol);
     }));
+    function("separate", optional_override([](long sid, std::vector<long> q) -> void {
+        QrackWrapper::Separate(sid, q);
+    }));
     function("get_unitary_fidelity", optional_override([](long sid) -> double {
         return QrackWrapper::GetUnitaryFidelity(sid);
     }));

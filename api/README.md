@@ -422,6 +422,37 @@ Resets the simulator state to the |0> permutation state for all qubits.
 
 - `sid`: Simulator instance ID.
 
+### Entanglement and separability utility
+
+#### Entanglement-breaking channel
+
+##### `separate(std::vector<bitLenInt> q)`
+
+For a general use type simulator, break entanglement between a set of subsystem of qubits and the rest of the simulator system, minimizing the loss of fidelity by replacing with the closest possible exactly separable state.
+
+- `q`: List of qubit IDs, to define the subsystem to separate from bulk
+
+#### Tests for separability
+
+##### `try_separate_tol(std::vector<bitLenInt> q, real1 tol) -> bool`
+
+**Return** whether the state is deemed separable up to numerical fidelity loss tolerance. For a general use type simulator, break entanglement between a set of subsystem of qubits and the rest of the simulator system, minimizing the loss of fidelity by replacing with the closest possible exactly separable state, only if the (L2 norm) fidelity loss would be less than the "`tol`" tolerance parameter.
+
+- `q`: List of qubit IDs, to define the subsystem to separate from bulk
+- `tol`: Numerical tolerance for L2 norm fidelity loss
+
+##### `try_separate_1qb(bitLenInt q) -> bool`
+
+**Return** whether a qubit is deemed separable in the ideal. For a general use type simulator, test if a specific qubit is separable in the ideal from the rest of the simulator system (and internally reduce the state representation to save memory, if it's separable).
+
+- `q`: Qubit ID
+
+##### `try_separate_2qb(bitLenInt q1, bitLenInt q2) -> bool`
+
+**Return** whether a 2-qubit subsystem is deemed separable in the ideal. (The two qubits within the subsystem may be entangled with each other, still.) For a general use type simulator, test if a specific 2-qubit subsystem is separable in the ideal from the rest of the simulator system (and internally reduce the state representation to save memory, if it's separable).
+
+- `q1`: Qubit ID (in potentially separable subsystem)
+- `q2`: Qubit ID (in potentially separable subsystem)
 
 ### Single-qubit gates
 

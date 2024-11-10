@@ -16,6 +16,7 @@ public:
     static bool TrySeparate1Qb(long sid, long qi1);
     static bool TrySeparate2Qb(long sid, long qi1, long qi2);
     static bool TrySeparateTol(long sid, std::vector<long> q, double tol);
+    static void Separate(long sid, std::vector<long> q);
     static double GetUnitaryFidelity(long sid);
     static void ResetUnitaryFidelity(long sid);
     static void SetSdrp(long sid, double sdrp);

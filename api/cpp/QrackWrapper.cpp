@@ -50,6 +50,9 @@ std::vector<bitLenInt> transform_qbids(const std::vector<long>& c) {
 bool QrackWrapper::TrySeparateTol(long sid, std::vector<long> q, double tol) {
     return Qrack::TrySeparateTol((Qrack::quid)sid, transform_qbids(q), (Qrack::real1_f)tol);
 }
+void QrackWrapper::Separate(long sid, std::vector<long> q) {
+    Qrack::Separate((Qrack::quid)sid, transform_qbids(q));
+}
 double QrackWrapper::GetUnitaryFidelity(long sid) {
     return (double)Qrack::GetUnitaryFidelity((Qrack::quid)sid);
 }
