@@ -3,10 +3,10 @@
 #include "qrack/wasm_api.hpp"
 
 long QrackWrapper::init_general(long length) {
-    return (long)Qrack::init_count((bitLenInt)length, false);
+    return (long)Qrack::init_count_type((bitLenInt)length, false, false, true, false, false, false, false, false, false, false);
 }
 long QrackWrapper::init_stabilizer(long length) {
-    return (long)Qrack::init_count_type((bitLenInt)length, false, false, false, true, false, false, false, false, false);
+    return (long)Qrack::init_count_type((bitLenInt)length, false, false, false, true, false, false, false, false, false, false);
 }
 long QrackWrapper::init_qbdd(long length) {
     return (long)Qrack::init_qbdd_count((bitLenInt)length);
@@ -50,6 +50,9 @@ std::vector<bitLenInt> transform_qbids(const std::vector<long>& c) {
 bool QrackWrapper::TrySeparateTol(long sid, std::vector<long> q, double tol) {
     return Qrack::TrySeparateTol((Qrack::quid)sid, transform_qbids(q), (Qrack::real1_f)tol);
 }
+void QrackWrapper::Separate(long sid, std::vector<long> q) {
+    Qrack::Separate((Qrack::quid)sid, transform_qbids(q));
+}
 double QrackWrapper::GetUnitaryFidelity(long sid) {
     return (double)Qrack::GetUnitaryFidelity((Qrack::quid)sid);
 }
@@ -82,7 +85,7 @@ std::vector<Qrack::QubitIndexState> validatePermProb(const std::vector<long>& q,
     std::vector<Qrack::QubitIndexState> _q;
     _q.reserve(q.size());
     for (long i = 0; i < q.size(); ++i) {
-        _q.push_back(Qrack::QubitIndexState((long)q[i], (bool)s[i]));
+        _q.emplace_back((long)q[i], (bool)s[i]);
     }
     return _q;
 }
@@ -96,47 +99,193 @@ double QrackWrapper::PermutationProbRdm(long sid, std::vector<long> q, std::vect
         "QrackWrapper::PermutationProbRdm() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::PermutationProbRdm((Qrack::quid)sid, _q, r);
 }
-std::vector<Qrack::QubitIntegerExpectation> validateFactProb(const std::vector<long>& q, const std::vector<long>& s, std::string m) {
+std::vector<Qrack::QubitIntegerExpVar> validateFactProb(const std::vector<long>& q, const std::vector<long>& s, std::string m) {
     if (q.size() != s.size()) {
         throw std::invalid_argument(m);
     }
-    std::vector<Qrack::QubitIntegerExpectation> _q;
+    std::vector<Qrack::QubitIntegerExpVar> _q;
     _q.reserve(q.size());
     for (long i = 0; i < q.size(); ++i) {
-        _q.push_back(Qrack::QubitIntegerExpectation((long)q[i], (long)s[i]));
+        _q.emplace_back((long)q[i], (long)s[i]);
     }
     return _q;
 }
 double QrackWrapper::FactorizedExpectation(long sid, std::vector<long> q, std::vector<long> s) {
-    std::vector<Qrack::QubitIntegerExpectation> _q = validateFactProb(q, s,
+    std::vector<Qrack::QubitIntegerExpVar> _q = validateFactProb(q, s,
         "QrackWrapper::FactorizedExpectation() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::FactorizedExpectation((Qrack::quid)sid, _q);
 }
 double QrackWrapper::FactorizedExpectationRdm(long sid, std::vector<long> q, std::vector<long> s, bool r) {
-    std::vector<Qrack::QubitIntegerExpectation> _q = validateFactProb(q, s,
+    std::vector<Qrack::QubitIntegerExpVar> _q = validateFactProb(q, s,
         "QrackWrapper::FactorizedExpectationRdm() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::FactorizedExpectationRdm((Qrack::quid)sid, _q, r);
 }
-std::vector<Qrack::QubitRealExpectation> validateFactFpProb(const std::vector<long>& q, const std::vector<double>& s, std::string m) {
+std::vector<Qrack::QubitRealExpVar> validateFactFpProb(const std::vector<long>& q, const std::vector<double>& s, std::string m) {
     if (q.size() != s.size()) {
         throw std::invalid_argument(m);
     }
-    std::vector<Qrack::QubitRealExpectation> _q;
+    std::vector<Qrack::QubitRealExpVar> _q;
     _q.reserve(q.size());
     for (long i = 0; i < q.size(); ++i) {
-        _q.push_back(Qrack::QubitRealExpectation((long)q[i], (Qrack::real1)s[i]));
+        _q.emplace_back((long)q[i], (Qrack::real1)s[i]);
     }
     return _q;
 }
 double QrackWrapper::FactorizedExpectationFp(long sid, std::vector<long> q, std::vector<double> s) {
-    std::vector<Qrack::QubitRealExpectation> _q = validateFactFpProb(q, s,
+    std::vector<Qrack::QubitRealExpVar> _q = validateFactFpProb(q, s,
         "QrackWrapper::FactorizedExpectationFp() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::FactorizedExpectationFp((Qrack::quid)sid, _q);
 }
 double QrackWrapper::FactorizedExpectationFpRdm(long sid, std::vector<long> q, std::vector<double> s, bool r) {
-    std::vector<Qrack::QubitRealExpectation> _q = validateFactFpProb(q, s,
+    std::vector<Qrack::QubitRealExpVar> _q = validateFactFpProb(q, s,
         "QrackWrapper::FactorizedExpectationFpRdm() 'q' and 's' parameter vectors should have same size!");
     return (double)Qrack::FactorizedExpectationFpRdm((Qrack::quid)sid, _q, r);
+}
+std::vector<Qrack::QubitU3Basis> validateUnitaryExpVar(const std::vector<long>& q, const std::vector<double>& b, std::string m) {
+    if ((3U * q.size()) != b.size()) {
+        throw std::invalid_argument(m);
+    }
+    std::vector<Qrack::QubitU3Basis> _q;
+    _q.reserve(q.size());
+    for (long i = 0; i < q.size(); ++i) {
+        const long j = 3 * i;
+        _q.emplace_back((bitLenInt)q[i], std::vector<Qrack::real1_f>{ (Qrack::real1_f)b[j], (Qrack::real1_f)b[j + 1], (Qrack::real1_f)b[j + 2] });
+    }
+    return _q;
+}
+double QrackWrapper::UnitaryExpectation(long sid, std::vector<long> q, std::vector<double> b) {
+    std::vector<Qrack::QubitU3Basis> _q = validateUnitaryExpVar(q, b,
+        "QrackWrapper::UnitaryExpectation() 'b' parameter vector should be 3 times size of 'q'!");
+    return (double)Qrack::UnitaryExpectation((Qrack::quid)sid, _q);
+}
+std::vector<Qrack::QubitMatrixBasis> validateMatrixExpVar(const std::vector<long>& q, const std::vector<double>& b, std::string m) {
+    if ((q.size() << 3U) != b.size()) {
+        throw std::invalid_argument(m);
+    }
+    std::vector<Qrack::QubitMatrixBasis> _q;
+    _q.reserve(q.size());
+    for (long i = 0; i < q.size(); ++i) {
+        const long j = 8 * i;
+        std::vector<Qrack::complex> mtrx {
+            Qrack::complex(b[j + 0], b[j + 1]), Qrack::complex(b[j + 2], b[j + 3]),
+            Qrack::complex(b[j + 4], b[j + 5]), Qrack::complex(b[j + 6], b[j + 7])
+        };
+        _q.emplace_back((bitLenInt)q[i], mtrx);
+    }
+    return _q;
+}
+double QrackWrapper::MatrixExpectation(long sid, std::vector<long> q, std::vector<double> b) {
+    std::vector<Qrack::QubitMatrixBasis> _q = validateMatrixExpVar(q, b,
+        "QrackWrapper::MatrixExpectation() 'b' parameter vector should be 8 times size of 'q'!");
+    return (double)Qrack::MatrixExpectation((Qrack::quid)sid, _q);
+}
+std::vector<Qrack::QubitU3BasisEigenVal> validateUnitaryExpVarEigenVal(const std::vector<long>& q, const std::vector<double>& b, const std::vector<double>& e, std::string m) {
+    if (((3U * q.size()) != b.size()) || ((q.size() << 1U) != e.size())) {
+        throw std::invalid_argument(m);
+    }
+    std::vector<Qrack::QubitU3BasisEigenVal> _q;
+    _q.reserve(q.size());
+    for (long i = 0; i < q.size(); ++i) {
+        const long j = 3 * i;
+        const long k = i << 1;
+        _q.emplace_back((bitLenInt)q[i], std::vector<Qrack::real1_f>{ (Qrack::real1_f)b[j], (Qrack::real1_f)b[j + 1], (Qrack::real1_f)b[j + 2] }, std::vector<Qrack::real1_f>{ (Qrack::real1_f)e[k], (Qrack::real1_f)e[k + 1] });
+    }
+    return _q;
+}
+double QrackWrapper::UnitaryExpectationEigenVal(long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e) {
+    std::vector<Qrack::QubitU3BasisEigenVal> _q = validateUnitaryExpVarEigenVal(q, b, e,
+        "QrackWrapper::UnitaryExpectationEigenVal() 'b' parameter vector should be 3 times size of 'q', and 'e' should be 2 times size of 'q'!");
+    return (double)Qrack::UnitaryExpectationEigenVal((Qrack::quid)sid, _q);
+}
+std::vector<Qrack::QubitMatrixBasisEigenVal> validateMatrixExpVarEigenVal(const std::vector<long>& q, const std::vector<double>& b, const std::vector<double>& e, std::string m) {
+    if (((q.size() << 3U) != b.size()) || ((q.size() << 1U) != e.size())) {
+        throw std::invalid_argument(m);
+    }
+    std::vector<Qrack::QubitMatrixBasisEigenVal> _q;
+    _q.reserve(q.size());
+    for (long i = 0; i < q.size(); ++i) {
+        const long j = 8 * i;
+        const long k = i << 1;
+        std::vector<Qrack::complex> mtrx {
+            Qrack::complex(b[j + 0], b[j + 1]), Qrack::complex(b[j + 2], b[j + 3]),
+            Qrack::complex(b[j + 4], b[j + 5]), Qrack::complex(b[j + 6], b[j + 7])
+        };
+        _q.emplace_back((bitLenInt)q[i], mtrx, std::vector<Qrack::real1_f>{ (Qrack::real1_f)e[k], (Qrack::real1_f)e[k + 1] });
+    }
+    return _q;
+}
+double QrackWrapper::MatrixExpectationEigenVal(long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e) {
+    std::vector<Qrack::QubitMatrixBasisEigenVal> _q = validateMatrixExpVarEigenVal(q, b, e,
+        "QrackWrapper::MatrixExpectationEigenVal() 'b' parameter vector should be 8 times size of 'q', and 'e' should be 2 times size of 'q'!");
+    return (double)Qrack::MatrixExpectationEigenVal((Qrack::quid)sid, _q);
+}
+std::vector<Qrack::QubitPauliBasis> transform_qubit_paulis(const std::vector<long>& q, const std::vector<char>& b, std::string m) {
+    if (q.size() != b.size()) {
+        throw std::invalid_argument(m);
+    }
+    std::vector<Qrack::QubitPauliBasis> _b;
+    _b.reserve(b.size());
+    for (size_t i = 0U; i < b.size(); ++i) {
+        _b.emplace_back((bitLenInt)q[i], (Qrack::Pauli)b[i]);
+    }
+
+    return _b;
+}
+double QrackWrapper::PauliExpectation(long sid, std::vector<long> q, std::vector<char> b) {
+    std::vector<Qrack::QubitPauliBasis>_q = transform_qubit_paulis(q, b,
+        "QrackWrapper::PauliExpectation() 'q' and 'b' parameter vectors should have same size!");
+    return (double)Qrack::PauliExpectation((Qrack::quid)sid, _q);
+}
+double QrackWrapper::Variance(long sid, std::vector<long> q) {
+    return (double)Qrack::Variance((Qrack::quid)sid, transform_qbids(q));
+}
+double QrackWrapper::VarianceRdm(long sid, std::vector<long> q, bool r) {
+    return (double)Qrack::VarianceRdm((Qrack::quid)sid, transform_qbids(q), r);
+}
+double QrackWrapper::FactorizedVariance(long sid, std::vector<long> q, std::vector<long> c) {
+    std::vector<Qrack::QubitIntegerExpVar> _q = validateFactProb(q, c,
+        "QrackWrapper::FactorizedVariance() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::FactorizedVariance((Qrack::quid)sid, _q);
+}
+double QrackWrapper::FactorizedVarianceRdm(long sid, std::vector<long> q, std::vector<long> c, bool r) {
+    std::vector<Qrack::QubitIntegerExpVar> _q = validateFactProb(q, c,
+        "QrackWrapper::FactorizedVarianceRdm() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::FactorizedVarianceRdm((Qrack::quid)sid, _q, r);
+}
+double QrackWrapper::FactorizedVarianceFp(long sid, std::vector<long> q, std::vector<double> s) {
+    std::vector<Qrack::QubitRealExpVar> _q = validateFactFpProb(q, s,
+        "QrackWrapper::FactorizedVarianceFp() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::FactorizedVarianceFp((Qrack::quid)sid, _q);
+}
+double QrackWrapper::FactorizedVarianceFpRdm(long sid, std::vector<long> q, std::vector<double> s, bool r) {
+    std::vector<Qrack::QubitRealExpVar> _q = validateFactFpProb(q, s,
+        "QrackWrapper::FactorizedVarianceFpRdm() 'q' and 's' parameter vectors should have same size!");
+    return (double)Qrack::FactorizedVarianceFpRdm((Qrack::quid)sid, _q, r);
+}
+double QrackWrapper::UnitaryVariance(long sid, std::vector<long> q, std::vector<double> b) {
+    std::vector<Qrack::QubitU3Basis> _q = validateUnitaryExpVar(q, b,
+        "QrackWrapper::UnitaryVariance() 'b' parameter vector should be 3 times size of 'q'!");
+    return (double)Qrack::UnitaryVariance((Qrack::quid)sid, _q);
+}
+double QrackWrapper::MatrixVariance(long sid, std::vector<long> q, std::vector<double> b) {
+    std::vector<Qrack::QubitMatrixBasis> _q = validateMatrixExpVar(q, b,
+        "QrackWrapper::MatrixVariance() 'b' parameter vector should be 8 times size of 'q'!");
+    return (double)Qrack::MatrixVariance((Qrack::quid)sid, _q);
+}
+double QrackWrapper::UnitaryVarianceEigenVal(long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e) {
+    std::vector<Qrack::QubitU3BasisEigenVal> _q = validateUnitaryExpVarEigenVal(q, b, e,
+        "QrackWrapper::UnitaryVarianceEigenVal() 'b' parameter vector should be 3 times size of 'q', and 'e' should be 2 times size of 'q'!");
+    return (double)Qrack::UnitaryVarianceEigenVal((Qrack::quid)sid, _q);
+}
+double QrackWrapper::MatrixVarianceEigenVal(long sid, std::vector<long> q, std::vector<double> b, std::vector<double> e) {
+    std::vector<Qrack::QubitMatrixBasisEigenVal> _q = validateMatrixExpVarEigenVal(q, b, e,
+        "QrackWrapper::MatrixVarianceEigenVal() 'b' parameter vector should be 8 times size of 'q', and 'e' should be 2 times size of 'q'!");
+    return (double)Qrack::MatrixVarianceEigenVal((Qrack::quid)sid, _q);
+}
+double QrackWrapper::PauliVariance(long sid, std::vector<long> q, std::vector<char> b) {
+    std::vector<Qrack::QubitPauliBasis>_q = transform_qubit_paulis(q, b,
+        "QrackWrapper::PauliVariance() 'q' and 'b' parameter vectors should have same size!");
+    return (double)Qrack::PauliVariance((Qrack::quid)sid, _q);
 }
 
 void QrackWrapper::PhaseParity(long sid, double lambda, std::vector<long> q) {
@@ -148,14 +297,8 @@ void QrackWrapper::PhaseParity(long sid, double lambda, std::vector<long> q) {
     Qrack::PhaseParity((Qrack::quid)sid, (Qrack::real1_f)lambda, _q);
 }
 double QrackWrapper::JointEnsembleProbability(long sid, std::vector<long> q, std::vector<char> b) {
-    if (q.size() != b.size()) {
-        throw std::invalid_argument("QrackWrapper::JointEnsembleProbability() 'q' and 'b' parameter vectors should have same size!");
-    }
-    std::vector<Qrack::QubitPauliBasis>_q;
-    _q.reserve(q.size());
-    for (size_t i = 0U; i < q.size(); ++i) {
-        _q.push_back(Qrack::QubitPauliBasis((bitLenInt)q[i], (Qrack::Pauli)b[i]));
-    }
+    std::vector<Qrack::QubitPauliBasis>_q = transform_qubit_paulis(q, b,
+        "QrackWrapper::JointEnsembleProbability() 'q' and 'b' parameter vectors should have same size!");
     return (double)Qrack::JointEnsembleProbability((Qrack::quid)sid, _q);
 }
 
@@ -175,18 +318,6 @@ bool QrackWrapper::M(long sid, long q) {
 void QrackWrapper::ForceM(long sid, long q, bool r) {
     // This returns "r," but there's no need to save the input argument.
     Qrack::ForceM((Qrack::quid)sid, (bitLenInt)q, r);
-}
-std::vector<Qrack::QubitPauliBasis> transform_qubit_paulis(const std::vector<long>& q, const std::vector<char>& b, std::string m) {
-    if (q.size() != b.size()) {
-        throw std::invalid_argument(m);
-    }
-    std::vector<Qrack::QubitPauliBasis> _b;
-    _b.reserve(b.size());
-    for (size_t i = 0U; i < b.size(); ++i) {
-        _b.push_back(Qrack::QubitPauliBasis((bitLenInt)q[i], (Qrack::Pauli)b[i]));
-    }
-
-    return _b;
 }
 bool QrackWrapper::Measure(long sid, std::vector<long> q, std::vector<char> b) {
     std::vector<Qrack::QubitPauliBasis> _q = transform_qubit_paulis(q, b,
@@ -255,7 +386,7 @@ std::vector<Qrack::complex> transform_matrix(const std::vector<double>& m) {
     std::vector<Qrack::complex> _m;
     _m.reserve(4);
     for (size_t i = 0U; i < 4; i+=2) {
-        _m.push_back(Qrack::complex(m[2 * i], m[(2 * i) + 1]));
+        _m.emplace_back(m[2 * i], m[(2 * i) + 1]);
     }
 
     return _m;
