@@ -3,7 +3,7 @@
 #include "qrack/qfactory.hpp"
 
 int QrackWrapper::qft_u3(int length) {
-    Qrack::QInterfacePtr qReg = Qrack::CreateQuantumInterface({ Qrack::QINTERFACE_QUNIT, Qrack::QINTERFACE_STABILIZER_HYBRID }, length, 0U);
+    Qrack::QInterfacePtr qReg = Qrack::CreateQuantumInterface({ Qrack::QINTERFACE_TENSOR_NETWORK, Qrack::QINTERFACE_QUNIT, Qrack::QINTERFACE_CPU }, (bitLenInt)length, Qrack::ZERO_BCI);
     
     Qrack::real1_f th, ph, lm;
     for (bitLenInt i = 0U; i < length; i++) {
@@ -16,5 +16,5 @@ int QrackWrapper::qft_u3(int length) {
     
     qReg->QFT(0, length);
     
-    return (int)qReg->MAll();
+    return (int)(uint32_t)qReg->MAll();
 }

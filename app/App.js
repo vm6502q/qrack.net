@@ -16,44 +16,27 @@ const qrack = Qrack({
 })
 
 function App () {
-  const [benchmarkData, setBenchmarkData] = useState([])
+  const [width, setWidth] = useState(window.innerWidth)
   const [fullData, setFullData] = useState([])
 
-  function handleQftDispatch (length, maxLength) {
-    qrack.then((core) => {
-      handleQftIteration(core, length, maxLength)
-    })
-  }
-
   function handleQftIteration (core, length, maxLength) {
-    const start = new Date().getTime()
-    core.qft_u3(length)
-    const end = new Date().getTime()
-
-    const nBenchmarkData = benchmarkData
-    nBenchmarkData.push({ method: '', label: length, value: (end - start) })
-
-    setBenchmarkData(nBenchmarkData)
-
-    if (length < maxLength) {
-      handleQftIteration(core, length + 1, maxLength)
-    } else {
-      setFullData(nBenchmarkData)
+    var data = []
+    for (var l = length; l <= maxLength; ++l) {
+        const start = new Date().getTime()
+        core.qft_u3(l)
+        const end = new Date().getTime()
+        data.push({ method: '', label: l, value: (end - start) })
     }
+    setFullData(data)
   }
-
-  useEffect(() => {
-    handleQftDispatch(1, 16)
-  }, [])
-
-  const [width, setWidth] = useState(window.innerWidth)
 
   useEffect(() => {
     function handleResize () {
       setWidth(window.innerWidth)
     }
     window.addEventListener('resize', handleResize)
-  })
+    qrack.then((core) => { handleQftIteration(core, 1, 16) })
+  }, [])
 
   return (
     <div>
